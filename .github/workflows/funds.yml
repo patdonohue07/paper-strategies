@@ -32,6 +32,20 @@ jobs:
           umask 077
           printf 'APCA_API_KEY_ID=%s\nAPCA_API_SECRET_KEY=%s\nAPCA_BASE=https://paper-api.alpaca.markets\n' "$K1" "$S1" > ~/.alpaca_paper
           printf 'APCA_API_KEY_ID=%s\nAPCA_API_SECRET_KEY=%s\nAPCA_BASE=https://paper-api.alpaca.markets\n' "$K2" "$S2" > ~/.alpaca_paper2
+          python3 - <<'PY' | tee funds/keycheck.txt
+          import os, json, urllib.request, urllib.error
+          from datetime import datetime
+          print("key check", datetime.now().isoformat(timespec="seconds"))
+          for name, f in (("APCA_KEY_ID/APCA_SECRET (bond fund + BILI)", "~/.alpaca_paper"), ("APCA2_KEY_ID/APCA2_SECRET (portable alpha)", "~/.alpaca_paper2")):
+              kv = dict(l.strip().split("=", 1) for l in open(os.path.expanduser(f)) if "=" in l)
+              lens = (len(kv.get("APCA_API_KEY_ID", "")), len(kv.get("APCA_API_SECRET_KEY", "")))
+              req = urllib.request.Request("https://paper-api.alpaca.markets/v2/account", headers={"APCA-API-KEY-ID": kv["APCA_API_KEY_ID"], "APCA-API-SECRET-KEY": kv["APCA_API_SECRET_KEY"]})
+              try:
+                  a = json.loads(urllib.request.urlopen(req, timeout=20).read()); msg = f"OK, account status {a.get('status')}"
+              except urllib.error.HTTPError as e: msg = f"HTTP {e.code} {e.read().decode()[:120]}"
+              except Exception as e: msg = f"error {str(e)[:120]}"
+              print(f"{name}: key length {lens[0]}, secret length {lens[1]} -> {msg}")
+          PY
           cd funds; L="${{ steps.gate.outputs.live }}"; T=$(date +%Y-%m-%d)
           done_today() { [ -n "$L" ] && [ -f "$1" ] && grep -q "^$T.*LIVE-PAPER" "$1"; }
           done_today fund_log.csv && echo "bond fund already ran today" || python3 paper_fund.py $L 2>&1 | tee last_run_fund.txt
