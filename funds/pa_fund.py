@@ -59,9 +59,9 @@ borrowed = max(0.0, sum(target_usd.values()) - eq)
 row = dict(ts=datetime.now().isoformat(timespec="seconds"), mode="LIVE-PAPER" if LIVE else "DRY", state=state, equity=round(eq, 2),
            spy_px=px["SPY"], ief_px=px["IEF"], tlt_px=px["TLT"], targets=json.dumps({k: round(v, 0) for k, v in target_usd.items()}), orders=json.dumps(orders),
            borrowed_est=round(borrowed, 0), fin_drag_today_est=round(borrowed * CFG["fin_rate_est"] / 252, 2))
-p = os.path.join(HERE, "pa_log.csv" if LIVE else "pa_log_dry.csv"); new = not os.path.exists(p)
-with open(p, "a", newline="") as f:
-    w = csv.DictWriter(f, fieldnames=list(row))
-    if new: w.writeheader()
-    w.writerow(row)
+p = os.path.join(HERE, "pa_log.csv" if LIVE else "pa_log_dry.csv")
+old = list(csv.DictReader(open(p))) if os.path.exists(p) else []
+cols = list(dict.fromkeys([k for r in old for k in r] + list(row)))   # keeps old rows readable when a column is added
+with open(p, "w", newline="") as f:
+    w = csv.DictWriter(f, fieldnames=cols, restval=""); w.writeheader(); w.writerows(old + [row])
 print(json.dumps(row, indent=1))
