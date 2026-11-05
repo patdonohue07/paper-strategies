@@ -45,6 +45,13 @@ jobs:
               except urllib.error.HTTPError as e: msg = f"HTTP {e.code} {e.read().decode()[:120]}"
               except Exception as e: msg = f"error {str(e)[:120]}"
               print(f"{name}: key length {lens[0]}, secret length {lens[1]} -> {msg}")
+              H = {"APCA-API-KEY-ID": kv["APCA_API_KEY_ID"], "APCA-API-SECRET-KEY": kv["APCA_API_SECRET_KEY"]}
+              for path in ("/v2/orders?status=all&limit=12&direction=desc", "/v2/positions"):
+                  try:
+                      for o in json.loads(urllib.request.urlopen(urllib.request.Request("https://paper-api.alpaca.markets" + path, headers=H), timeout=20).read()):
+                          if "orders" in path: print(f"   order {o['symbol']} {o['side']} qty {o['qty']} filled {o['filled_qty']} @ {o.get('filled_avg_price')} {o['type']}/{o['time_in_force']} status {o['status']} submitted {o['submitted_at'][:19]} filled_at {(o.get('filled_at') or '')[:19]}")
+                          else: print(f"   position {o['symbol']} qty {o['qty']} value {o['market_value']}")
+                  except Exception as e: print("   ", path, "error", str(e)[:100])
           PY
           cd funds; L="${{ steps.gate.outputs.live }}"; T=$(date +%Y-%m-%d)
           done_today() { [ -n "$L" ] && [ -f "$1" ] && grep -q "^$T.*LIVE-PAPER" "$1"; }
