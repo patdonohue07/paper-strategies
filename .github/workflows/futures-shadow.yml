@@ -1,0 +1,28 @@
+name: futures-shadow
+# C91 month-end trade in actual TY and US futures: a log of what it would have done (no orders, no futures account).
+on:
+  schedule:
+    - cron: "20 22,23 * * 1-5"
+  workflow_dispatch:
+permissions: {contents: write}
+concurrency: {group: fut, cancel-in-progress: false}
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env: {TZ: America/New_York, GH_TOKEN: "${{ secrets.GITHUB_TOKEN }}"}
+    steps:
+      - uses: actions/checkout@v4
+      - id: gate
+        run: if [ -f ci/ENABLED ]; then echo "on=1" >> $GITHUB_OUTPUT; else echo "on=0" >> $GITHUB_OUTPUT; fi
+      - if: steps.gate.outputs.on == '1'
+        run: ci/state.sh restore fut fut && git checkout HEAD -- fut
+      - if: steps.gate.outputs.on == '1'
+        env:
+          K1: ${{ secrets.APCA_KEY_ID }}
+          S1: ${{ secrets.APCA_SECRET }}
+        run: |
+          umask 077; printf 'APCA_API_KEY_ID=%s\nAPCA_API_SECRET_KEY=%s\nAPCA_BASE=https://paper-api.alpaca.markets\n' "$K1" "$S1" > ~/.alpaca_paper
+          cd fut && python3 fut_shadow.py; rm -f ~/.alpaca_paper
+      - if: steps.gate.outputs.on == '1' && always()
+        run: ci/state.sh save fut fut

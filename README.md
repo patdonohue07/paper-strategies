@@ -11,7 +11,8 @@ jobs only read public data.
 | kalshi-maker | every 10 min | C66 weekend paper maker (paper orders, fills read from trade history) |
 | hl-logger | hourly | Hyperliquid wallet-position logger |
 | perp-forward-test | daily ~10:37 | FWD-C10 Binance perp breakdown short forward test |
+| futures-shadow | weekdays ~18:20 | C91 month-end trade in actual TY and US futures: a log only, no orders |
 
-Each job keeps its data on its own `state-*` branch (funds, kalshi, hl, fwd). Logs: open that branch on GitHub.
+Each job keeps its data on its own `state-*` branch (funds, kalshi, hl, fwd, fut). Logs: open that branch on GitHub.
 Secrets used: `APCA_KEY_ID`, `APCA_SECRET` (bond fund + BILI account), `APCA2_KEY_ID`, `APCA2_SECRET` (portable alpha).
 Jobs do nothing until `ci/ENABLED` exists on main. Pre-registrations live in the Investing Thesis project.
