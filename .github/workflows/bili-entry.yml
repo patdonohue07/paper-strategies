@@ -24,8 +24,8 @@ jobs:
         run: ci/state.sh restore funds funds && git checkout HEAD -- funds
       - if: steps.gate.outputs.on == '1'
         env:
-          K1: ${{ secrets.APCA_KEY_ID }}
-          S1: ${{ secrets.APCA_SECRET }}
+          K1: ${{ secrets.APACKEYID }}
+          S1: ${{ secrets.APCSECRET }}
         run: |
           umask 077
           printf 'APCA_API_KEY_ID=%s\nAPCA_API_SECRET_KEY=%s\nAPCA_BASE=https://paper-api.alpaca.markets\n' "$K1" "$S1" > ~/.alpaca_paper

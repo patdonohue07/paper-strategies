@@ -15,5 +15,5 @@ jobs only read public data.
 | vix-score | weekdays ~08:50 | C100 forward scoring of the VIX-augmented SPY variance forecast (no trading) |
 
 Each job keeps its data on its own `state-*` branch (funds, kalshi, hl, fwd, fut, vix). Logs: open that branch on GitHub.
-Secrets used: `APCA_KEY_ID`, `APCA_SECRET` (bond fund + BILI account), `APCA2_KEY_ID`, `APCA2_SECRET` (portable alpha).
+Secrets used: `APACKEYID`, `APCSECRET` (bond fund + BILI account), `APACKEYID2`, `APACSECRET2` (portable alpha).
 Jobs do nothing until `ci/ENABLED` exists on main. Pre-registrations live in the Investing Thesis project.
