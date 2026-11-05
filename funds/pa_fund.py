@@ -5,7 +5,8 @@ Usage: python3 pa_fund.py [--live]   (default dry run: computes and logs, sends 
 import os, sys, json, csv, urllib.request, urllib.error
 from datetime import datetime, date, timedelta
 HERE = os.path.dirname(os.path.abspath(__file__)); LIVE = "--live" in sys.argv
-CFG = {"core_SPY": 1.00, "overlay_IEF": 0.50, "fin_rate_est": 0.0625}   # fin_rate_est = assumed margin rate, used only for the logged drag estimate
+CFG = {"core_SPY": 1.00, "overlay_IEF": 0.50, "overlay_TLT": 0.225, "fin_rate_est": 0.0625}   # v2 2026-11-05 (C97, Pat approved): overlay doubled to 100% IEF-equivalent;
+# the second half is held as TLT at 0.45x notional (duration ~16 vs IEF ~7.2) so gross stays ~172% inside Reg T margin   # fin_rate_est = assumed margin rate, used only for the logged drag estimate
 def keys(p):
     p = os.path.expanduser(p)
     return dict(l.strip().split("=", 1) for l in open(p) if "=" in l) if os.path.exists(p) else None
@@ -42,8 +43,9 @@ def in_monthend_window(k):   # position held from close(k) to close(k+1) lies in
 state = "monthend" if in_monthend_window(i) else "core_only"
 def last(sym):
     q = api("GET", f"https://data.alpaca.markets/v2/stocks/{sym}/trades/latest?feed=iex"); return float(q.get("trade", {}).get("p", 0)) or None
-px = {s: last(s) for s in ("SPY", "IEF")}
-target_usd = {"SPY": CFG["core_SPY"] * eq, "IEF": CFG["overlay_IEF"] * eq if state == "monthend" else 0.0}
+px = {s: last(s) for s in ("SPY", "IEF", "TLT")}
+mo = state == "monthend"
+target_usd = {"SPY": CFG["core_SPY"] * eq, "IEF": CFG["overlay_IEF"] * eq if mo else 0.0, "TLT": CFG["overlay_TLT"] * eq if mo else 0.0}
 pos = api("GET", f"{BASE}/v2/positions"); held = {p["symbol"]: float(p["qty"]) for p in pos} if isinstance(pos, list) and os.path.exists(os.path.expanduser("~/.alpaca_paper2")) else {}
 orders = []
 for s, usd in target_usd.items():
@@ -55,7 +57,7 @@ for s, usd in target_usd.items():
     orders.append((s, dq, res.get("id") or res.get("error") or "dry"))
 borrowed = max(0.0, sum(target_usd.values()) - eq)
 row = dict(ts=datetime.now().isoformat(timespec="seconds"), mode="LIVE-PAPER" if LIVE else "DRY", state=state, equity=round(eq, 2),
-           spy_px=px["SPY"], ief_px=px["IEF"], targets=json.dumps({k: round(v, 0) for k, v in target_usd.items()}), orders=json.dumps(orders),
+           spy_px=px["SPY"], ief_px=px["IEF"], tlt_px=px["TLT"], targets=json.dumps({k: round(v, 0) for k, v in target_usd.items()}), orders=json.dumps(orders),
            borrowed_est=round(borrowed, 0), fin_drag_today_est=round(borrowed * CFG["fin_rate_est"] / 252, 2))
 p = os.path.join(HERE, "pa_log.csv" if LIVE else "pa_log_dry.csv"); new = not os.path.exists(p)
 with open(p, "a", newline="") as f:

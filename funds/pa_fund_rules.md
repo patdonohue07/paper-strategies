@@ -10,3 +10,8 @@
 - Expectation (C88 ETF version, 2016-2026): +0.8%/yr over SPY before the drag estimate, about the same volatility and drawdowns. One month is noise: overlay months win about 60% of the time.
 - Review: after 3 months, the first look; a real verdict needs about 12 months of windows.
 - Real-money version (not now): replace the IEF overlay with micro 10-year Treasury futures sized by DV01 at the time.
+
+## v2 (2026-11-05, approved by Pat): overlay doubled (C97)
+- C97 chose a 100% overlay (Sharpe 0.66 -> 0.75 in 2003-2014; 0.77 -> 0.90 in 2015-2026, no deeper drawdown).
+- Held as 50% IEF plus 22.5% TLT in the month-end window. TLT at 0.45x notional carries about the same rate risk as another 50% IEF (duration ~16 vs ~7.2), so gross exposure stays near 172% instead of 200%, inside Alpaca's margin limit.
+- Note: pa_log.csv gains a tlt_px column from this date.
