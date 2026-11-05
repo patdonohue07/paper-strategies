@@ -1,0 +1,30 @@
+name: vix-score
+# C100: forward scoring of the VIX-augmented SPY variance forecast (no trading). Runs before the US open.
+on:
+  schedule:
+    - cron: "50 12,13 * * 1-5"
+  workflow_dispatch:
+permissions: {contents: write}
+concurrency: {group: vix, cancel-in-progress: false}
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env: {TZ: America/New_York, GH_TOKEN: "${{ secrets.GITHUB_TOKEN }}"}
+    steps:
+      - uses: actions/checkout@v4
+      - id: gate
+        run: |
+          [ -f ci/ENABLED ] || { echo "on=0" >> $GITHUB_OUTPUT; exit 0; }
+          hm=$(date +%H%M); if [ "${{ github.event_name }}" = workflow_dispatch ] || { [ "$hm" -ge 800 ] && [ "$hm" -le 929 ]; }; then echo "on=1" >> $GITHUB_OUTPUT; else echo "on=0" >> $GITHUB_OUTPUT; fi
+      - if: steps.gate.outputs.on == '1'
+        run: ci/state.sh restore vix vix && git checkout HEAD -- vix
+      - if: steps.gate.outputs.on == '1'
+        env:
+          K1: ${{ secrets.APCA_KEY_ID }}
+          S1: ${{ secrets.APCA_SECRET }}
+        run: |
+          umask 077; printf 'APCA_API_KEY_ID=%s\nAPCA_API_SECRET_KEY=%s\nAPCA_BASE=https://paper-api.alpaca.markets\n' "$K1" "$S1" > ~/.alpaca_paper
+          cd vix && python3 vix_score.py; rm -f ~/.alpaca_paper
+      - if: steps.gate.outputs.on == '1' && always()
+        run: ci/state.sh save vix vix
