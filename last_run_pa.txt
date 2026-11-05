@@ -1,0 +1,13 @@
+{
+ "ts": "2026-11-05T18:32:00",
+ "mode": "DRY",
+ "state": "core_only",
+ "equity": 1000000.0,
+ "spy_px": 730.52,
+ "ief_px": 91.985,
+ "tlt_px": 81.97,
+ "targets": "{\"SPY\": 1000000.0, \"IEF\": 0.0, \"TLT\": 0.0}",
+ "orders": "[[\"SPY\", 1368, \"dry\"]]",
+ "borrowed_est": 0.0,
+ "fin_drag_today_est": 0.0
+}

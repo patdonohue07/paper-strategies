@@ -1,0 +1,7 @@
+key check 2026-11-05T18:31:59
+APACKEYID/APCSECRET (bond fund + BILI): key length 26, secret length 44 -> OK, account status ACTIVE
+   order VCIT buy qty 3755 filled 543 @ 79.88 market/cls status expired submitted 2026-11-05T20:40:06 filled_at 2026-11-05T20:59:59
+   order IEF sell qty 2832 filled 0 @ None market/cls status expired submitted 2026-11-05T20:40:06 filled_at 
+   position VCIT qty 543 value 43385.7
+APACKEYID2/APACSECRET2 (portable alpha): key length 26, secret length 44 -> OK, account status ACTIVE
+   order SPY buy qty 1361 filled 0 @ None market/cls status expired submitted 2026-11-05T20:42:06 filled_at 

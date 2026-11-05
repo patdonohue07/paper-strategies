@@ -1,0 +1,14 @@
+{
+ "ts": "2026-11-05T18:32:00",
+ "mode": "DRY",
+ "state": "auction",
+ "equity": 1000010.86,
+ "beta_vcit_ief": 0.869,
+ "tlt_px": 81.97,
+ "ief_px": 91.985,
+ "vcit_px": 79.875,
+ "targets": "{\"TLT\": 0.0, \"IEF\": -260733.0, \"VCIT\": 300003.0}",
+ "orders": "[[\"IEF\", -2834, \"dry\"], [\"VCIT\", 3212, \"dry\"]]",
+ "auctions_seen": "2026-10-21,2026-11-10,2026-11-12",
+ "auction_tracked_only": "{\"TLT\": -100001.08600000001, \"IEF\": -100001.08600000001, \"hedge_extra_IEF\": -0.25}"
+}

@@ -1,0 +1,2 @@
+ts,mode,state,equity,spy_px,ief_px,targets,orders,borrowed_est,fin_drag_today_est
+2026-11-05T15:42:06,LIVE-PAPER,core_only,1000000.0,734.55,92.05,"{""SPY"": 1000000.0, ""IEF"": 0.0}","[[""SPY"", 1361, ""d4b521c5-4774-48e9-a521-23513852d50f""]]",0.0,0.0
