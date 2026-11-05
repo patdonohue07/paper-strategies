@@ -28,3 +28,6 @@ The month-end leg is cleaner in intermediate and aggregate funds (IEF t 2.84, BN
 - On early-close days (1 pm close, e.g. Nov 27, Dec 24) the 3:40 pm run sends no orders, since the market is already closed.
 - If a window's entry day is a half day, enter one session earlier (Dec 2026 month-end: enter at the Dec 23 close instead of Dec 24). Same shift for the tracked auction window.
 - Previous version saved as paper_fund_v2_prefix_20261104.py.
+
+## v2.2 (2026-11-05): order type change
+- Alpaca's paper account let the market-on-close orders of Nov 5 expire (VCIT filled 543 of 3,755; IEF and SPY filled 0). From Nov 6 all fund orders are plain market orders (time in force "day") sent by the GitHub run at about 15:15 ET (retry 15:32), so they fill at that time's price instead of the 16:00 close. Small timing difference from the backtests (about 30-45 minutes of price drift on entry and exit days).

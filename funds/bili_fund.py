@@ -34,7 +34,7 @@ if MODE == "exit":
     q = float(pos.get("qty", 0)) if isinstance(pos, dict) and "qty" in pos else 0.0
     res = {}
     if q:
-        o = {"symbol": CFG["sym"], "qty": str(abs(int(q))), "side": "sell" if q > 0 else "buy", "type": "market", "time_in_force": "cls"}
+        o = {"symbol": CFG["sym"], "qty": str(abs(int(q))), "side": "sell" if q > 0 else "buy", "type": "market", "time_in_force": "day"}   # v2.2: Alpaca paper let MOC (cls) orders expire on 2026-11-05
         res = api("POST", f"{BASE}/v2/orders", o) if LIVE else {"dry_run": True}
     log("bili_exits.csv", dict(ts=datetime.now().isoformat(timespec="seconds"), mode="LIVE-PAPER" if LIVE else "DRY", qty_held=q, order=res.get("id") or res.get("error") or ("dry" if q else "none"),
                                 entry_px=pos.get("avg_entry_price") if isinstance(pos, dict) else None))
@@ -80,7 +80,7 @@ if sig:
         a = api("GET", f"{BASE}/v2/assets/{CFG['sym']}")
         if not (a.get("shortable") and a.get("easy_to_borrow")): note = "short skipped: not shortable/easy to borrow"; qty = 0
     if qty:
-        o = {"symbol": CFG["sym"], "qty": str(qty), "side": "buy" if sig > 0 else "sell", "type": "market", "time_in_force": "opg"}
+        o = {"symbol": CFG["sym"], "qty": str(qty), "side": "buy" if sig > 0 else "sell", "type": "market", "time_in_force": "day"}   # sent before the open, fills at the open (paper does not reliably fill opg)
         r = api("POST", f"{BASE}/v2/orders", o) if LIVE else {"dry_run": True}
         order = r.get("id") or r.get("error") or "dry"; note = note or f"{'long' if sig > 0 else 'short'} {qty}"
 md = [d for d in sorted(us) if parity(d)]

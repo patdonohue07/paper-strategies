@@ -52,7 +52,7 @@ for s, usd in target_usd.items():
     if not px[s]: continue
     dq = int(usd / px[s]) - int(held.get(s, 0))
     if dq == 0: continue
-    o = {"symbol": s, "qty": str(abs(dq)), "side": "buy" if dq > 0 else "sell", "type": "market", "time_in_force": "cls"}
+    o = {"symbol": s, "qty": str(abs(dq)), "side": "buy" if dq > 0 else "sell", "type": "market", "time_in_force": "day"}   # v2.2: Alpaca paper let MOC (cls) orders expire on 2026-11-05
     res = api("POST", f"{BASE}/v2/orders", o) if LIVE else {"dry_run": True}
     orders.append((s, dq, res.get("id") or res.get("error") or "dry"))
 borrowed = max(0.0, sum(target_usd.values()) - eq)

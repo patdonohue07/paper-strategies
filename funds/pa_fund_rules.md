@@ -15,3 +15,6 @@
 - C97 chose a 100% overlay (Sharpe 0.66 -> 0.75 in 2003-2014; 0.77 -> 0.90 in 2015-2026, no deeper drawdown).
 - Held as 50% IEF plus 22.5% TLT in the month-end window. TLT at 0.45x notional carries about the same rate risk as another 50% IEF (duration ~16 vs ~7.2), so gross exposure stays near 172% instead of 200%, inside Alpaca's margin limit.
 - Note: pa_log.csv gains a tlt_px column from this date.
+
+## v2.2 (2026-11-05): order type change
+- Market-on-close orders expired on paper (SPY 1,361 filled 0). From Nov 6, plain market orders at about 15:15 ET.
