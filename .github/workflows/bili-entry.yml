@@ -1,0 +1,36 @@
+name: bili-entry
+# C90 BILI pre-open parity rule: market-on-open order before Alpaca's 09:28 ET cutoff. Paper only.
+on:
+  schedule:
+    - cron: "40 12,13 * * 1-5"
+    - cron: "2 13,14 * * 1-5"
+  workflow_dispatch:
+    inputs:
+      dry: {description: "dry run (sends nothing, ignores the time gate)", default: "true"}
+permissions: {contents: write}
+concurrency: {group: funds, cancel-in-progress: false}
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    env: {TZ: America/New_York, GH_TOKEN: "${{ secrets.GITHUB_TOKEN }}"}
+    steps:
+      - uses: actions/checkout@v4
+      - id: gate
+        run: |
+          [ -f ci/ENABLED ] || { echo "on=0" >> $GITHUB_OUTPUT; echo "jobs not enabled yet"; exit 0; }
+          if [ "${{ github.event_name }}" = workflow_dispatch ] && [ "${{ inputs.dry }}" != "false" ]; then echo "on=1" >> $GITHUB_OUTPUT; echo "live=" >> $GITHUB_OUTPUT; exit 0; fi
+          hm=$(date +%H%M); if [ "$hm" -ge 800 ] && [ "$hm" -le 924 ]; then echo "on=1" >> $GITHUB_OUTPUT; echo "live=--live" >> $GITHUB_OUTPUT; else echo "on=0" >> $GITHUB_OUTPUT; echo "outside 08:00-09:24 ET ($hm)"; fi
+      - if: steps.gate.outputs.on == '1'
+        run: ci/state.sh restore funds funds && git checkout HEAD -- funds
+      - if: steps.gate.outputs.on == '1'
+        env:
+          K1: ${{ secrets.APCA_KEY_ID }}
+          S1: ${{ secrets.APCA_SECRET }}
+        run: |
+          umask 077
+          printf 'APCA_API_KEY_ID=%s\nAPCA_API_SECRET_KEY=%s\nAPCA_BASE=https://paper-api.alpaca.markets\n' "$K1" "$S1" > ~/.alpaca_paper
+          cd funds; L="${{ steps.gate.outputs.live }}"; T=$(date +%Y-%m-%d)
+          if [ -n "$L" ] && [ -f bili_entries.csv ] && grep -q "^$T.*LIVE-PAPER" bili_entries.csv; then echo "BILI entry already ran today"; else python3 bili_fund.py entry $L 2>&1 | tee last_run_bili_entry.txt; fi
+          rm -f ~/.alpaca_paper
+      - if: steps.gate.outputs.on == '1' && always()
+        run: ci/state.sh save funds funds

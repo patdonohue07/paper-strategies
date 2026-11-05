@@ -1,0 +1,23 @@
+name: perp-forward-test
+# FWD-C10 Binance perp breakdown short forward test (public archive data, paper only)
+on:
+  schedule:
+    - cron: "37 15 * * *"
+  workflow_dispatch:
+permissions: {contents: write}
+concurrency: {group: fwd, cancel-in-progress: false}
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env: {TZ: America/New_York, GH_TOKEN: "${{ secrets.GITHUB_TOKEN }}"}
+    steps:
+      - uses: actions/checkout@v4
+      - id: gate
+        run: if [ -f ci/ENABLED ]; then echo "on=1" >> $GITHUB_OUTPUT; else echo "on=0" >> $GITHUB_OUTPUT; echo "jobs not enabled yet"; fi
+      - if: steps.gate.outputs.on == '1'
+        run: ci/state.sh restore fwd fwd && git checkout HEAD -- fwd
+      - if: steps.gate.outputs.on == '1'
+        run: cd fwd && python3 fwd.py
+      - if: steps.gate.outputs.on == '1' && always()
+        run: ci/state.sh save fwd fwd

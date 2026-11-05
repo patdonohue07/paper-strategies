@@ -1,0 +1,23 @@
+name: hl-logger
+# Hourly Hyperliquid wallet-position logger (public data, read-only)
+on:
+  schedule:
+    - cron: "7 * * * *"
+  workflow_dispatch:
+permissions: {contents: write}
+concurrency: {group: hl, cancel-in-progress: false}
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env: {TZ: America/New_York, GH_TOKEN: "${{ secrets.GITHUB_TOKEN }}"}
+    steps:
+      - uses: actions/checkout@v4
+      - id: gate
+        run: if [ -f ci/ENABLED ]; then echo "on=1" >> $GITHUB_OUTPUT; else echo "on=0" >> $GITHUB_OUTPUT; echo "jobs not enabled yet"; fi
+      - if: steps.gate.outputs.on == '1'
+        run: ci/state.sh restore hl hl && git checkout HEAD -- hl
+      - if: steps.gate.outputs.on == '1'
+        run: cd hl && python3 hl_logger.py --once
+      - if: steps.gate.outputs.on == '1' && always()
+        run: ci/state.sh save hl hl

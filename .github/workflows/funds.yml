@@ -1,0 +1,42 @@
+name: funds-close
+# Bond fund (C34/C43/C79), portable alpha (C88) and the BILI exit (C90): market-on-close orders, Alpaca PAPER only.
+# Two cron slots per DST regime; the gate only lets the first run inside 15:00-15:48 ET act, once per day.
+on:
+  schedule:
+    - cron: "15,32 19,20 * * 1-5"
+  workflow_dispatch:
+    inputs:
+      dry: {description: "dry run (sends nothing, ignores the time gate)", default: "true"}
+permissions: {contents: write}
+concurrency: {group: funds, cancel-in-progress: false}
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    env: {TZ: America/New_York, GH_TOKEN: "${{ secrets.GITHUB_TOKEN }}"}
+    steps:
+      - uses: actions/checkout@v4
+      - id: gate
+        run: |
+          [ -f ci/ENABLED ] || { echo "on=0" >> $GITHUB_OUTPUT; echo "jobs not enabled yet"; exit 0; }
+          if [ "${{ github.event_name }}" = workflow_dispatch ] && [ "${{ inputs.dry }}" != "false" ]; then echo "on=1" >> $GITHUB_OUTPUT; echo "live=" >> $GITHUB_OUTPUT; exit 0; fi
+          hm=$(date +%H%M); if [ "$hm" -ge 1500 ] && [ "$hm" -le 1548 ]; then echo "on=1" >> $GITHUB_OUTPUT; echo "live=--live" >> $GITHUB_OUTPUT; else echo "on=0" >> $GITHUB_OUTPUT; echo "outside 15:00-15:48 ET ($hm)"; fi
+      - if: steps.gate.outputs.on == '1'
+        run: ci/state.sh restore funds funds && git checkout HEAD -- funds
+      - if: steps.gate.outputs.on == '1'
+        env:
+          K1: ${{ secrets.APCA_KEY_ID }}
+          S1: ${{ secrets.APCA_SECRET }}
+          K2: ${{ secrets.APCA2_KEY_ID }}
+          S2: ${{ secrets.APCA2_SECRET }}
+        run: |
+          umask 077
+          printf 'APCA_API_KEY_ID=%s\nAPCA_API_SECRET_KEY=%s\nAPCA_BASE=https://paper-api.alpaca.markets\n' "$K1" "$S1" > ~/.alpaca_paper
+          printf 'APCA_API_KEY_ID=%s\nAPCA_API_SECRET_KEY=%s\nAPCA_BASE=https://paper-api.alpaca.markets\n' "$K2" "$S2" > ~/.alpaca_paper2
+          cd funds; L="${{ steps.gate.outputs.live }}"; T=$(date +%Y-%m-%d)
+          done_today() { [ -n "$L" ] && [ -f "$1" ] && grep -q "^$T.*LIVE-PAPER" "$1"; }
+          done_today fund_log.csv && echo "bond fund already ran today" || python3 paper_fund.py $L 2>&1 | tee last_run_fund.txt
+          done_today pa_log.csv && echo "portable alpha already ran today" || python3 pa_fund.py $L 2>&1 | tee last_run_pa.txt
+          done_today bili_exits.csv && echo "BILI exit already ran today" || python3 bili_fund.py exit $L 2>&1 | tee last_run_bili_exit.txt
+          rm -f ~/.alpaca_paper ~/.alpaca_paper2
+      - if: steps.gate.outputs.on == '1' && always()
+        run: ci/state.sh save funds funds

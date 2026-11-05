@@ -1,0 +1,23 @@
+name: kalshi-maker
+# C66 Kalshi weekend paper maker (public data, no orders, no keys)
+on:
+  schedule:
+    - cron: "*/10 * * * *"
+  workflow_dispatch:
+permissions: {contents: write}
+concurrency: {group: kalshi, cancel-in-progress: false}
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env: {TZ: America/New_York, GH_TOKEN: "${{ secrets.GITHUB_TOKEN }}"}
+    steps:
+      - uses: actions/checkout@v4
+      - id: gate
+        run: if [ -f ci/ENABLED ]; then echo "on=1" >> $GITHUB_OUTPUT; else echo "on=0" >> $GITHUB_OUTPUT; echo "jobs not enabled yet"; fi
+      - if: steps.gate.outputs.on == '1'
+        run: ci/state.sh restore kalshi kalshi && git checkout HEAD -- kalshi
+      - if: steps.gate.outputs.on == '1'
+        run: cd kalshi/code && python3 paper_maker.py --once
+      - if: steps.gate.outputs.on == '1' && always()
+        run: ci/state.sh save kalshi kalshi
