@@ -1,0 +1,81 @@
+Forward test, perp breakdown short (frozen rule, paper only). Updated 2026-11-06 16:04. Data through 2026-11-05 UTC.
+Signals since 2026-10-01: 187 (memes 18, alts 169); open 168; top-trader ratio still pending 0
+
+CLOSED trades (returns before funding):
+  KEPT (ratio > 2.238):     n 8, mean -34.53%, t -3.04, wins 25%
+  dropped:                  n 11, mean -50.22%, t -6.01, wins 9%
+  kept + jump EV > 0:       n 7, mean -30.72%, t -2.92, wins 29%
+  memes kept:               n 0
+  alts kept:                n 8, mean -34.53%, t -3.04, wins 25%
+
+Verdict when KEPT reaches 100 closed trades: mean > 0 with t > 2.0 and kept > dropped. Until then nothing is decided.
+
+REPORT-ONLY SPLIT (added 2026-11-03; does not change the verdict). Stock/ETF perps classified by price in equity_perps.json:
+  KEPT crypto only:         n 7, mean -47.98%, t -2.97, wins 14%
+  dropped crypto only:      n 11, mean -50.22%, t -6.01, wins 9%
+  KEPT stock/ETF perps:     n 1, mean +59.60%, t n/a, wins 100%
+  open kept marks, crypto:  n 33, mean mark +7.2%
+  open kept marks, stocks:  n 26, mean mark +17.1%
+
+OPEN kept positions (mark = short P&L at last close):
+  1000RATSUSDT     2026-10-13 00:00 entry 0.02125  mark +36.7%
+  ALABUSDT         2026-11-02 18:00 entry 235.57  mark +24.9%  [stock/ETF]
+  AMATUSDT         2026-11-05 15:00 entry 326.94  mark +2.2%  [stock/ETF]
+  API3USDT         2026-10-30 03:00 entry 0.2289  mark +2.3%
+  ARMUSDT          2026-11-04 23:00 entry 188.71  mark +12.9%  [stock/ETF]
+  ASTSUSDT         2026-10-22 08:00 entry 38.96  mark +23.6%  [stock/ETF]
+  AXLUSDT          2026-11-05 15:00 entry 0.03787  mark +1.3%
+  AXTIUSDT         2026-11-04 19:00 entry 46.01  mark +21.8%  [stock/ETF]
+  BASUSDT          2026-10-30 00:00 entry 0.014791  mark +8.9%
+  BEUSDT           2026-11-05 14:00 entry 169.19  mark +2.4%  [stock/ETF]
+  C98USDT          2026-11-05 15:00 entry 0.01135  mark -1.6%
+  CATIUSDT         2026-10-29 20:00 entry 0.04065  mark +6.7%
+  CBRSUSDT         2026-10-16 21:00 entry 126.89  mark +35.8%  [stock/ETF]
+  CHILLGUYUSDT     2026-10-30 00:00 entry 0.008398  mark -1.9%
+  CLOUSDT          2026-10-14 15:00 entry 0.05009  mark +10.0%
+  COHRUSDT         2026-10-22 23:00 entry 204.5  mark +18.4%  [stock/ETF]
+  COOKIEUSDT       2026-10-29 20:00 entry 0.008153  mark -2.4%
+  CRWVUSDT         2026-10-22 17:00 entry 55.42  mark +22.6%  [stock/ETF]
+  CYBERUSDT        2026-10-30 03:00 entry 0.2437  mark -30.3%
+  DELLUSDT         2026-11-05 12:00 entry 351.05  mark +10.6%  [stock/ETF]
+  DRIFTUSDT        2026-10-15 03:00 entry 0.01531  mark +20.9%
+  FORMUSDT         2026-10-18 17:00 entry 0.2411  mark +21.4%
+  GALAUSDT         2026-10-30 00:00 entry 0.001601  mark +4.1%
+  GLWUSDT          2026-11-05 23:00 entry 101.81  mark +0.0%  [stock/ETF]
+  GRIFFAINUSDT     2026-10-14 09:00 entry 0.015319  mark +30.0%
+  GUNUSDT          2026-10-23 22:00 entry 0.002042  mark +14.4%
+  INTCUSDT         2026-10-29 21:00 entry 72.61  mark +29.1%  [stock/ETF]
+  IONQUSDT         2026-11-05 15:00 entry 25.34  mark -6.8%  [stock/ETF]
+  IRENUSDT         2026-10-15 10:00 entry 29.4  mark +36.9%  [stock/ETF]
+  IRYSUSDT         2026-10-29 14:00 entry 0.02215  mark +16.1%
+  KOMAUSDT         2026-10-30 00:00 entry 0.013582  mark +6.0%
+  KORUUSDT         2026-10-13 00:00 entry 14.3  mark +55.6%  [stock/ETF]
+  LITEUSDT         2026-11-03 16:00 entry 675.44  mark +25.2%  [stock/ETF]
+  LRCXUSDT         2026-11-05 14:00 entry 202.98  mark +5.5%  [stock/ETF]
+  LYNUSDT          2026-10-15 15:00 entry 0.01586  mark -38.1%
+  MELANIAUSDT      2026-11-05 05:00 entry 0.06255  mark +4.1%
+  MOVEUSDT         2026-10-29 03:00 entry 0.006435  mark +10.6%
+  MRVLUSDT         2026-11-02 18:00 entry 175.4  mark +24.6%  [stock/ETF]
+  MYXUSDT          2026-10-08 15:00 entry 0.06272  mark +21.4%
+  NBISUSDT         2026-10-26 03:00 entry 152.44  mark +22.6%  [stock/ETF]
+  OKLOUSDT         2026-11-03 16:00 entry 23.24  mark +17.0%  [stock/ETF]
+  OPNUSDT          2026-11-05 15:00 entry 0.03745  mark -1.8%
+  PLAYUSDT         2026-10-08 16:00 entry 0.02218  mark +45.2%
+  PORTALUSDT       2026-10-29 20:00 entry 0.01261  mark +7.3%
+  QUSDT            2026-11-03 22:00 entry 0.02918  mark +11.1%
+  RDDTUSDT         2026-10-30 14:00 entry 96.03  mark +3.6%  [stock/ETF]
+  RECALLUSDT       2026-10-30 18:00 entry 0.02936  mark +1.8%
+  RKLBUSDT         2026-11-05 15:00 entry 44.56  mark -1.6%  [stock/ETF]
+  SCRUSDT          2026-10-17 21:00 entry 0.02032  mark +11.6%
+  SECZUSDT         2026-10-15 08:00 entry 10.13  mark +27.4%  [stock/ETF]
+  SIRENUSDT        2026-10-19 08:00 entry 0.02281  mark -8.8%
+  SKYAIUSDT        2026-10-18 14:00 entry 0.02854  mark +1.1%
+  SLXUSDT          2026-11-05 15:00 entry 0.03669  mark -0.1%
+  TOWNSUSDT        2026-10-25 05:00 entry 0.001413  mark +18.7%
+  TQQQUSDT         2026-11-05 20:00 entry 50.56  mark +1.4%  [stock/ETF]
+  TRIAUSDT         2026-10-24 21:00 entry 0.002574  mark +12.5%
+  USARUSDT         2026-10-14 17:00 entry 10.19  mark +28.5%  [stock/ETF]
+  WDCUSDT          2026-11-05 23:00 entry 265.01  mark +0.0%  [stock/ETF]
+  XAIUSDT          2026-11-05 15:00 entry 0.006091  mark -1.9%
+
+Unclassified new listings (information only): 65 signals
