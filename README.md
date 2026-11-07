@@ -13,7 +13,7 @@ jobs only read public data.
 | perp-forward-test | daily 10:37 | FWD-C10 Binance perp breakdown short forward test |
 | futures-shadow | weekdays 18:20 | C91 month-end trade in actual TY and US futures: a log only, no orders |
 | vix-score | weekdays 08:50 | C100 forward scoring of the VIX-augmented SPY variance forecast (no trading) |
-| health | weekdays 16:30 | Daily health report: one file per day on `state-health` (`health/YYYY-MM-DD.md`, `health/latest.md`) |
+| health | weekdays 16:30 | Daily health report: one file per day on the `state-health` branch (`YYYY-MM-DD.md`, plus `latest.md`) |
 | scheduler | always on | Starts every job above at its exact ET time (see below) |
 | checks | manual only | `orders`: read-only check that Monday's market orders would be accepted; `yahoo`: raw bar timestamps |
 

@@ -1,6 +1,6 @@
 name: health
 # Daily health report at 16:30 ET weekdays (started by the scheduler): one file per day on state-health,
-# health/YYYY-MM-DD.md and health/latest.md. Read-only on Alpaca (GET requests only), no orders.
+# YYYY-MM-DD.md and latest.md. Read-only on Alpaca (GET requests only), no orders.
 on:
   workflow_dispatch:
 permissions: {contents: write, actions: read}
