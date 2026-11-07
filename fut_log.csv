@@ -1,0 +1,3 @@
+month,root,contract,yahoo,entry_date,exit_date,entry_px,exit_px,pnl_usd,pct_notional,note
+2026-10,TY,TYZ26,ZNZ26.CBT,2026-10-26,2026-10-30,106.109375,106.640625,495.0,0.004665,closed; entry corrected 106.046875 -> 106.109375 (v1.1 date fix)
+2026-10,US,USZ26,ZBZ26.CBT,2026-10-26,2026-10-30,107.5,107.65625,88.75,0.000826,closed; entry corrected 107.46875 -> 107.5 (v1.1 date fix)
