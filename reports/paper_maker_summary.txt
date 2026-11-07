@@ -1,0 +1,5 @@
+C66 paper maker summary 2026-11-07 06:20 ET (interim, decides nothing)
+weekend  above/below  orders    0 filled    0 mean filled P&L +nanc t nan | if all filled +nanc
+weekend  range modal  orders    0 filled    0 mean filled P&L +nanc t nan | if all filled +nanc
+weekday  above/below  orders   19 filled    3 mean filled P&L -56.00c t nan | if all filled +35.05c
+weekday  range modal  orders    2 filled    1 mean filled P&L -11.00c t nan | if all filled +31.00c
