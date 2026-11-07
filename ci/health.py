@@ -1,4 +1,4 @@
-"""Daily health report: one markdown file per day on the state-health branch (health/YYYY-MM-DD.md, plus latest.md).
+"""Daily health report: one markdown file per day at the root of the state-health branch (YYYY-MM-DD.md, plus latest.md).
 Sections: jobs that ran today and when (vs the scheduler's slots), orders and fills for both Alpaca PAPER accounts,
 positions vs today's targets, each job's own summary line, and every error found.
 Reads: Actions API (GITHUB_TOKEN), the state-* branches (fetched by the workflow), Alpaca paper API (read-only GETs).
