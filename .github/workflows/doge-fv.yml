@@ -1,0 +1,23 @@
+name: doge-fv
+# C120-FWD Kalshi DOGE vs GBM fair value: forward paper scoring (public Kalshi + Coinbase data, no orders, no keys)
+on:
+  schedule:
+    - cron: "3 15-22 * * *"
+  workflow_dispatch:
+permissions: {contents: write}
+concurrency: {group: dogefv, cancel-in-progress: false}
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env: {TZ: America/New_York, GH_TOKEN: "${{ secrets.GITHUB_TOKEN }}"}
+    steps:
+      - uses: actions/checkout@v4
+      - id: gate
+        run: if [ -f ci/ENABLED ]; then echo "on=1" >> $GITHUB_OUTPUT; else echo "on=0" >> $GITHUB_OUTPUT; echo "jobs not enabled yet"; fi
+      - if: steps.gate.outputs.on == '1'
+        run: ci/state.sh restore dogefv dogefv/state
+      - if: steps.gate.outputs.on == '1'
+        run: cd dogefv && python3 doge_fv.py
+      - if: steps.gate.outputs.on == '1' && always()
+        run: ci/state.sh save dogefv dogefv/state
