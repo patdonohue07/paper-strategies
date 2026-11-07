@@ -1,0 +1,28 @@
+name: checks
+# One-off checks, manual only. orders: read-only Alpaca PAPER check that Monday's market orders would be accepted
+# (GET requests only, never sends an order). yahoo: prints raw Yahoo bar timestamps (futures-shadow date bug).
+on:
+  workflow_dispatch:
+    inputs:
+      which: {description: "orders or yahoo", default: "orders"}
+permissions: {contents: read}
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env: {TZ: America/New_York}
+    steps:
+      - uses: actions/checkout@v4
+      - if: inputs.which == 'yahoo'
+        run: python3 ci/yahoo_diag.py
+      - if: inputs.which == 'orders'
+        env:
+          K1: ${{ secrets.APACKEYID }}
+          S1: ${{ secrets.APCSECRET }}
+          K2: ${{ secrets.APACKEYID2 }}
+          S2: ${{ secrets.APACSECRET2 }}
+        run: |
+          umask 077
+          printf 'APCA_API_KEY_ID=%s\nAPCA_API_SECRET_KEY=%s\nAPCA_BASE=https://paper-api.alpaca.markets\n' "$K1" "$S1" > ~/.alpaca_paper
+          printf 'APCA_API_KEY_ID=%s\nAPCA_API_SECRET_KEY=%s\nAPCA_BASE=https://paper-api.alpaca.markets\n' "$K2" "$S2" > ~/.alpaca_paper2
+          python3 ci/order_check.py; rc=$?; rm -f ~/.alpaca_paper ~/.alpaca_paper2; exit $rc
