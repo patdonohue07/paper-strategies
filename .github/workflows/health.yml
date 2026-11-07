@@ -1,0 +1,28 @@
+name: health
+# Daily health report at 16:30 ET weekdays (started by the scheduler): one file per day on state-health,
+# health/YYYY-MM-DD.md and health/latest.md. Read-only on Alpaca (GET requests only), no orders.
+on:
+  workflow_dispatch:
+permissions: {contents: write, actions: read}
+concurrency: {group: health, cancel-in-progress: false}
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env: {TZ: America/New_York, GH_TOKEN: "${{ secrets.GITHUB_TOKEN }}"}
+    steps:
+      - uses: actions/checkout@v4
+      - run: for b in funds kalshi hl fwd fut vix; do git fetch -q --depth 1 origin "state-$b:refs/remotes/origin/state-$b" || echo "no state-$b yet"; done
+      - run: ci/state.sh restore health health
+      - env:
+          K1: ${{ secrets.APACKEYID }}
+          S1: ${{ secrets.APCSECRET }}
+          K2: ${{ secrets.APACKEYID2 }}
+          S2: ${{ secrets.APACSECRET2 }}
+        run: |
+          umask 077
+          printf 'APCA_API_KEY_ID=%s\nAPCA_API_SECRET_KEY=%s\nAPCA_BASE=https://paper-api.alpaca.markets\n' "$K1" "$S1" > ~/.alpaca_paper
+          printf 'APCA_API_KEY_ID=%s\nAPCA_API_SECRET_KEY=%s\nAPCA_BASE=https://paper-api.alpaca.markets\n' "$K2" "$S2" > ~/.alpaca_paper2
+          python3 ci/health.py health; rc=$?; rm -f ~/.alpaca_paper ~/.alpaca_paper2; exit $rc
+      - if: always()
+        run: ci/state.sh save health health

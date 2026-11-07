@@ -1,0 +1,19 @@
+name: scheduler
+# Starts every paper job at its exact ET time (GitHub's own cron is throttled on this repo). See ci/scheduler.py.
+# One run lives ~5h45m, then starts its successor. The hourly cron only restarts the chain if it broke: a second
+# scheduler exits at once when one is already running. Stop it: create ci/SCHEDULER_OFF on main, or disable this workflow.
+on:
+  schedule:
+    - cron: "23 * * * *"
+  workflow_dispatch:
+    inputs:
+      minutes: {description: "lifetime in minutes before handing off (default 345)", default: "345"}
+permissions: {actions: write, contents: read}
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 358
+    env: {TZ: America/New_York, GH_TOKEN: "${{ secrets.GITHUB_TOKEN }}", SCHED_MINUTES: "${{ inputs.minutes || '345' }}"}
+    steps:
+      - uses: actions/checkout@v4
+      - run: python3 ci/scheduler.py
