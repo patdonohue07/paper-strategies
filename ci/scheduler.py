@@ -22,6 +22,7 @@ WEEKDAYS, ALL = (0, 1, 2, 3, 4), (0, 1, 2, 3, 4, 5, 6)
 JOBS = [
     ("kalshi-maker.yml", "*/10", ALL, {}, 8),
     ("hl-logger.yml", ":07", ALL, {}, 20),
+    ("doge-fv.yml", ":03", ALL, {}, 20),
     ("perp-forward-test.yml", ["10:37"], ALL, {}, 30),
     ("bili-entry.yml", ["08:40", "09:02"], WEEKDAYS, {"dry": "false"}, 15),
     ("vix-score.yml", ["08:50"], WEEKDAYS, {}, 30),
