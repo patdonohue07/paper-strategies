@@ -2,9 +2,13 @@
 Enter at the settle of the 5th-last trading day of the month, exit at the last trading day's settle, in the earliest
 quarterly contract whose first notice day is at least 10 calendar days after entry. Cost: two ticks + $5 round trip.
 Settles come from Yahoo daily closes for the specific contract (e.g. ZNZ26.CBT); the trading calendar from Alpaca.
-Catches up on missed days from price history, so a late or skipped run does not lose a trade. Standard library only."""
+Catches up on missed days from price history, so a late or skipped run does not lose a trade. Standard library only.
+v1.1 2026-11-07: bar dates now use the exchange time zone per timestamp (zoneinfo). Before, the CURRENT gmtoffset was
+applied to every bar, so after the Nov 1 DST change each EDT-era bar (stamped 00:00 New York) landed on the prior day:
+the logged Oct 2026 entry was the Oct 27 settle and no bar mapped to Fri Oct 30. Open rows now re-read their entry settle."""
 import os, sys, json, csv, urllib.request, urllib.error
 from datetime import date, datetime, timedelta, timezone
+from zoneinfo import ZoneInfo
 HERE = os.path.dirname(os.path.abspath(__file__)); LOG = os.path.join(HERE, "fut_log.csv")
 ROOTS = {"TY": ("ZN", 1000, 15.625), "US": ("ZB", 1000, 31.25)}   # root: (Yahoo code, $ per point, tick $)
 MCODE = {3: "H", 6: "M", 9: "U", 12: "Z"}
@@ -30,9 +34,11 @@ def contract(entry):
         if mm in MCODE and fnd(yy, mm) >= entry + timedelta(days=10): return yy, mm
 def closes(sym):
     d = get(f"https://query1.finance.yahoo.com/v8/finance/chart/{sym}?range=6mo&interval=1d")["chart"]["result"][0]
-    off = d["meta"].get("gmtoffset", 0); out = {}
+    tz = ZoneInfo(d["meta"].get("exchangeTimezoneName") or "America/New_York"); out = {}
     for t, c in zip(d.get("timestamp", []), d["indicators"]["quote"][0]["close"]):
-        if c is not None: out[datetime.fromtimestamp(t + off, timezone.utc).date()] = c
+        if c is None: continue
+        lt = datetime.fromtimestamp(t, tz)
+        out[lt.date() + timedelta(days=1 if lt.hour >= 17 else 0)] = c   # a stamp at the evening session open belongs to the next day
     return out
 rows = list(csv.DictReader(open(LOG))) if os.path.exists(LOG) else []
 key = {(r["month"], r["root"]): r for r in rows}
@@ -51,11 +57,15 @@ for (y, m) in sorted(months):
         if r["pnl_usd"]: continue
         try: c = closes(r["yahoo"])
         except Exception as e: r["note"] = f"price fetch failed: {str(e)[:80]}"; key[k] = r; continue
-        if not r["entry_px"] and entry in c: r["entry_px"] = round(c[entry], 6)
+        fix = ""
+        if entry in c:   # open rows re-read the entry settle (repairs rows logged before the v1.1 date fix)
+            e = round(c[entry], 6)
+            if r["entry_px"] and abs(float(r["entry_px"]) - e) > 1e-9: fix = f"; entry corrected {r['entry_px']} -> {e} (v1.1 date fix)"
+            r["entry_px"] = e
         if r["entry_px"] and exit_ <= today and exit_ in c:
             a, z = float(r["entry_px"]), c[exit_]; pnl = (z - a) * mult - 2 * tick - 5
-            r.update(exit_px=round(z, 6), pnl_usd=round(pnl, 2), pct_notional=round(pnl / (a * mult), 6), note="closed")
-        elif r["entry_px"]: r["note"] = "open"
+            r.update(exit_px=round(z, 6), pnl_usd=round(pnl, 2), pct_notional=round(pnl / (a * mult), 6), note="closed" + fix)
+        elif r["entry_px"]: r["note"] = "open" + fix
         else: r["note"] = "waiting for entry settle"
         key[k] = r
 out = sorted(key.values(), key=lambda r: (r["month"], r["root"]))

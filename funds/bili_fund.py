@@ -2,6 +2,7 @@
 Usage: python3 bili_fund.py entry|exit [--live]   (default dry run: computes and logs, sends nothing). Standard library only."""
 import os, sys, json, csv, math, statistics, urllib.request, urllib.error
 from datetime import datetime, date, timedelta, timezone
+from zoneinfo import ZoneInfo
 HERE = os.path.dirname(os.path.abspath(__file__)); LIVE = "--live" in sys.argv
 MODE = "exit" if "exit" in sys.argv else "entry"
 CFG = {"sym": "BILI", "hk": "9626.HK", "fx": "HKD=X", "shares_per_adr": 1.0, "thresh": 0.01, "win": 252, "min_obs": 126, "notional": 100000.0}
@@ -43,13 +44,13 @@ if MODE == "exit":
 def yahoo(sym):
     u = f"https://query1.finance.yahoo.com/v8/finance/chart/{sym}?range=2y&interval=1d"
     d = json.loads(urllib.request.urlopen(urllib.request.Request(u, headers=UA), timeout=30).read())["chart"]["result"][0]
-    tz = d["meta"].get("exchangeTimezoneName"); off = d["meta"].get("gmtoffset", 0)
-    out = {}
+    tz = ZoneInfo(d["meta"].get("exchangeTimezoneName") or "UTC")   # v2.3 2026-11-07: per-bar zone, not today's gmtoffset (HKD=X is London time,
+    out = {}                                                           # so BST-era FX bars were dated a day early; HKD peg keeps the effect tiny)
     for t, c in zip(d["timestamp"], d["indicators"]["quote"][0]["close"]):
-        if c is not None: out[datetime.fromtimestamp(t + off, timezone.utc).date()] = float(c)
+        if c is not None: out[datetime.fromtimestamp(t, tz).date()] = float(c)
     m = d["meta"]; rp, rt = m.get("regularMarketPrice"), m.get("regularMarketTime")   # latest close when the last daily bar is still blank
     if rp and rt:
-        dd = datetime.fromtimestamp(rt + off, timezone.utc).date()
+        dd = datetime.fromtimestamp(rt, tz).date()
         if dd not in out: out[dd] = float(rp)
     return out
 err = ""
