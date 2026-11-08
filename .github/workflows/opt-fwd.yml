@@ -1,0 +1,30 @@
+name: opt-fwd
+# C125-FWD: forward paper scoring of the C125 options survivors on real Alpaca indicative option quotes (log only, no orders).
+on:
+  schedule:
+    - cron: "40 19,20 * * 1-5"
+  workflow_dispatch:
+permissions: {contents: write}
+concurrency: {group: optfwd, cancel-in-progress: false}
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env: {TZ: America/New_York, GH_TOKEN: "${{ secrets.GITHUB_TOKEN }}"}
+    steps:
+      - uses: actions/checkout@v4
+      - id: gate
+        run: |
+          [ -f ci/ENABLED ] || { echo "on=0" >> $GITHUB_OUTPUT; exit 0; }
+          hm=$(date +%H%M); if [ "${{ github.event_name }}" = workflow_dispatch ] || { [ "$hm" -ge 1530 ] && [ "$hm" -le 1559 ]; }; then echo "on=1" >> $GITHUB_OUTPUT; else echo "on=0" >> $GITHUB_OUTPUT; fi
+      - if: steps.gate.outputs.on == '1'
+        run: ci/state.sh restore optfwd optfwd/state
+      - if: steps.gate.outputs.on == '1'
+        env:
+          K1: ${{ secrets.APACKEYID }}
+          S1: ${{ secrets.APCSECRET }}
+        run: |
+          umask 077; printf 'APCA_API_KEY_ID=%s\nAPCA_API_SECRET_KEY=%s\nAPCA_BASE=https://paper-api.alpaca.markets\n' "$K1" "$S1" > ~/.alpaca_paper
+          cd optfwd && python3 opt_fwd.py; rc=$?; rm -f ~/.alpaca_paper; exit $rc
+      - if: steps.gate.outputs.on == '1' && always()
+        run: ci/state.sh save optfwd optfwd/state
