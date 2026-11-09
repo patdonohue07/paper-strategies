@@ -14,7 +14,7 @@ def get(u, h=None, raw=False):
 today = date.today()
 bars, tok = [], None
 while True:
-    u = f"https://data.alpaca.markets/v2/stocks/SPY/bars?timeframe=1Day&start=2013-01-01&end={today.isoformat()}&adjustment=all&feed=sip&limit=10000" + (f"&page_token={tok}" if tok else "")
+    u = f"https://data.alpaca.markets/v2/stocks/SPY/bars?timeframe=1Day&start=2013-01-01&end={(today - timedelta(days=1)).isoformat()}&adjustment=all&feed=sip&limit=10000" + (f"&page_token={tok}" if tok else "")
     d = get(u, H); bars += [(x["t"][:10], x["c"]) for x in d.get("bars", [])]; tok = d.get("next_page_token")
     if not tok: break
 spy = {date.fromisoformat(a): c for a, c in bars}
