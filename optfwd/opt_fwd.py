@@ -11,9 +11,16 @@ B) F07_02095 rich-IV short strangles. Daily: 30d ATM IV per name (interpolated i
    3 names with the highest peer_dm (>= 60 stored days of history required) and no open position. Sell the 25-delta call and
    25-delta put, first expiry >= 45 days, at the BID (mid info). Skip if an earnings date (known, or projected last + k*91 days,
    +-7 day buffer) falls between entry and expiry. Hold to expiry, settle at intrinsic.
+S) C157 amendment (added 2026-11-10; A and B above are unchanged). Same weekly ranking as B, but peer_dm uses history SEEDED from the
+   Bloomberg export (iv_seed.csv: peer_raw per name for the 252 trading days to 2026-09-29, same formula on Bloomberg 30d ATM IV), so
+   it can rank from the first candidate day. Seed rows are used only for dates before the name's first stored Alpaca day and age out
+   of the trailing window. Each pick logs TWO structures on the same expiry (first >= 45 days): S1 the short 25-delta strangle, and
+   S2 an iron condor = S1 plus long 10-delta wings (wing |delta| within 0.04 of 0.10, else no condor). Shorts fill at the bid, wings
+   at the ask (mid info). Same earnings skip and no-stacking as B, with its own open list. Hold to expiry, settle at intrinsic.
+   Decision at 100 settled picks, each structure separately: pass if mean net > 0 with month-clustered t >= 2.
 P&L unit: bp of the underlying price at entry, per 1 share, after $0.0065/share/leg/side commission. No early assignment modeled.
 Decision: A at 40 settled trades, B at 100: pass if mean net > 0 with month-clustered t >= 2 on the bid/ask (primary) series.
-State: optfwd/state/{state.json, a_trades.csv, b_trades.csv, iv_hist.csv, summary.md, log.txt}.
+State: optfwd/state/{state.json, a_trades.csv, b_trades.csv, s_trades.csv, iv_hist.csv, summary.md, log.txt}.
 Usage: python3 opt_fwd.py [--mock]   (--mock: synthetic quotes, temp state dir, no network: logic test only)"""
 import os, sys, json, math, csv, time, random, tempfile, urllib.request, urllib.parse, datetime as dt
 from zoneinfo import ZoneInfo
@@ -113,6 +120,7 @@ def quote(sym):
 
 # ---------------------------------------------------------------- helpers
 st = json.load(open(os.path.join(D, "state.json"))) if os.path.exists(os.path.join(D, "state.json")) else {"a": [], "b": [], "days": []}
+st.setdefault("s", [])
 def append(name, row, cols):
     p = os.path.join(D, name); new = not os.path.exists(p)
     with open(p, "a", newline="") as f:
@@ -244,6 +252,49 @@ def run():
             st["b"].append(dict(und=tk, entry=today.isoformat(), S0=px[tk], Kc=c["K"], Kp=pu["K"], exp=ex.isoformat(), peer_dm=round(val, 4),
                                 credit_bid=cb, credit_mid=cm, status="open"))
             log(f"B ENTER short strangle {tk} {pu['K']}P/{c['K']}C exp {ex} peer_dm {val:+.3f} credit bid {cb:.2f} mid {cm:.2f}")
+    # ---------------- S: seeded-history ranking; logs the strangle (S1) and the 10-delta-wing iron condor (S2)
+    seed = {}; sp = os.path.join(HERE, "iv_seed.csv")
+    if os.path.exists(sp):
+        for r in csv.DictReader(open(sp)): seed.setdefault(r["ticker"], []).append((r["date"], float(r["peer_raw"])))
+    pdm_s = {}
+    for tk, v in iv30.items():
+        own = [(d, x) for d, x, _ in hist.get(tk, [])]; first = own[0][0] if own else "9999-12-31"
+        h = [x[1] for x in ([s for s in seed.get(tk, []) if s[0] < first] + own)[-253:-1]]
+        if len(h) >= 60: pdm_s[tk] = (math.log(v) - med[SECTOR[tk]]) - sum(h) / len(h)
+    log(f"S seeded peer_dm ready for {len(pdm_s)}")
+    for p in st["s"]:
+        if p["status"] != "open": continue
+        exp = dt.date.fromisoformat(p["exp"])
+        if today >= exp:
+            S = px.get(p["und"]) if today == exp else (stock_closes(p["und"], 40).get(exp.isoformat()) or px.get(p["und"]))
+            if not S: continue
+            v = settle_value("C", p["Kc"], S) + settle_value("P", p["Kp"], S)
+            p.update(status="settled", exit_date=exp.isoformat(), S_exp=S, pnl_bp=(p["credit_bid"] - v) / p["S0"] * 1e4, pnl_mid_bp=(p["credit_mid"] - v) / p["S0"] * 1e4)
+            if p.get("cond_bid") is not None:
+                w = settle_value("C", p["Kc2"], S) + settle_value("P", p["Kp2"], S)
+                p.update(cond_pnl_bp=(p["cond_bid"] - (v - w)) / p["S0"] * 1e4, cond_pnl_mid_bp=(p["cond_mid"] - (v - w)) / p["S0"] * 1e4)
+            append("s_trades.csv", p, ["und", "entry", "S0", "Kc", "Kp", "Kc2", "Kp2", "exp", "peer_dm", "credit_bid", "credit_mid", "cond_bid", "cond_mid",
+                                       "exit_date", "S_exp", "pnl_bp", "pnl_mid_bp", "cond_pnl_bp", "cond_pnl_mid_bp"])
+            log(f"S SETTLED {p['und']} strangle {p['pnl_bp']:+.1f}bp condor {'n/a' if p.get('cond_pnl_bp') is None else format(p['cond_pnl_bp'], '+.1f') + 'bp'}")
+    if cand and pdm_s:
+        E = earn_dates(); opens = {p["und"] for p in st["s"] if p["status"] == "open"}; done = 0
+        for tk, val in sorted(pdm_s.items(), key=lambda x: -x[1]):
+            if done >= 3: break
+            done += 1
+            if tk in opens: log(f"S skip {tk}: open"); continue
+            ex = first_exp(chain(tk, px[tk], 45, 80, 0.3), 45)
+            if not ex: log(f"S skip {tk}: no expiry >= 45d"); continue
+            if earnings_between(tk, today, ex, E): log(f"S skip {tk}: earnings before {ex}"); continue
+            rr = chain(tk, px[tk], (ex - today).days, (ex - today).days, 0.6); c = pick_delta(rr, ex, "C", 0.25); pu = pick_delta(rr, ex, "P", 0.25)
+            if not (c and pu): log(f"S skip {tk}: no 25d legs"); continue
+            cb = c["bid"] + pu["bid"] - 2 * COMM; cm = (c["bid"] + c["ask"] + pu["bid"] + pu["ask"]) / 2
+            rec = dict(und=tk, entry=today.isoformat(), S0=px[tk], Kc=c["K"], Kp=pu["K"], exp=ex.isoformat(), peer_dm=round(val, 4),
+                       credit_bid=cb, credit_mid=cm, cond_bid=None, cond_mid=None, Kc2=None, Kp2=None, status="open")
+            c2 = pick_delta(rr, ex, "C", 0.10); p2 = pick_delta(rr, ex, "P", 0.10)
+            if c2 and p2 and abs(abs(c2["delta"]) - 0.10) <= 0.04 and abs(abs(p2["delta"]) - 0.10) <= 0.04 and c2["K"] > c["K"] and p2["K"] < pu["K"]:
+                rec.update(Kc2=c2["K"], Kp2=p2["K"], cond_bid=cb - c2["ask"] - p2["ask"] - 2 * COMM, cond_mid=cm - (c2["bid"] + c2["ask"] + p2["bid"] + p2["ask"]) / 2)
+            st["s"].append(rec)
+            log(f"S ENTER {tk} strangle {pu['K']}P/{c['K']}C exp {ex} peer_dm {val:+.3f} credit bid {cb:.2f}; condor wings {rec['Kp2']}P/{rec['Kc2']}C credit bid {rec['cond_bid'] if rec['cond_bid'] is None else round(rec['cond_bid'], 2)}")
     summary(now); json.dump(st, open(os.path.join(D, "state.json"), "w"), indent=0, default=str)
 
 def summary(now):
@@ -253,6 +304,12 @@ def summary(now):
         if s:
             mu, t, m = tstat([p["pnl_bp"] for p in s], [p["entry"][:7] for p in s]); mm = sum(p["pnl_mid_bp"] for p in s) / len(s)
             out.append(f"## {lab}\n- Settled {len(s)} of {target}; open {o}\n- Mean net (bid/ask fills) {mu:+.1f} bp, month-clustered t {t:.2f} over {m} months; at mid {mm:+.1f} bp\n- Win rate {sum(1 for p in s if p['pnl_bp'] > 0) / len(s):.0%}\n")
+        else: out.append(f"## {lab}\n- No settled trades yet; open {o}\n")
+    for col, mid, lab in [("pnl_bp", "pnl_mid_bp", "S1: seeded-history short 25d strangles (C157)"), ("cond_pnl_bp", "cond_pnl_mid_bp", "S2: seeded-history iron condors, 10d wings (C157)")]:
+        s = [p for p in st["s"] if p["status"] == "settled" and p.get(col) is not None]; o = sum(1 for p in st["s"] if p["status"] == "open")
+        if s:
+            mu, t, m = tstat([p[col] for p in s], [p["entry"][:7] for p in s]); mm = sum(p[mid] for p in s) / len(s)
+            out.append(f"## {lab}\n- Settled {len(s)} of 100; open {o}\n- Mean net (bid/ask fills) {mu:+.1f} bp, month-clustered t {t:.2f} over {m} months; at mid {mm:+.1f} bp\n- Win rate {sum(1 for p in s if p[col] > 0) / len(s):.0%}; worst {min(p[col] for p in s):+.0f} bp\n")
         else: out.append(f"## {lab}\n- No settled trades yet; open {o}\n")
     out.append("Decision: pass if mean net > 0 and t >= 2 at the target count. Backtest (modeled) holdout: A +27bp/trade t 14.6; B +421bp/trade t 4.1.\n")
     open(os.path.join(D, "summary.md"), "w").write("\n".join(out))
