@@ -12,6 +12,8 @@ Frozen rules (research_lab C149, C175/C176, C204-C209; preregistration claude/c2
   K x prior-20 RTH range x point value (K: RB 0.6521, EMA 0.34, calibrated on 2021-24); CFD lots are fractional. A failed attempt starts a new one the next session.
 - Data: Yahoo 1-minute bars (NQ=F, RTY=F), 5-minute bars for ranges, daily closes (ES=F, ZN=F) for the composite. Continuous front
   contracts: roll jumps are not removed (research used roll-free returns) - disclosed difference.
+- Variant B (added 2026-11-11, research C211; account A above is unchanged): the same, but RB skips FOMC statement days
+  (Federal Reserve calendar: 2026-12-09; 2027-01-27, 03-17, 04-28, 06-09, 07-28, 09-15, 10-27, 12-08). Own simulated FTMO account.
 - Decision: after 250 sessions, pass if the combined daily P&L mean > 0 with t >= 1.5; FTMO attempts and payouts reported throughout.
 Standard library only. Catches up on any of the last ~6 sessions not yet processed.
 """
@@ -23,6 +25,12 @@ ET = ZoneInfo("America/New_York")
 HERE = os.path.dirname(os.path.abspath(__file__)); ST = os.path.join(HERE, "state")
 K_SD = {"RB": 0.6521, "EMA": 0.34}   # per-micro daily $ sd = K x prior-20 RTH range x point value (calibrated 2021-24)
 TARGET_SD = 1000.0                   # 1% of the account per strategy
+FOMC = {date(2026, 12, 9), date(2027, 1, 27), date(2027, 3, 17), date(2027, 4, 28), date(2027, 6, 9), date(2027, 7, 28),
+        date(2027, 9, 15), date(2027, 10, 27), date(2027, 12, 8)}   # statement days (federalreserve.gov, fetched 2026-11-11)
+
+
+def new_acc():
+    return {"attempt": 1, "stage": 0, "bal": 0.0, "days": 0, "age": 0, "dead": False, "fees": FEE, "refunded": False, "payouts": 0.0, "npay": 0}
 ACCT, FEE = 100000.0, 603.0
 START = date.fromisoformat(os.environ.get("FTMO_START", "2026-11-12"))   # first forward session (override only for local tests)
 TICK = {"NQ": 0.25, "RTY": 0.10}; PV = {"NQ": 2.0, "RTY": 5.0}; COST = {"NQ": 1.22 + 2 * 0.25 * 2.0, "RTY": 1.22 + 2 * 0.10 * 5.0}
@@ -234,8 +242,8 @@ def step_account(acc, day_pnl, day_worst, traded):
 def main():
     os.makedirs(ST, exist_ok=True)
     tf = os.path.join(ST, "trades.csv"); af = os.path.join(ST, "account.csv"); sf = os.path.join(ST, "state.json")
-    state = json.load(open(sf)) if os.path.exists(sf) else {"done": [], "acc": {"attempt": 1, "stage": 0, "bal": 0.0, "days": 0, "age": 0, "dead": False,
-                                                                                 "fees": FEE, "refunded": False, "payouts": 0.0, "npay": 0}}
+    state = json.load(open(sf)) if os.path.exists(sf) else {"done": [], "acc": new_acc()}
+    state.setdefault("accB", new_acc()); bf = os.path.join(ST, "account_b.csv")
     nq = rth_days(yahoo("NQ=F", "7d", "1m")); rty = rth_days(yahoo("RTY=F", "7d", "1m"))
     rng_nq = daily_ranges(yahoo("NQ=F", "60d", "5m")); rng_rty = daily_ranges(yahoo("RTY=F", "60d", "5m"))
     es = [(t.date(), c) for t, o, h, l, c in yahoo("ES=F", "2y", "1d")]; zn = [(t.date(), c) for t, o, h, l, c in yahoo("ZN=F", "2y", "1d")]
@@ -243,20 +251,20 @@ def main():
     today = datetime.now(ET).date()
     ordered = sorted((d, b) for d, b in rty.items())
     sig = ema_signals(ordered)
-    trows, arows = [], []
+    trows, arows, brows = [], [], []
     for d in sorted(set(nq) & set(rty)):
         if str(d) in state["done"] or d < START or (d == today and datetime.now(ET).hour < 16):
             continue
-        rbn = rbw = emn = emw = 0.0; traded = False
+        rbn = rbw = emn = emw = 0.0; traded = rb_tr = em_tr = False
         z = comp.get(d); r20 = range20(rng_nq, d)
         if z is not None and abs(z) >= 0.5 and r20:
             side = -1 if z > 0 else 1; net, w = rb_trade(nq[d], side, r20)
-            rbn, rbw, traded = net, w, True
+            rbn, rbw, traded, rb_tr = net, w, True, True
             trows.append(dict(date=d, stream="RB", side=side, z=round(z, 3), k_entry=1, net_micro=round(net, 2), worst_micro=round(w, 2)))
         a20 = range20(rng_rty, d)
         if a20 and d in sig:
             for k0, s, net, w in ema_trades(rty[d], sig[d], 0.25 * a20):
-                emn += net; emw += w; traded = True
+                emn += net; emw += w; traded = em_tr = True
                 trows.append(dict(date=d, stream="EMA", side=s, z="", k_entry=k0, net_micro=round(net, 2), worst_micro=round(w, 2)))
         u_rb = TARGET_SD / (K_SD["RB"] * r20 * PV["NQ"]) if r20 else 0.0
         u_em = TARGET_SD / (K_SD["EMA"] * a20 * PV["RTY"]) if a20 else 0.0
@@ -265,17 +273,24 @@ def main():
         arows.append(dict(date=d, attempt=acc["attempt"], stage=acc["stage"], units_rb=round(u_rb, 3), units_ema=round(u_em, 3),
                           day_pnl=round(pnl, 2), day_worst=round(worst, 2),
                           balance=round(acc["bal"], 2), event=ev, payouts=round(acc["payouts"], 2), net_fees=round(acc["fees"], 2)))
+        # variant B: RB skipped on FOMC statement days
+        fomc = d in FOMC
+        pb = (0.0 if fomc else u_rb * rbn) + u_em * emn; wb = min(pb, (0.0 if fomc else u_rb * rbw) + u_em * emw)
+        tb = em_tr or (rb_tr and not fomc)
+        accb = state["accB"]; evb = step_account(accb, pb, wb, tb)
+        brows.append(dict(date=d, attempt=accb["attempt"], stage=accb["stage"], fomc_day=int(fomc), day_pnl=round(pb, 2), day_worst=round(wb, 2),
+                          balance=round(accb["bal"], 2), event=evb, payouts=round(accb["payouts"], 2), net_fees=round(accb["fees"], 2)))
         state["done"].append(str(d))
-    for f, rows in ((tf, trows), (af, arows)):
+    for f, rows in ((tf, trows), (af, arows), (bf, brows)):
         if rows:
             new = not os.path.exists(f)
             with open(f, "a", newline="") as fh:
                 w = csv.DictWriter(fh, fieldnames=list(rows[0])); w.writeheader() if new else None; w.writerows(rows)
     json.dump(state, open(sf, "w"), indent=1, default=str)
-    summary(state, af, tf)
+    summary(state, af, tf, bf)
 
 
-def summary(state, af, tf):
+def summary(state, af, tf, bf):
     acc = state["acc"]; rows = list(csv.DictReader(open(af))) if os.path.exists(af) else []
     x = [float(r["day_pnl"]) for r in rows]; n = len(x)
     mu = sum(x) / n if n else 0.0; sd = math.sqrt(sum((v - mu) ** 2 for v in x) / (n - 1)) if n > 2 else 0.0
@@ -288,7 +303,12 @@ def summary(state, af, tf):
              f"- EMA trades: {len(by['EMA'])}, mean ${sum(by['EMA'])/len(by['EMA']):+.2f}/micro" if by["EMA"] else "- EMA trades: 0",
              f"- FTMO: attempt {acc['attempt']}, stage {acc['stage']} (0 = phase 1, 1 = phase 2, 2 = funded), balance ${acc['bal']:+,.0f}, "
              f"payouts ${acc['payouts']:,.0f} ({acc['npay']}), net fees ${acc['fees']:,.0f}, net cash ${acc['payouts'] - acc['fees']:+,.0f}.", ""]
-    lines += ["Last 10 sessions:"] + [f"  {r['date']} attempt {r['attempt']} stage {r['stage']} day {float(r['day_pnl']):+,.0f} bal {float(r['balance']):+,.0f} {r['event']}" for r in rows[-10:]]
+    rb_ = list(csv.DictReader(open(bf))) if os.path.exists(bf) else []; xb = [float(r["day_pnl"]) for r in rb_]; nb = len(xb)
+    mb = sum(xb) / nb if nb else 0.0; sb = math.sqrt(sum((v - mb) ** 2 for v in xb) / (nb - 1)) if nb > 2 else 0.0
+    b = state["accB"]
+    lines += [f"Variant B (RB skips FOMC days): {nb} sessions, mean ${mb:+,.0f} (t {mb / (sb / math.sqrt(nb)) if sb > 0 else float('nan'):.2f}); "
+              f"FTMO attempt {b['attempt']}, stage {b['stage']}, balance ${b['bal']:+,.0f}, payouts ${b['payouts']:,.0f}, net cash ${b['payouts'] - b['fees']:+,.0f}.", ""]
+    lines += ["Last 10 sessions (account A):"] + [f"  {r['date']} attempt {r['attempt']} stage {r['stage']} day {float(r['day_pnl']):+,.0f} bal {float(r['balance']):+,.0f} {r['event']}" for r in rows[-10:]]
     open(os.path.join(ST, "summary.md"), "w").write("\n".join(lines) + "\n"); print("\n".join(lines))
 
 
