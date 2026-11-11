@@ -1,0 +1,25 @@
+name: ftmo-fwd
+# C210-FWD: rebalancing + RTY morning trend under FTMO 2-Step 100K rules, forward paper log (no orders, no account).
+on:
+  schedule:
+    - cron: "20 21,22 * * 1-5"
+  workflow_dispatch:
+permissions: {contents: write}
+concurrency: {group: ftmofwd, cancel-in-progress: false}
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env: {TZ: America/New_York, GH_TOKEN: "${{ secrets.GITHUB_TOKEN }}"}
+    steps:
+      - uses: actions/checkout@v4
+      - id: gate
+        run: |
+          [ -f ci/ENABLED ] || { echo "on=0" >> $GITHUB_OUTPUT; exit 0; }
+          hm=$(date +%H%M); if [ "${{ github.event_name }}" = workflow_dispatch ] || { [ "$hm" -ge 1610 ] && [ "$hm" -le 1859 ]; }; then echo "on=1" >> $GITHUB_OUTPUT; else echo "on=0" >> $GITHUB_OUTPUT; fi
+      - if: steps.gate.outputs.on == '1'
+        run: ci/state.sh restore ftmofwd ftmofwd/state
+      - if: steps.gate.outputs.on == '1'
+        run: cd ftmofwd && python3 ftmo_fwd.py
+      - if: steps.gate.outputs.on == '1' && always()
+        run: ci/state.sh save ftmofwd ftmofwd/state
