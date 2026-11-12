@@ -14,6 +14,7 @@ jobs only read public data.
 | opt-fwd | weekdays 15:40 | C125-FWD options survivors on real Alpaca option quotes (log only, no orders): A SPY 10-delta put-write w/ MA200 + TP50 (decides at 40), B rich-IV short strangles (decides at 100) |
 | perp-forward-test | daily 10:37 | FWD-C10 Binance perp breakdown short forward test |
 | ftmo-fwd | weekdays 16:20 | C210-FWD rebalancing + RTY morning trend on FTMO 2-Step 100K rules: daily paper log from Yahoo bars (no orders, no account; decides at 250 sessions) |
+| sol-maker | hourly at :16 | C226 paper market-maker replay on Kalshi hourly SOL ladders (BTC/ETH for comparison): quotes from public 1-min candles, fills from public trade prints, held to settlement (no orders; decides 2026-12-11) |
 | futures-shadow | weekdays 18:20 | C91 month-end trade in actual TY and US futures: a log only, no orders |
 | vix-score | weekdays 08:50 | C100 forward scoring of the VIX-augmented SPY variance forecast (no trading) |
 | health | weekdays 16:30 | Daily health report: one file per day on the `state-health` branch (`YYYY-MM-DD.md`, plus `latest.md`) |
@@ -22,7 +23,7 @@ jobs only read public data.
 
 ## Scheduler
 GitHub's own cron is throttled on this repo (about 2 runs per 14 hours), so `scheduler` (ci/scheduler.py) keeps one run
-alive for about 5h45m, starts each job with `gh workflow run` at its slot (kalshi every 10 min, hl :07, doge-fv :03, opt-fwd 15:40, ftmo-fwd 16:20, perp 10:37,
+alive for about 5h45m, starts each job with `gh workflow run` at its slot (kalshi every 10 min, hl :07, doge-fv :03, opt-fwd 15:40, ftmo-fwd 16:20, sol-maker :16, perp 10:37,
 bili-entry 08:40 and 09:02 dry=false, vix 08:50, funds-close 15:15 and 15:32 dry=false, health 16:30, futures-shadow 18:20
 weekdays), then starts its successor and exits. Before each start it checks the Actions API so a slot is never started
 twice; a missed slot is started late only within its grace window. A second scheduler exits at once if one is already

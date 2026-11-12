@@ -29,6 +29,7 @@ JOBS = [
     ("funds.yml", ["15:15", "15:32"], WEEKDAYS, {"dry": "false"}, 15),
     ("opt-fwd.yml", ["15:40"], WEEKDAYS, {}, 15),
     ("ftmo-fwd.yml", ["16:20"], WEEKDAYS, {}, 60),
+    ("sol-maker.yml", ":16", ALL, {}, 40),
     ("health.yml", ["16:30"], WEEKDAYS, {}, 60),
     ("futures-shadow.yml", ["18:20"], WEEKDAYS, {}, 60),
 ]
