@@ -1,0 +1,1 @@
+C100 VIX forecast forward scoring, 2026-11-13 08:50: 3 scored days, mean QLIKE improvement +0.7140 (positive = VIX helps), VIX better on 100% of days; decision at 250 days
