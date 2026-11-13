@@ -1,0 +1,60 @@
+2026-11-02 14:52 run start: 923 symbols (78 meme, 598 alt, 247 unclassified), days 2026-10-01 to 2026-11-01
+2026-11-02 15:14 downloaded 27078 new symbol-days
+2026-11-02 15:18 done: 230 signals (183 in frozen universe), summary.txt written
+2026-11-02 15:49 run start: 923 symbols (78 meme, 598 alt, 247 unclassified), days 2026-10-01 to 2026-11-01
+2026-11-02 15:50 downloaded 0 new symbol-days
+2026-11-02 15:50 done: 180 signals (133 in frozen universe), summary.txt written
+2026-11-03 10:37 run start: 923 symbols (78 meme, 598 alt, 247 unclassified), days 2026-10-01 to 2026-11-02
+2026-11-03 10:38 downloaded 887 new symbol-days
+2026-11-03 10:38 done: 193 signals (142 in frozen universe), summary.txt written
+2026-11-04 10:37 run start: 923 symbols (78 meme, 598 alt, 247 unclassified), days 2026-10-01 to 2026-11-03
+2026-11-04 10:38 downloaded 887 new symbol-days
+2026-11-04 10:38 done: 201 signals (146 in frozen universe), summary.txt written
+2026-11-05 10:37 run start: 923 symbols (78 meme, 598 alt, 247 unclassified), days 2026-10-01 to 2026-11-04
+2026-11-05 10:38 downloaded 887 new symbol-days
+2026-11-05 10:38 done: 212 signals (154 in frozen universe), summary.txt written
+2026-11-06 16:02 run start: 923 symbols (78 meme, 598 alt, 247 unclassified), days 2026-10-01 to 2026-11-05
+2026-11-06 16:03 downloaded 887 new symbol-days
+2026-11-06 16:04 done: 252 signals (187 in frozen universe), summary.txt written
+2026-11-07 10:37 run start: 923 symbols (78 meme, 598 alt, 247 unclassified), days 2026-10-01 to 2026-11-06
+2026-11-07 10:38 downloaded 887 new symbol-days
+2026-11-07 10:38 done: 259 signals (190 in frozen universe), summary.txt written
+2026-11-07 14:36 run start: 923 symbols (78 meme, 598 alt, 247 unclassified), days 2026-10-01 to 2026-11-06
+2026-11-07 14:37 downloaded 0 new symbol-days
+2026-11-07 14:37 done: 259 signals (190 in frozen universe), summary.txt written
+2026-11-08 10:37 run start: 923 symbols (78 meme, 598 alt, 247 unclassified), days 2026-10-01 to 2026-11-07
+2026-11-08 10:38 downloaded 887 new symbol-days
+2026-11-08 10:38 done: 261 signals (191 in frozen universe), summary.txt written
+2026-11-08 14:55 run start: 923 symbols (78 meme, 598 alt, 247 unclassified), days 2026-10-01 to 2026-11-07
+2026-11-08 14:56 downloaded 0 new symbol-days
+2026-11-08 14:56 done: 261 signals (191 in frozen universe), summary.txt written
+2026-11-09 10:37 run start: 923 symbols (78 meme, 598 alt, 247 unclassified), days 2026-10-01 to 2026-11-08
+2026-11-09 10:38 downloaded 887 new symbol-days
+2026-11-09 10:38 done: 277 signals (205 in frozen universe), summary.txt written
+2026-11-09 18:50 run start: 923 symbols (78 meme, 598 alt, 247 unclassified), days 2026-10-01 to 2026-11-08
+2026-11-09 18:51 downloaded 0 new symbol-days
+2026-11-09 18:52 done: 277 signals (205 in frozen universe), summary.txt written
+2026-11-10 10:37 run start: 923 symbols (78 meme, 598 alt, 247 unclassified), days 2026-10-01 to 2026-11-09
+2026-11-10 10:38 downloaded 887 new symbol-days
+2026-11-10 10:38 done: 288 signals (215 in frozen universe), summary.txt written
+2026-11-10 16:24 run start: 923 symbols (78 meme, 598 alt, 247 unclassified), days 2026-10-01 to 2026-11-09
+2026-11-10 16:25 downloaded 0 new symbol-days
+2026-11-10 16:25 done: 288 signals (215 in frozen universe), summary.txt written
+2026-11-11 10:37 run start: 923 symbols (78 meme, 598 alt, 247 unclassified), days 2026-10-01 to 2026-11-10
+2026-11-11 10:38 downloaded 887 new symbol-days
+2026-11-11 10:38 done: 294 signals (220 in frozen universe), summary.txt written
+2026-11-11 17:14 run start: 923 symbols (78 meme, 598 alt, 247 unclassified), days 2026-10-01 to 2026-11-10
+2026-11-11 17:15 downloaded 0 new symbol-days
+2026-11-11 17:15 done: 294 signals (220 in frozen universe), summary.txt written
+2026-11-12 10:37 run start: 923 symbols (78 meme, 598 alt, 247 unclassified), days 2026-10-01 to 2026-11-11
+2026-11-12 10:38 downloaded 887 new symbol-days
+2026-11-12 10:38 done: 297 signals (223 in frozen universe), summary.txt written
+2026-11-12 16:54 run start: 923 symbols (78 meme, 598 alt, 247 unclassified), days 2026-10-01 to 2026-11-11
+2026-11-12 16:55 downloaded 0 new symbol-days
+2026-11-12 16:55 done: 297 signals (223 in frozen universe), summary.txt written
+2026-11-13 10:37 run start: 924 symbols (78 meme, 598 alt, 248 unclassified), days 2026-10-01 to 2026-11-12
+2026-11-13 10:38 downloaded 889 new symbol-days
+2026-11-13 10:38 done: 306 signals (229 in frozen universe), summary.txt written
+2026-11-13 16:35 run start: 924 symbols (78 meme, 598 alt, 248 unclassified), days 2026-10-01 to 2026-11-12
+2026-11-13 16:36 downloaded 0 new symbol-days
+2026-11-13 16:37 done: 306 signals (229 in frozen universe), summary.txt written
