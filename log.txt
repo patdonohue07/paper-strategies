@@ -1,0 +1,12 @@
+2026-11-09 15:40:31 ET run start mock=False
+2026-11-09 15:40:33 ET A ENTER sell SPY270115P00665000 K 665.0 delta -0.100 bid 4.08 ask 4.1 (SPY 754.34 > MA200 727.99)
+2026-11-09 15:41:32 ET B iv30 for 109 names; peer_dm ready for 0
+2026-11-10 15:40:22 ET run start mock=False
+2026-11-10 15:41:46 ET B iv30 for 109 names; peer_dm ready for 0
+2026-11-10 15:41:46 ET S seeded peer_dm ready for 109
+2026-11-12 15:40:25 ET run start mock=False
+2026-11-12 15:42:00 ET B iv30 for 109 names; peer_dm ready for 0
+2026-11-12 15:42:00 ET S seeded peer_dm ready for 109
+2026-11-13 15:40:27 ET run start mock=False
+2026-11-13 15:41:43 ET B iv30 for 109 names; peer_dm ready for 0
+2026-11-13 15:41:43 ET S seeded peer_dm ready for 109
