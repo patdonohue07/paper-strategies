@@ -1,0 +1,30 @@
+{
+ "done": [
+  "2026-11-12",
+  "2026-11-13"
+ ],
+ "acc": {
+  "attempt": 1,
+  "stage": 0,
+  "bal": -804.3869087394153,
+  "days": 2,
+  "age": 2,
+  "dead": false,
+  "fees": 603.0,
+  "refunded": false,
+  "payouts": 0.0,
+  "npay": 0
+ },
+ "accB": {
+  "attempt": 1,
+  "stage": 0,
+  "bal": -804.3869087394153,
+  "days": 2,
+  "age": 2,
+  "dead": false,
+  "fees": 603.0,
+  "refunded": false,
+  "payouts": 0.0,
+  "npay": 0
+ }
+}
