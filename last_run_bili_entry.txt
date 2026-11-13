@@ -1,0 +1,18 @@
+{
+ "ts": "2026-11-13T08:40:19",
+ "mode": "LIVE-PAPER",
+ "equity": 997275.9,
+ "hk_close": 104.4000015258789,
+ "fx_prior": 7.844369888305664,
+ "parity": 13.3089,
+ "median_prem": -0.00082,
+ "n_prem": 252,
+ "forecast_open": 13.298,
+ "prior_close": 13.5,
+ "gap": -0.01497,
+ "signal": -1,
+ "order": "4c775773-9a5b-49c1-b81f-66ba4e919c94",
+ "note": "short 7407",
+ "last_match": "2026-11-12: parity 13.754 vs US open 13.55",
+ "hk_last": "2026-11-13"
+}

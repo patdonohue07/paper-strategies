@@ -1,0 +1,22 @@
+key check 2026-11-13T15:32:31
+APACKEYID/APCSECRET (bond fund + BILI): key length 26, secret length 44 -> OK, account status ACTIVE
+   order BILI buy qty 7407 filled 7407 @ 13.27 market/day status filled submitted 2026-11-13T20:15:23 filled_at 2026-11-13T20:15:24
+   order VCIT buy qty 8 filled 8 @ 78.64 market/day status filled submitted 2026-11-13T20:15:20 filled_at 2026-11-13T20:15:22
+   order IEF buy qty 17 filled 17 @ 90.06 market/day status filled submitted 2026-11-13T20:15:20 filled_at 2026-11-13T20:15:22
+   order BILI sell qty 7407 filled 7407 @ 13.265688 market/day status filled submitted 2026-11-13T13:40:19 filled_at 2026-11-13T14:33:10
+   order BILI buy qty 7168 filled 7168 @ 13.53 market/day status filled submitted 2026-11-12T20:15:19 filled_at 2026-11-12T20:15:23
+   order VCIT buy qty 27 filled 27 @ 78.8 market/day status filled submitted 2026-11-12T20:15:18 filled_at 2026-11-12T20:15:19
+   order IEF sell qty 20 filled 20 @ 90.2855 market/day status filled submitted 2026-11-12T20:15:18 filled_at 2026-11-12T20:15:22
+   order BILI sell qty 7168 filled 7168 @ 13.622913 market/day status filled submitted 2026-11-12T13:40:31 filled_at 2026-11-12T14:33:23
+   order IEF buy qty 24 filled 24 @ 90.92 market/day status filled submitted 2026-11-11T20:15:30 filled_at 2026-11-11T20:15:31
+   order BILI sell qty 6988 filled 6988 @ 14.24 market/day status filled submitted 2026-11-10T20:15:17 filled_at 2026-11-10T20:15:21
+   order VCIT buy qty 21 filled 21 @ 79.3 market/day status filled submitted 2026-11-10T20:15:14 filled_at 2026-11-10T20:15:15
+   order IEF buy qty 9 filled 9 @ 91.06 market/day status filled submitted 2026-11-10T20:15:14 filled_at 2026-11-10T20:15:17
+   position IEF qty -2798 value -252029.85
+   position VCIT qty 3809 value 299482.625
+APACKEYID2/APACSECRET2 (portable alpha): key length 26, secret length 44 -> OK, account status ACTIVE
+   order SPY buy qty 1 filled 1 @ 753.64 market/day status filled submitted 2026-11-13T20:15:22 filled_at 2026-11-13T20:15:23
+   order SPY sell qty 1 filled 1 @ 757.13 market/day status filled submitted 2026-11-12T20:15:18 filled_at 2026-11-12T20:15:19
+   order SPY buy qty 1324 filled 1324 @ 755.26914 market/day status filled submitted 2026-11-09T20:15:18 filled_at 2026-11-09T20:15:29
+   order SPY buy qty 1361 filled 0 @ None market/cls status expired submitted 2026-11-05T20:42:06 filled_at 
+   position SPY qty 1324 value 996812.0608
