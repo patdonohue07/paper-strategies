@@ -31,6 +31,7 @@ JOBS = [
     ("ftmo-fwd.yml", ["16:20"], WEEKDAYS, {}, 60),
     ("health.yml", ["16:30"], WEEKDAYS, {}, 60),
     ("futures-shadow.yml", ["18:20"], WEEKDAYS, {}, 60),
+    ("c237-listings.yml", ":05", ALL, {}, 20),
 ]
 
 def slots_on(day, job):

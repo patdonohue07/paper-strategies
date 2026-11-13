@@ -1,0 +1,23 @@
+name: c237-listings
+# C237: Kalshi new-listing snapshots 60-90 min after open (public data, no keys, no orders). Started hourly at :05 ET by
+# ci/scheduler.py; each run loops for ~54 min (a cycle every 5 min) and saves hourly shards to the state-c237 branch.
+# Listing window ends 2026-12-13 23:59 ET; after that the script exits at once (remove from the scheduler then).
+on:
+  workflow_dispatch:
+permissions: {contents: write}
+concurrency: {group: c237, cancel-in-progress: false}
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 62
+    env: {TZ: America/New_York, GH_TOKEN: "${{ secrets.GITHUB_TOKEN }}", RUN_MINUTES: "54"}
+    steps:
+      - uses: actions/checkout@v4
+      - id: gate
+        run: if [ -f ci/ENABLED ]; then echo "on=1" >> $GITHUB_OUTPUT; else echo "on=0" >> $GITHUB_OUTPUT; fi
+      - if: steps.gate.outputs.on == '1'
+        run: ci/state.sh restore c237 c237/state
+      - if: steps.gate.outputs.on == '1'
+        run: python3 c237/listing_logger.py c237/state
+      - if: steps.gate.outputs.on == '1' && always()
+        run: ci/state.sh save c237 c237/state
