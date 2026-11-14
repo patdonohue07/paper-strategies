@@ -1,0 +1,5 @@
+Futures shadow log (C91 rule), updated 2026-11-13 21:27
+TY: 1 closed months, total $+495, mean $+495/contract-month
+US: 1 closed months, total $+89, mean $+89/contract-month
+  2026-10 TYZ26: closed; entry corrected 106.046875 -> 106.109375 (v1.1 date fix) entry 106.109375 exit 106.640625 pnl 495.0
+  2026-10 USZ26: closed; entry corrected 107.46875 -> 107.5 (v1.1 date fix) entry 107.5 exit 107.65625 pnl 88.75
