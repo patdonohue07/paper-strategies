@@ -1,0 +1,5 @@
+C66 paper maker summary 2026-11-14 06:50 ET (interim, decides nothing)
+weekend  above/below  orders   17 filled    3 mean filled P&L -18.67c t nan | if all filled +41.00c
+weekend  range modal  orders    6 filled    5 mean filled P&L -34.60c t nan | if all filled -18.33c
+weekday  above/below  orders   68 filled   12 mean filled P&L -27.67c t -1.15 | if all filled +37.65c
+weekday  range modal  orders   16 filled   12 mean filled P&L +12.25c t 0.69 | if all filled +27.56c
