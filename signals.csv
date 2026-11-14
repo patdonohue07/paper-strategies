@@ -1,0 +1,2 @@
+ticker,series,ts,close,side,model,bid,ask,edge,spot,sigma,hrs,strike_type,floor,cap
+KXDOGED-26NOV1117-T0.0699999,KXDOGED,2026-11-11T11:03:25.690482-05:00,2026-11-11T17:00:00-05:00,NO,0.1166,0.22,0.29,0.1034,0.06899,0.4704,5.94,greater,0.0699999,

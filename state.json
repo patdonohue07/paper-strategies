@@ -1,0 +1,37 @@
+{
+"signals": {
+"KXDOGED-26NOV1117-T0.0699999": {
+"ticker": "KXDOGED-26NOV1117-T0.0699999",
+"series": "KXDOGED",
+"ts": "2026-11-11T11:03:25.690482-05:00",
+"close": "2026-11-11T17:00:00-05:00",
+"side": "NO",
+"model": 0.1166,
+"bid": 0.22,
+"ask": 0.29,
+"edge": 0.1034,
+"spot": 0.06899,
+"sigma": 0.4704,
+"hrs": 5.94,
+"strike_type": "greater",
+"floor": 0.0699999,
+"cap": null
+}
+},
+"trades": {
+"KXDOGED-26NOV1117-T0.0699999": {
+"ticker": "KXDOGED-26NOV1117-T0.0699999",
+"series": "KXDOGED",
+"side": "NO",
+"ts_signal": "2026-11-11T11:03:25.690482-05:00",
+"ts_fill": "2026-11-11T12:03:14.526759-05:00",
+"close": "2026-11-11T17:00:00-05:00",
+"cost": 0.86,
+"touch_size": "10000.00",
+"status": "settled",
+"result": "no",
+"pnl": 0.1316,
+"pnl_rounded_10": 1.31
+}
+}
+}

@@ -1,0 +1,2 @@
+ticker,series,side,ts_signal,ts_fill,close,cost,touch_size,result,pnl,pnl_rounded_10
+KXDOGED-26NOV1117-T0.0699999,KXDOGED,NO,2026-11-11T11:03:25.690482-05:00,2026-11-11T12:03:14.526759-05:00,2026-11-11T17:00:00-05:00,0.86,10000.00,no,0.1316,1.31
