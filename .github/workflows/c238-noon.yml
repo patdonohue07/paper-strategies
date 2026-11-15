@@ -1,0 +1,23 @@
+name: c238-noon
+# C238: records Kalshi and Polymarket order-book tops for the noon-ET crypto contracts, 10:55-12:00 ET every day (public data,
+# no keys, no orders). Started at 10:55 ET by ci/scheduler.py; saves daily tape files to the state-c238 branch.
+# Test window ends with settlement day 2026-12-15; remove from the scheduler after that.
+on:
+  workflow_dispatch:
+permissions: {contents: write}
+concurrency: {group: c238, cancel-in-progress: false}
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 80
+    env: {TZ: America/New_York, GH_TOKEN: "${{ secrets.GITHUB_TOKEN }}"}
+    steps:
+      - uses: actions/checkout@v4
+      - id: gate
+        run: if [ -f ci/ENABLED ]; then echo "on=1" >> $GITHUB_OUTPUT; else echo "on=0" >> $GITHUB_OUTPUT; fi
+      - if: steps.gate.outputs.on == '1'
+        run: ci/state.sh restore c238 c238/state
+      - if: steps.gate.outputs.on == '1'
+        run: python3 c238/noon_logger.py c238/state
+      - if: steps.gate.outputs.on == '1' && always()
+        run: ci/state.sh save c238 c238/state
