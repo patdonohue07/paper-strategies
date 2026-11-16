@@ -16,6 +16,7 @@ jobs only read public data.
 | ftmo-fwd | weekdays 16:20 | C210-FWD rebalancing + RTY morning trend on FTMO 2-Step 100K rules: daily paper log from Yahoo bars (no orders, no account; decides at 250 sessions) |
 | c237-listings | hourly :05 (5-min cycles) | C237 Kalshi new-listing snapshots 60-90 min after open, listings to 2026-12-13 (public data, no keys, no orders) |
 | c238-noon | daily 10:55-12:00 ET | C238 Kalshi + Polymarket order-book tops for the noon-ET crypto contracts, settlement days to 2026-12-15 (public data, no keys, no orders) |
+| c239-hourly | hourly :56-:00 ET | C239 Kalshi hourly crypto ladders + Coinbase spot in the last ~2.5 min before each close, closes to 2026-12-07 00:00 ET (public data, no keys, no orders) |
 | futures-shadow | weekdays 18:20 | C91 month-end trade in actual TY and US futures: a log only, no orders |
 | vix-score | weekdays 08:50 | C100 forward scoring of the VIX-augmented SPY variance forecast (no trading) |
 | health | weekdays 16:30 | Daily health report: one file per day on the `state-health` branch (`YYYY-MM-DD.md`, plus `latest.md`) |
@@ -24,7 +25,7 @@ jobs only read public data.
 
 ## Scheduler
 GitHub's own cron is throttled on this repo (about 2 runs per 14 hours), so `scheduler` (ci/scheduler.py) keeps one run
-alive for about 5h45m, starts each job with `gh workflow run` at its slot (kalshi every 10 min, hl :07, doge-fv :03, opt-fwd 15:40, ftmo-fwd 16:20, c237 :05, c238 10:55, perp 10:37,
+alive for about 5h45m, starts each job with `gh workflow run` at its slot (kalshi every 10 min, hl :07, doge-fv :03, opt-fwd 15:40, ftmo-fwd 16:20, c237 :05, c238 10:55, c239 :56, perp 10:37,
 bili-entry 08:40 and 09:02 dry=false, vix 08:50, funds-close 15:15 and 15:32 dry=false, health 16:30, futures-shadow 18:20
 weekdays), then starts its successor and exits. Before each start it checks the Actions API so a slot is never started
 twice; a missed slot is started late only within its grace window. A second scheduler exits at once if one is already
@@ -32,6 +33,6 @@ running; the hourly cron on scheduler.yml only matters when the chain breaks. Th
 backup; they are time-gated and once-per-day guarded, so a stray cron run does nothing harmful.
 Stop the chain: create `ci/SCHEDULER_OFF` on main (takes effect within 10 minutes) or disable the scheduler workflow.
 
-Each job keeps its data on its own `state-*` branch (funds, kalshi, hl, fwd, fut, vix, health, dogefv, optfwd, ftmofwd, c237, c238). Logs: open that branch on GitHub.
+Each job keeps its data on its own `state-*` branch (funds, kalshi, hl, fwd, fut, vix, health, dogefv, optfwd, ftmofwd, c237, c238, c239). Logs: open that branch on GitHub.
 Secrets used: `APACKEYID`, `APCSECRET` (bond fund + BILI account), `APACKEYID2`, `APACSECRET2` (portable alpha).
 Jobs do nothing until `ci/ENABLED` exists on main. Pre-registrations live in the Investing Thesis project.
