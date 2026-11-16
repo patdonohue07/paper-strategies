@@ -1,0 +1,23 @@
+name: c239-hourly
+# C239: records the Kalshi hourly crypto ladders (BTC, ETH, SOL, XRP, DOGE) every 15 s in the last ~2.5 min before each hourly
+# close, with Coinbase spot readings (public data, no keys, no orders). Started at :56 ET every hour by ci/scheduler.py; saves one
+# tape file per close to the state-c239 branch. Test window ends with the 2026-12-07 00:00 ET close; remove from the scheduler then.
+on:
+  workflow_dispatch:
+permissions: {contents: write}
+concurrency: {group: c239, cancel-in-progress: false}
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    env: {TZ: America/New_York, GH_TOKEN: "${{ secrets.GITHUB_TOKEN }}"}
+    steps:
+      - uses: actions/checkout@v4
+      - id: gate
+        run: if [ -f ci/ENABLED ]; then echo "on=1" >> $GITHUB_OUTPUT; else echo "on=0" >> $GITHUB_OUTPUT; fi
+      - if: steps.gate.outputs.on == '1'
+        run: ci/state.sh restore c239 c239/state
+      - if: steps.gate.outputs.on == '1'
+        run: python3 c239/hourly_logger.py c239/state
+      - if: steps.gate.outputs.on == '1' && always()
+        run: ci/state.sh save c239 c239/state
