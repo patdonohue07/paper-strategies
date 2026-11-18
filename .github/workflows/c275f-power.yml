@@ -1,0 +1,23 @@
+name: c275f-power
+# C275F forward paper test: Kalshi weekly power-price contracts (ERCOT, PJM, MISO hubs). Hourly at ~:30 ET via ci/scheduler.py.
+# Public order books only; no keys, no orders. Snapshots stop after 2027-01-22 17:00 ET (remove from the scheduler then).
+# Scored offline with the frozen C275 pricer. State on state-c275f (tape/YYYY-MM.jsonl, logs/).
+on:
+  workflow_dispatch:
+permissions: {contents: write}
+concurrency: {group: c275f, cancel-in-progress: false}
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env: {TZ: America/New_York, GH_TOKEN: "${{ secrets.GITHUB_TOKEN }}"}
+    steps:
+      - uses: actions/checkout@v4
+      - id: gate
+        run: if [ -f ci/ENABLED ]; then echo "on=1" >> $GITHUB_OUTPUT; else echo "on=0" >> $GITHUB_OUTPUT; fi
+      - if: steps.gate.outputs.on == '1'
+        run: ci/state.sh restore c275f c275f/state
+      - if: steps.gate.outputs.on == '1'
+        run: python3 c275f/power_logger.py c275f/state
+      - if: steps.gate.outputs.on == '1' && always()
+        run: ci/state.sh save c275f c275f/state
