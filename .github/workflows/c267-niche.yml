@@ -1,0 +1,26 @@
+name: c267-niche
+# C267 weekly niche-market pipeline: discovers Kalshi series launched in the last 90 days, keeps small (niche) books, prices contracts with
+# an underlying (lognormal digital / GBM barrier), flags 5c+ edges on live order books, logs every niche contract, then scores settled
+# flags against the best-of-N random gate (C266). Public data only; no keys, no orders. Started Mondays 11:00 ET by ci/scheduler.py;
+# state on the state-c267 branch (scans/, results.json, scoreboard.md).
+on:
+  workflow_dispatch:
+permissions: {contents: write}
+concurrency: {group: c267, cancel-in-progress: false}
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 150
+    env: {TZ: America/New_York, GH_TOKEN: "${{ secrets.GITHUB_TOKEN }}"}
+    steps:
+      - uses: actions/checkout@v4
+      - id: gate
+        run: if [ -f ci/ENABLED ]; then echo "on=1" >> $GITHUB_OUTPUT; else echo "on=0" >> $GITHUB_OUTPUT; fi
+      - if: steps.gate.outputs.on == '1'
+        run: ci/state.sh restore c267 c267/state
+      - if: steps.gate.outputs.on == '1'
+        run: python3 c267/pipeline.py c267/state
+      - if: steps.gate.outputs.on == '1'
+        run: python3 c267/score.py c267/state
+      - if: steps.gate.outputs.on == '1' && always()
+        run: ci/state.sh save c267 c267/state
