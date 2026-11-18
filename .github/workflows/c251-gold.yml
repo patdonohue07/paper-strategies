@@ -1,0 +1,23 @@
+name: c251-gold
+# C251: records the Kalshi daily gold / silver / copper ladders (top of book, every strike) once a minute 12:59-16:01 ET on weekdays
+# (public data, no keys, no orders). Started at 12:55 ET by ci/scheduler.py; saves daily tape files to the state-c251 branch.
+# Window ends with settlement day 2026-12-31; remove from the scheduler after that.
+on:
+  workflow_dispatch:
+permissions: {contents: write}
+concurrency: {group: c251, cancel-in-progress: false}
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 200
+    env: {TZ: America/New_York, GH_TOKEN: "${{ secrets.GITHUB_TOKEN }}"}
+    steps:
+      - uses: actions/checkout@v4
+      - id: gate
+        run: if [ -f ci/ENABLED ]; then echo "on=1" >> $GITHUB_OUTPUT; else echo "on=0" >> $GITHUB_OUTPUT; fi
+      - if: steps.gate.outputs.on == '1'
+        run: ci/state.sh restore c251 c251/state
+      - if: steps.gate.outputs.on == '1'
+        run: python3 c251/gold_logger.py c251/state
+      - if: steps.gate.outputs.on == '1' && always()
+        run: ci/state.sh save c251 c251/state
