@@ -4,14 +4,19 @@ Same record format as the C219 scan (research_lab/code/c219_scan.py), so the fro
 {ts, series: {S: {p0: [price, time], p1: [price, time], t0, t1, markets: [[event, ticker, strike_type, floor, cap, bid, ask,
  bid_sz, ask_sz, close]]}}}
 Public data only; no keys, no orders. Started at :56 ET each hour by ci/scheduler.py; polls from :57:40 to :00:20.
+Amendment 1 (2026-11-17, before any C239 outcome analysis): the /markets list is a cache refreshed every ~15 s, so each cycle
+also reads the live order book of the (up to 12) strikes whose cached mid is within 0.03-0.97, nearest 0.5 first ("ob": {ticker: [bid, ask, bid_size, ask_size,
+read_time]}). The original fields are unchanged.
 Usage: python3 hourly_logger.py <state_dir> [--now]   (--now: test, record the next 3 minutes whatever the clock says)"""
 import gzip, json, os, sys, time, urllib.error, urllib.request
+from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timedelta, timezone
 
 STATE = sys.argv[1] if len(sys.argv) > 1 and not sys.argv[1].startswith("--") else os.path.join(os.path.dirname(os.path.abspath(__file__)), "state")
 API = "https://api.elections.kalshi.com/trade-api/v2"; UA = {"User-Agent": "research-client/1.0"}
 SERIES = {"KXBTCD": "BTC-USD", "KXETHD": "ETH-USD", "KXSOLD": "SOL-USD", "KXXRPD": "XRP-USD", "KXDOGED": "DOGE-USD"}
 INTERVAL = 15
+POOL = ThreadPoolExecutor(max_workers=6)
 END = datetime(2026, 12, 7, 0, 5, tzinfo=timezone(timedelta(hours=-5)))   # test window ends with the Dec 7 00:00 ET close
 
 
@@ -47,6 +52,17 @@ def pull(s, max_close):
             return rows
 
 
+def ob_top(ticker):
+    """Live top of book from the per-market order book (the /markets list is a ~15-s cache). [yes_bid, yes_ask, bid_size, ask_size, read_time]."""
+    d = get(f"{API}/markets/{ticker}/orderbook")
+    if not d:
+        return None
+    o = d.get("orderbook_fp") or {}
+    yb = [(float(p), float(q)) for p, q in o.get("yes_dollars") or []]; nb = [(float(p), float(q)) for p, q in o.get("no_dollars") or []]
+    by = max(yb) if yb else (None, 0.0); bn = max(nb) if nb else (None, 0.0)
+    return [by[0], None if bn[0] is None else round(1 - bn[0], 4), by[1], bn[1], round(time.time(), 3)]
+
+
 def log(msg):
     os.makedirs(os.path.join(STATE, "logs"), exist_ok=True)
     line = f"{datetime.now(timezone.utc):%Y-%m-%d %H:%M:%S} UTC {msg}"; print(line, flush=True)
@@ -70,8 +86,12 @@ def main():
     while time.time() < stop:
         t0 = time.time(); rec = dict(ts=datetime.now(timezone.utc).isoformat(), series={})
         for s, prod in SERIES.items():
-            a = time.time(); p0 = price(prod); ms = pull(s, close + 60); p1 = price(prod)
-            rec["series"][s] = dict(p0=p0, p1=p1, t0=a, t1=time.time(), markets=ms)
+            a = time.time(); p0 = price(prod); ms = pull(s, close + 60); p1 = price(prod); t1 = time.time()   # original fields, timing unchanged
+            near = sorted(((abs((float(m[5]) + float(m[6])) / 2 - 0.5), m[1]) for m in ms if m[5] is not None and m[6] is not None
+                           and 0.03 <= (float(m[5]) + float(m[6])) / 2 <= 0.97))[:12]   # at most 12 per series (rate limit)
+            near = [t for _, t in near]
+            ob = dict(zip(near, POOL.map(ob_top, near))) if near else {}
+            rec["series"][s] = dict(p0=p0, p1=p1, t0=a, t1=t1, markets=ms, ob=ob, p2=price(prod))
         with gzip.open(path, "at") as fh:
             fh.write(json.dumps(rec) + "\n")
         n += 1; nm += sum(len(v["markets"]) for v in rec["series"].values())
