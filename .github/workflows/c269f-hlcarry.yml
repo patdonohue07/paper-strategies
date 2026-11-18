@@ -1,0 +1,24 @@
+name: c269f-hlcarry
+# C269F forward paper test: funding carry on Hyperliquid builder-deployed (HIP-3) perps. Hourly at ~:02 via ci/scheduler.py. Public info
+# endpoint only; no keys, no orders. Opens paper positions on the side that receives funding when abs(funding) >= 0.01%/h (24 h and 72 h
+# holds), entry/exit at the live top of book, funding accrued hourly; xyz dex = control; A_flip = random-side control. State on
+# state-c269f (positions.json, closed.jsonl, scoreboard.md). New signals stop after 2027-02-18; remove from the scheduler once all close.
+on:
+  workflow_dispatch:
+permissions: {contents: write}
+concurrency: {group: c269f, cancel-in-progress: false}
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env: {TZ: America/New_York, GH_TOKEN: "${{ secrets.GITHUB_TOKEN }}"}
+    steps:
+      - uses: actions/checkout@v4
+      - id: gate
+        run: if [ -f ci/ENABLED ]; then echo "on=1" >> $GITHUB_OUTPUT; else echo "on=0" >> $GITHUB_OUTPUT; fi
+      - if: steps.gate.outputs.on == '1'
+        run: ci/state.sh restore c269f c269f/state
+      - if: steps.gate.outputs.on == '1'
+        run: python3 c269f/carry_logger.py c269f/state && python3 c269f/score.py c269f/state
+      - if: steps.gate.outputs.on == '1' && always()
+        run: ci/state.sh save c269f c269f/state

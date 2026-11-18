@@ -19,6 +19,7 @@ jobs only read public data.
 | c239-hourly | hourly :56-:00 ET | C239 Kalshi hourly crypto ladders + Coinbase spot in the last ~2.5 min before each close, closes to 2026-12-07 00:00 ET (public data, no keys, no orders) |
 | c251-gold | weekdays 12:59-16:01 ET | C251 Kalshi daily gold/silver/copper ladders, top of book every minute, settlement days to 2026-12-31 (public data, no keys, no orders) |
 | c253-ticks | weekdays 13:30-14:30 ET | C253 second-by-second order books of near-money Kalshi gold/silver/copper and BTC strikes, with Binance PAXG and Coinbase BTC, to 2026-12-04 (public data, no keys, no orders) |
+| c269f-hlcarry | hourly :02 | C269F forward paper test of funding carry on Hyperliquid builder perps (niche dexes vs xyz control, random-side control), to 2027-02-18 (public data, no keys, no orders) |
 | futures-shadow | weekdays 18:20 | C91 month-end trade in actual TY and US futures: a log only, no orders |
 | vix-score | weekdays 08:50 | C100 forward scoring of the VIX-augmented SPY variance forecast (no trading) |
 | health | weekdays 16:30 | Daily health report: one file per day on the `state-health` branch (`YYYY-MM-DD.md`, plus `latest.md`) |
