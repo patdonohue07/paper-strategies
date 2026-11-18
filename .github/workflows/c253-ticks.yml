@@ -1,0 +1,23 @@
+name: c253-ticks
+# C253: second-by-second order books of near-money Kalshi gold/silver/copper (daily) and BTC (hourly) strikes, with Binance PAXG and
+# Coinbase BTC, weekdays 13:30-14:30 ET (public data, no keys, no orders). Started at 13:25 ET by ci/scheduler.py; saves to state-c253.
+# Logging ends 2026-12-04; remove from the scheduler then.
+on:
+  workflow_dispatch:
+permissions: {contents: write}
+concurrency: {group: c253, cancel-in-progress: false}
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 75
+    env: {TZ: America/New_York, GH_TOKEN: "${{ secrets.GITHUB_TOKEN }}"}
+    steps:
+      - uses: actions/checkout@v4
+      - id: gate
+        run: if [ -f ci/ENABLED ]; then echo "on=1" >> $GITHUB_OUTPUT; else echo "on=0" >> $GITHUB_OUTPUT; fi
+      - if: steps.gate.outputs.on == '1'
+        run: ci/state.sh restore c253 c253/state
+      - if: steps.gate.outputs.on == '1'
+        run: python3 c253/tick_logger.py c253/state
+      - if: steps.gate.outputs.on == '1' && always()
+        run: ci/state.sh save c253 c253/state
