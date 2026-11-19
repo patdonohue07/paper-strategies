@@ -39,6 +39,7 @@ JOBS = [
     ("c269f-hlcarry.yml", ":02", ALL, {}, 20),
     ("c267-niche.yml", ["11:00"], (0,), {}, 120),
     ("c275f-power.yml", ":30", ALL, {}, 20),
+    ("c281f-closure.yml", ["10:00", "20:00"], ALL, {}, 10),
 ]
 
 def slots_on(day, job):
