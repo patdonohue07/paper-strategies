@@ -1,0 +1,24 @@
+name: c281f-closure
+# C281F forward paper test: order books of 159 stock perps (Hyperliquid xyz / io / para dexes, Lighter) at 20:00 ET and 10:00 ET daily
+# via ci/scheduler.py, to test the C281 "fade the closed-market move from the evening before the reopening" rule on touch prices.
+# Public order books only; no keys, no orders. Snapshots stop after 2027-03-01 12:00 ET (remove from the scheduler then).
+# Scored offline with a scorer hashed before the data is read. State on state-c281f (tape/YYYY-MM.jsonl, logs/).
+on:
+  workflow_dispatch:
+permissions: {contents: write}
+concurrency: {group: c281f, cancel-in-progress: false}
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env: {TZ: America/New_York, GH_TOKEN: "${{ secrets.GITHUB_TOKEN }}"}
+    steps:
+      - uses: actions/checkout@v4
+      - id: gate
+        run: if [ -f ci/ENABLED ]; then echo "on=1" >> $GITHUB_OUTPUT; else echo "on=0" >> $GITHUB_OUTPUT; fi
+      - if: steps.gate.outputs.on == '1'
+        run: ci/state.sh restore c281f c281f/state
+      - if: steps.gate.outputs.on == '1'
+        run: python3 c281f/closure_logger.py c281f/state
+      - if: steps.gate.outputs.on == '1' && always()
+        run: ci/state.sh save c281f c281f/state
