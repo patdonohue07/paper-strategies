@@ -1,0 +1,3 @@
+ts,mode,equity,hk_close,fx_prior,parity,median_prem,n_prem,forecast_open,prior_close,gap,signal,order,note
+2026-11-05T16:37:52,DRY,1000016.24,,7.846189975738525,,-0.00077,252,,13.88,,0,,no 9626.HK close dated today (HK holiday or data lag)
+2026-11-05T16:46:17,DRY,1000016.24,115.0,7.846189975738525,14.6568,-0.00077,252,14.6455,13.88,0.05515,1,dry,long 7204,2026-11-04: parity 13.675 vs US open 13.98,2026-11-05

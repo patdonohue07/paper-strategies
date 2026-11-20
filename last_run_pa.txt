@@ -1,0 +1,13 @@
+{
+ "ts": "2026-11-20T15:15:33",
+ "mode": "LIVE-PAPER",
+ "state": "core_only",
+ "equity": 918525.62,
+ "spy_px": 693.81,
+ "ief_px": 91.72,
+ "tlt_px": 81.55,
+ "targets": "{\"SPY\": 918526.0, \"IEF\": 0.0, \"TLT\": 0.0}",
+ "orders": "[[\"SPY\", -1, \"383e5798-c77c-43ce-82de-c1ed7f3b7c85\"]]",
+ "borrowed_est": 0.0,
+ "fin_drag_today_est": 0.0
+}

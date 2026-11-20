@@ -1,0 +1,14 @@
+{
+ "ts": "2026-11-20T15:15:31",
+ "mode": "LIVE-PAPER",
+ "state": "flat",
+ "equity": 999664.01,
+ "beta_vcit_ief": 0.849,
+ "tlt_px": 81.55,
+ "ief_px": 91.72,
+ "vcit_px": 79.385,
+ "targets": "{\"TLT\": 0.0, \"IEF\": -254489.0, \"VCIT\": 299899.0}",
+ "orders": "[[\"IEF\", 43, \"89c404fc-0219-4a49-905b-17b994745d22\"], [\"VCIT\", -27, \"54e3d59d-c684-4642-ad3c-fbc860f814c2\"]]",
+ "auctions_seen": "2026-11-10,2026-11-12,2026-11-18",
+ "auction_tracked_only": "{}"
+}
