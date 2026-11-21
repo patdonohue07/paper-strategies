@@ -23,6 +23,7 @@ jobs only read public data.
 | c267-niche | Mondays 11:00 ET | C267 weekly niche-market pipeline: new (<= 90-day) small-book Kalshi series priced (lognormal / barrier, Treasury par yields) and logged; flags on live order books; settled flags scored against the best-of-N random gate (public data, no keys, no orders) |
 | c275f-power | hourly :30 | C275F forward paper test of the C275 weekly power pricer: live order books of Kalshi weekly ERCOT / PJM / MISO hub-price contracts, scored offline with the frozen pricer, to 2027-01-22 (public data, no keys, no orders) |
 | c281f-closure | daily 10:00 and 20:00 | C281F forward paper test of the C281 closure snap-back (enter 20:00 ET the evening before a US market reopening, exit 10:00): live order books of 159 stock perps on Hyperliquid xyz / io / para and Lighter, scored offline with a pre-hashed scorer, to 2027-03-01 (public data, no keys, no orders) |
+| c296f-nav | weekdays 21:00 | C296F forward paper test of the C296 stale-NAV rule: Vanguard international stock ETFs (VXUS, VEA, VWO, VGK, VPL, VSS) 15:45-16:00 SIP bars and NBBO (Alpaca market data, no orders) plus their Admiral funds' NAVs (Yahoo), scored offline with a pre-hashed scorer, to 2027-02-24 |
 | futures-shadow | weekdays 18:20 | C91 month-end trade in actual TY and US futures: a log only, no orders |
 | vix-score | weekdays 08:50 | C100 forward scoring of the VIX-augmented SPY variance forecast (no trading) |
 | health | weekdays 16:30 | Daily health report: one file per day on the `state-health` branch (`YYYY-MM-DD.md`, plus `latest.md`) |

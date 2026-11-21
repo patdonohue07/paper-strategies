@@ -1,0 +1,30 @@
+name: c296f-nav
+# C296F forward paper test: Vanguard international stock ETFs (VXUS VEA VWO VGK VPL VSS) vs their Admiral mutual funds, stale-NAV
+# rule. Weekdays 21:00 ET via ci/scheduler.py: today's 15:45-16:00 SIP bars + NBBO at 15:49/15:59 (Alpaca market data only, no
+# orders) and Yahoo NAVs/dividends. Logging stops after 2027-02-24 (remove from the scheduler then). Scored offline with a scorer
+# hashed before the data is read. State on state-c296f (tape/YYYY-MM.jsonl).
+on:
+  workflow_dispatch:
+permissions: {contents: write}
+concurrency: {group: c296f, cancel-in-progress: false}
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env: {TZ: America/New_York, GH_TOKEN: "${{ secrets.GITHUB_TOKEN }}"}
+    steps:
+      - uses: actions/checkout@v4
+      - id: gate
+        run: if [ -f ci/ENABLED ]; then echo "on=1" >> $GITHUB_OUTPUT; else echo "on=0" >> $GITHUB_OUTPUT; fi
+      - if: steps.gate.outputs.on == '1'
+        run: ci/state.sh restore c296f c296f/state
+      - if: steps.gate.outputs.on == '1'
+        env:
+          K1: ${{ secrets.APACKEYID }}
+          S1: ${{ secrets.APCSECRET }}
+        run: |
+          umask 077
+          printf 'APCA_API_KEY_ID=%s\nAPCA_API_SECRET_KEY=%s\n' "$K1" "$S1" > ~/.alpaca_paper
+          python3 c296f/nav_logger.py c296f/state
+      - if: steps.gate.outputs.on == '1' && always()
+        run: ci/state.sh save c296f c296f/state
