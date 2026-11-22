@@ -12,7 +12,7 @@ jobs only read public data.
 | hl-logger | hourly at :07 | Hyperliquid wallet-position logger |
 | doge-fv | hourly at :03 (signals 11:00-16:00) | C120-FWD Kalshi DOGE vs GBM fair-value forward paper score (log only, no orders; decides at 150 settled trades) |
 | opt-fwd | weekdays 15:40 | C125-FWD options survivors on real Alpaca option quotes (log only, no orders): A SPY 10-delta put-write w/ MA200 + TP50 (decides at 40), B rich-IV short strangles (decides at 100) |
-| perp-forward-test | daily 10:37 | FWD-C10 Binance perp breakdown short forward test |
+| perp-forward-test | daily 10:37 | FWD-C10 Binance perp breakdown short forward test (2026-11-21 data fix: a day Binance had not yet published is retried until it is more than 3 days old; this repairs 2026-10-28, which was missing for every symbol and delayed later signals by 24 h; the rule is unchanged) |
 | ftmo-fwd | weekdays 16:20 | C210-FWD rebalancing + RTY morning trend on FTMO 2-Step 100K rules: daily paper log from Yahoo bars (no orders, no account; decides at 250 sessions) |
 | c237-listings | hourly :05 (5-min cycles) | C237 Kalshi new-listing snapshots 60-90 min after open, listings to 2026-12-13 (public data, no keys, no orders) |
 | c238-noon | daily 10:55-12:00 ET | C238 Kalshi + Polymarket order-book tops for the noon-ET crypto contracts, settlement days to 2026-12-15 (public data, no keys, no orders) |

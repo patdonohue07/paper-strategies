@@ -45,7 +45,7 @@ try:
     for s in allsyms:
         if s.endswith("USDT") and s not in classes: classes[s] = "unclassified"
 except Exception as e: log("listing failed", e)
-# ---- hourly data cache: hourly/SYM.json = {"rows": {open_ms: [o,h,l,c,qv]}, "days": {date: "ok"|"404"|...}}
+# ---- hourly data cache: hourly/SYM.json = {"rows": {open_ms: [o,h,l,c,qv]}, "days": {date: "ok"|"404:<fetch date>"}}
 def seed(sym):
     rows = {}
     for d in ("binance", "binance_alt"):
@@ -60,14 +60,20 @@ def update(sym):
     st = json.load(open(p)) if os.path.exists(p) else {"rows": {}, "days": {}}
     if not st.get("seed_aug") and classes[sym] != "unclassified":
         st["rows"].update({str(k): v for k, v in seed(sym).items()}); st["seed_aug"] = 1
-    need = [d for d in days if st["days"].get(str(d)) != "ok" and not (st["days"].get(str(d), "").startswith("404") and (yday - d).days > 3)]
+    # A 404 is final only if it was seen when the day was already > 3 days old (Binance sometimes publishes a day late). Plain "404"
+    # entries from before 2026-11-21 carry no fetch date and are retried once; that is how 2026-10-28 (missing for every symbol) is repaired.
+    def final404(d):
+        v = st["days"].get(str(d), "")
+        if not v.startswith("404:"): return False
+        return (date.fromisoformat(v[4:]) - d).days > 3
+    need = [d for d in days if st["days"].get(str(d)) != "ok" and not final404(d)]
     if classes[sym] == "unclassified" and not st["rows"]:   # only follow new listings that trade now
         need = [d for d in days if d >= START.date() - timedelta(days=0)]
         if fetch(BASE + "data/futures/um/daily/klines/%s/1h/%s-1h-%s.zip" % (sym, sym, yday)) is None: return sym, 0
     n = 0
     for d in need:
         z = fetch(BASE + "data/futures/um/daily/klines/%s/1h/%s-1h-%s.zip" % (sym, sym, d))
-        if z is None: st["days"][str(d)] = "404"; continue
+        if z is None: st["days"][str(d)] = "404:%s" % (yday + timedelta(days=1)); continue
         rows, _ = unzip_rows(z)
         for r in rows: st["rows"][str(int(r[0]))] = [float(r[1]), float(r[2]), float(r[3]), float(r[4]), float(r[7])]
         st["days"][str(d)] = "ok"; n += 1
