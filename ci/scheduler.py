@@ -41,6 +41,7 @@ JOBS = [
     ("c275f-power.yml", ":30", ALL, {}, 20),
     ("c281f-closure.yml", ["10:00", "20:00"], ALL, {}, 10),
     ("c296f-nav.yml", ["21:00"], WEEKDAYS, {}, 120),
+    ("c334f-book.yml", ["21:30"], ALL, {}, 120),
 ]
 
 def slots_on(day, job):
