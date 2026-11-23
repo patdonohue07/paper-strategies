@@ -1,0 +1,22 @@
+name: c334f-book
+# C334F forward paper log: frozen C333 book (US index swing rule + BTC/ETH trend ensemble) under simulated FTMO 2-Step 100K rules.
+# Daily 21:30 ET via ci/scheduler.py; Yahoo daily bars only, no orders, no account. State on state-c334f. Review 2027-11-22.
+on:
+  workflow_dispatch:
+permissions: {contents: write}
+concurrency: {group: c334f, cancel-in-progress: false}
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env: {TZ: America/New_York, GH_TOKEN: "${{ secrets.GITHUB_TOKEN }}"}
+    steps:
+      - uses: actions/checkout@v4
+      - id: gate
+        run: if [ -f ci/ENABLED ]; then echo "on=1" >> $GITHUB_OUTPUT; else echo "on=0" >> $GITHUB_OUTPUT; fi
+      - if: steps.gate.outputs.on == '1'
+        run: ci/state.sh restore c334f c334f/state
+      - if: steps.gate.outputs.on == '1'
+        run: python3 c334f/book_logger.py c334f/state
+      - if: steps.gate.outputs.on == '1' && always()
+        run: ci/state.sh save c334f c334f/state
