@@ -1,4 +1,5 @@
 name: c334f-book
+# RETIRED 2026-11-23 (no longer started by ci/scheduler.py); replaced by c348f-book.yml.
 # C334F forward paper log: frozen C333 book (US index swing rule + BTC/ETH trend ensemble) under simulated FTMO 2-Step 100K rules.
 # Daily 21:30 ET via ci/scheduler.py; Yahoo daily bars only, no orders, no account. State on state-c334f. Review 2027-11-22.
 on:
