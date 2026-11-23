@@ -1,0 +1,22 @@
+name: c348f-book
+# C348F forward paper log: frozen C347 rule-compliant multi-account book (US index swing rule + BTC/ETH trend ensemble; CFD and crypto-perp accounts).
+# Daily 09:40 and 21:30 ET via ci/scheduler.py; Yahoo daily + 5-min bars and data.binance.vision files, no orders, no account. State on state-c348f. Review 2027-11-22.
+on:
+  workflow_dispatch:
+permissions: {contents: write}
+concurrency: {group: c348f, cancel-in-progress: false}
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env: {TZ: America/New_York, GH_TOKEN: "${{ secrets.GITHUB_TOKEN }}"}
+    steps:
+      - uses: actions/checkout@v4
+      - id: gate
+        run: if [ -f ci/ENABLED ]; then echo "on=1" >> $GITHUB_OUTPUT; else echo "on=0" >> $GITHUB_OUTPUT; fi
+      - if: steps.gate.outputs.on == '1'
+        run: ci/state.sh restore c348f c348f/state
+      - if: steps.gate.outputs.on == '1'
+        run: python3 c348f/book_logger.py c348f/state
+      - if: steps.gate.outputs.on == '1' && always()
+        run: ci/state.sh save c348f c348f/state

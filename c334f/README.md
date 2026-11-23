@@ -1,5 +1,8 @@
 # C334F: forward paper log of the C333 FTMO book (no orders, no account)
 
+**Retired 2026-11-23 before its first logged day; replaced by [C348F](../c348f/README.md)** (the C347 rule-compliant multi-account book).
+The workflow file stays for history but is no longer scheduled.
+
 Frozen book from research_lab C320/C311/C327/C330/C332/C333 (rules in the docstring of `book_logger.py`):
 - US index swing rule on US500/US100/US2000/US30 (8-vote score >= 5, stop 1.5 x ATR14, target 2R, max 7 sessions), $875 risk per trade.
 - BTC/ETH trend: equal-weight ensemble of 8 variants, 0.5% of the account in daily volatility, FTMO crypto costs.
