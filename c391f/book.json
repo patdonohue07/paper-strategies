@@ -1,0 +1,380 @@
+{
+ "source": "research_lab reports/c391/book.json (final selections), C391 prereg; S05/S06 = S01 with C391 Amendment 1 leverage caps 5x/10x (C391F addendum 2)",
+ "books": {
+  "AUTO_150": {
+   "S01": 2
+  },
+  "AUTO_500": {
+   "S02": 1,
+   "S01": 2,
+   "S03": 1
+  },
+  "AUTO_1500": {
+   "S02": 5,
+   "S01": 2
+  },
+  "ALL_500": {
+   "S02": 1,
+   "S01": 2,
+   "S04": 1
+  },
+  "AUTO_150_L5": {
+   "S05": 2
+  },
+  "AUTO_150_L10": {
+   "S06": 2
+  }
+ },
+ "entries": [
+  {
+   "id": "S01",
+   "key": "MFPEL3D50_10K",
+   "label": "MyFundedPerps Elite 3% DLL 50K 10K",
+   "firm": "MyFundedPerps",
+   "fee": 71.0,
+   "src": "MFPEL3D50_10K {\"add\": \"T1\", \"fm\": 1.0, \"g\": 1800.0, \"mult\": 1.5, \"ru\": 2.0, \"vc\": 1.25}",
+   "cfg": {
+    "ru": 2.0,
+    "vc": 1.25,
+    "g": 1800.0,
+    "fm": 1.0,
+    "add": "T1",
+    "mult": 1.5
+   },
+   "plan": {
+    "fee": 71.0,
+    "monthly": false,
+    "refund": false,
+    "refund_n": 1,
+    "phases": [
+     {
+      "target": 1000.0,
+      "mll": 500.0,
+      "type": "static",
+      "lock": false,
+      "dll": 300.0,
+      "soft": false,
+      "min_days": 0,
+      "cons": null
+     }
+    ],
+    "funded": {
+     "type": "static",
+     "lock": false,
+     "soft": false,
+     "split": 0.8,
+     "mll": 500.0,
+     "dll": 300.0,
+     "first_wait": 1,
+     "cycle": 1,
+     "min_pay": 100.0
+    }
+   },
+   "stream": {
+    "kind": "mix",
+    "size": 0.1,
+    "ru": 3.0,
+    "vt": 1875.0,
+    "t1": 3.0,
+    "g": 1800.0
+   },
+   "fm": 1.0,
+   "cm": 1.0,
+   "guard": null
+  },
+  {
+   "id": "S02",
+   "key": "F_MyFundedFuturesPro50K",
+   "label": "MyFundedFutures Pro 50K (C338 rules)",
+   "firm": "MyFundedFutures",
+   "fee": 265,
+   "src": "F_MyFundedFuturesPro50K {\"K\": 5, \"fm\": 1.0, \"g\": 0.25, \"rf\": 1.5, \"sess\": true, \"stream\": \"K+T1\"}",
+   "cfg": {
+    "stream": "K+T1",
+    "rf": 1.5,
+    "sess": true,
+    "K": 5,
+    "g": 0.25,
+    "fm": 1.0
+   },
+   "plan": {
+    "monthly": false,
+    "activation": 0.0,
+    "phases": [
+     {
+      "target": 3000,
+      "mll": 2000,
+      "dll": null,
+      "soft": true,
+      "cons": 0.5,
+      "min_days": 2
+     }
+    ],
+    "funded": {
+     "mll": 2000,
+     "first_wait": 14,
+     "cycle": 14,
+     "buffer": 2100,
+     "min_pay": 1000,
+     "split": 0.8,
+     "floor_zero_after_pay": true
+    },
+    "fee": 265
+   },
+   "stream": {
+    "kind": "fut",
+    "risk": 3000.0,
+    "session": true,
+    "K": 5,
+    "t1": true,
+    "k_leg": true
+   },
+   "fm": 1.0,
+   "cm": 1.0,
+   "guard": 500.0
+  },
+  {
+   "id": "S03",
+   "key": "VTC2S100_5K",
+   "label": "Velotrade CLASSIC 2-Step 100K 5K",
+   "firm": "Velotrade",
+   "fee": 54.0,
+   "src": "VTC2S100_5K {\"add\": \"T1\", \"fm\": 1.0, \"g\": 4000.0, \"mult\": 1.5, \"ru\": 2.0, \"vc\": 1.25}",
+   "cfg": {
+    "ru": 2.0,
+    "vc": 1.25,
+    "g": 4000.0,
+    "fm": 1.0,
+    "add": "T1",
+    "mult": 1.5
+   },
+   "plan": {
+    "fee": 54.0,
+    "monthly": false,
+    "refund": false,
+    "refund_n": 1,
+    "phases": [
+     {
+      "target": 500.0,
+      "mll": 500.0,
+      "type": "static",
+      "lock": false,
+      "dll": 250.0,
+      "soft": false,
+      "min_days": 5,
+      "cons": null
+     },
+     {
+      "target": 250.0,
+      "mll": 500.0,
+      "type": "static",
+      "lock": false,
+      "dll": 250.0,
+      "soft": false,
+      "min_days": 5,
+      "cons": null
+     }
+    ],
+    "funded": {
+     "type": "static",
+     "lock": false,
+     "soft": false,
+     "split": 0.8,
+     "mll": 500.0,
+     "dll": 250.0,
+     "first_wait": 14,
+     "cycle": 7,
+     "min_pay": 100.0
+    }
+   },
+   "stream": {
+    "kind": "mix",
+    "size": 0.05,
+    "ru": 3.0,
+    "vt": 1875.0,
+    "t1": 3.0,
+    "g": 4000.0
+   },
+   "fm": 1.0,
+   "cm": 1.0,
+   "guard": null
+  },
+  {
+   "id": "S04",
+   "key": "C2P200_5K",
+   "label": "CFT 2-Phase (current book) 5K",
+   "firm": "CFT 2-Phase",
+   "fee": 58.0,
+   "src": "C2P200_5K {\"add\": \"base\", \"cm\": 1.25, \"fm\": 1.0, \"g\": 4000.0, \"mult\": 1.5, \"vt\": 2500}",
+   "cfg": {
+    "vt": 2500,
+    "g": 4000.0,
+    "cm": 1.25,
+    "fm": 1.0,
+    "add": "base",
+    "mult": 1.5
+   },
+   "plan": {
+    "fee": 58.0,
+    "monthly": false,
+    "refund": false,
+    "refund_n": 1,
+    "phases": [
+     {
+      "target": 400.0,
+      "mll": 500.0,
+      "type": "static",
+      "lock": false,
+      "dll": 250.0,
+      "soft": false,
+      "min_days": 0,
+      "cons": null
+     },
+     {
+      "target": 250.0,
+      "mll": 500.0,
+      "type": "static",
+      "lock": false,
+      "dll": 250.0,
+      "soft": false,
+      "min_days": 0,
+      "cons": null
+     }
+    ],
+    "funded": {
+     "type": "static",
+     "lock": false,
+     "soft": false,
+     "split": 0.8,
+     "mll": 500.0,
+     "dll": 250.0,
+     "first_wait": 15,
+     "cycle": 15
+    }
+   },
+   "stream": {
+    "kind": "perp",
+    "size": 0.05,
+    "vt": 3750.0,
+    "ten": false
+   },
+   "fm": 1.0,
+   "cm": 1.25,
+   "guard": 200.0
+  },
+  {
+   "id": "S05",
+   "key": "MFPEL3D50_10K",
+   "label": "MyFundedPerps Elite 3% DLL 50K 10K (leverage cap 5x)",
+   "firm": "MyFundedPerps",
+   "fee": 71.0,
+   "src": "MFPEL3D50_10K {\"add\": \"T1\", \"fm\": 1.0, \"g\": 1800.0, \"mult\": 1.5, \"ru\": 2.0, \"vc\": 1.25} lev5",
+   "cfg": {
+    "ru": 2.0,
+    "vc": 1.25,
+    "g": 1800.0,
+    "fm": 1.0,
+    "add": "T1",
+    "mult": 1.5
+   },
+   "plan": {
+    "fee": 71.0,
+    "monthly": false,
+    "refund": false,
+    "refund_n": 1,
+    "phases": [
+     {
+      "target": 1000.0,
+      "mll": 500.0,
+      "type": "static",
+      "lock": false,
+      "dll": 300.0,
+      "soft": false,
+      "min_days": 0,
+      "cons": null
+     }
+    ],
+    "funded": {
+     "type": "static",
+     "lock": false,
+     "soft": false,
+     "split": 0.8,
+     "mll": 500.0,
+     "dll": 300.0,
+     "first_wait": 1,
+     "cycle": 1,
+     "min_pay": 100.0
+    }
+   },
+   "stream": {
+    "kind": "mix",
+    "size": 0.1,
+    "ru": 3.0,
+    "vt": 1875.0,
+    "t1": 3.0,
+    "g": 1800.0,
+    "lev": 5.0
+   },
+   "fm": 1.0,
+   "cm": 1.0,
+   "guard": null
+  },
+  {
+   "id": "S06",
+   "key": "MFPEL3D50_10K",
+   "label": "MyFundedPerps Elite 3% DLL 50K 10K (leverage cap 10x)",
+   "firm": "MyFundedPerps",
+   "fee": 71.0,
+   "src": "MFPEL3D50_10K {\"add\": \"T1\", \"fm\": 1.0, \"g\": 1800.0, \"mult\": 1.5, \"ru\": 2.0, \"vc\": 1.25} lev10",
+   "cfg": {
+    "ru": 2.0,
+    "vc": 1.25,
+    "g": 1800.0,
+    "fm": 1.0,
+    "add": "T1",
+    "mult": 1.5
+   },
+   "plan": {
+    "fee": 71.0,
+    "monthly": false,
+    "refund": false,
+    "refund_n": 1,
+    "phases": [
+     {
+      "target": 1000.0,
+      "mll": 500.0,
+      "type": "static",
+      "lock": false,
+      "dll": 300.0,
+      "soft": false,
+      "min_days": 0,
+      "cons": null
+     }
+    ],
+    "funded": {
+     "type": "static",
+     "lock": false,
+     "soft": false,
+     "split": 0.8,
+     "mll": 500.0,
+     "dll": 300.0,
+     "first_wait": 1,
+     "cycle": 1,
+     "min_pay": 100.0
+    }
+   },
+   "stream": {
+    "kind": "mix",
+    "size": 0.1,
+    "ru": 3.0,
+    "vt": 1875.0,
+    "t1": 3.0,
+    "g": 1800.0,
+    "lev": 10.0
+   },
+   "fm": 1.0,
+   "cm": 1.0,
+   "guard": null
+  }
+ ]
+}
