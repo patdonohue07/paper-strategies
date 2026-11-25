@@ -1,0 +1,23 @@
+name: c390f-book
+# C390F forward paper log: the C387 v3.2 prop books (AUTO capped 29 accounts, AUTO max 54, FULL 41) on futures, CFD and crypto-perp
+# accounts. Daily 09:40 and 21:30 ET via ci/scheduler.py; Yahoo and data.binance.vision public data, no orders, no account.
+# State on state-c390f. First logged day 2026-12-01; review 2027-12-01.
+on:
+  workflow_dispatch:
+permissions: {contents: write}
+concurrency: {group: c390f, cancel-in-progress: false}
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env: {TZ: America/New_York, GH_TOKEN: "${{ secrets.GITHUB_TOKEN }}"}
+    steps:
+      - uses: actions/checkout@v4
+      - id: gate
+        run: if [ -f ci/ENABLED ]; then echo "on=1" >> $GITHUB_OUTPUT; else echo "on=0" >> $GITHUB_OUTPUT; fi
+      - if: steps.gate.outputs.on == '1'
+        run: ci/state.sh restore c390f c390f/state
+      - if: steps.gate.outputs.on == '1'
+        run: python3 c390f/book_logger.py c390f/state
+      - if: steps.gate.outputs.on == '1' && always()
+        run: ci/state.sh save c390f c390f/state

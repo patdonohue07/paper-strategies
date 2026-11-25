@@ -1,0 +1,1585 @@
+{
+ "source": "research_lab reports/c387 alloc2_AUTO.json (CAPPED2, MAX) and alloc2_FULL.json (CAPPED2), v3.2 (C387 Amendment 7)",
+ "books": {
+  "AUTO": {
+   "accounts": 29,
+   "entries": {
+    "E01": 2,
+    "E02": 1,
+    "E03": 1,
+    "E04": 1,
+    "E05": 1,
+    "E06": 3,
+    "E07": 3,
+    "E08": 2,
+    "E09": 1,
+    "E10": 4,
+    "E11": 1,
+    "E12": 1,
+    "E13": 1,
+    "E14": 1,
+    "E15": 2,
+    "E16": 1,
+    "E17": 2,
+    "E18": 1
+   }
+  },
+  "AUTO_MAX": {
+   "accounts": 54,
+   "entries": {
+    "E11": 1,
+    "E06": 2,
+    "E19": 1,
+    "E01": 2,
+    "E10": 5,
+    "E13": 1,
+    "E12": 1,
+    "E07": 4,
+    "E15": 1,
+    "E08": 5,
+    "E09": 5,
+    "E20": 1,
+    "E17": 2,
+    "E21": 3,
+    "E04": 15,
+    "E03": 5
+   }
+  },
+  "FULL": {
+   "accounts": 41,
+   "entries": {
+    "E22": 1,
+    "E23": 1,
+    "E24": 1,
+    "E25": 1,
+    "E01": 2,
+    "E26": 1,
+    "E27": 1,
+    "E02": 1,
+    "E03": 1,
+    "E04": 1,
+    "E05": 1,
+    "E06": 3,
+    "E07": 5,
+    "E08": 2,
+    "E09": 1,
+    "E10": 5,
+    "E11": 1,
+    "E12": 1,
+    "E13": 1,
+    "E28": 1,
+    "E16": 1,
+    "E29": 1,
+    "E30": 4,
+    "E17": 2,
+    "E31": 1
+   }
+  }
+ },
+ "entries": [
+  {
+   "id": "E01",
+   "src": "FT200 {\"ru\": 1.5, \"vc\": 1.25, \"g\": 4000.0, \"fm\": 1.0}",
+   "key": "FT200",
+   "firm": "FTMO 2-Step (CFD)",
+   "label": "FTMO 2-Step (CFD) (current book)",
+   "price_status": "verified (C347)",
+   "plan": {
+    "fee": 1185,
+    "monthly": false,
+    "refund": true,
+    "refund_n": 1,
+    "phases": [
+     {
+      "target": 20000,
+      "mll": 20000,
+      "type": "static",
+      "lock": false,
+      "dll": 10000,
+      "soft": false,
+      "min_days": 4,
+      "cons": null
+     },
+     {
+      "target": 10000,
+      "mll": 20000,
+      "type": "static",
+      "lock": false,
+      "dll": 10000,
+      "soft": false,
+      "min_days": 4,
+      "cons": null
+     }
+    ],
+    "funded": {
+     "type": "static",
+     "lock": false,
+     "soft": false,
+     "split": 0.8,
+     "mll": 20000,
+     "dll": 10000,
+     "first_wait": 14,
+     "cycle": 14
+    }
+   },
+   "stream": {
+    "kind": "cfd",
+    "size": 2,
+    "ru": 1.5,
+    "vc": 1.25,
+    "g": 4000.0,
+    "gap_rule": true
+   },
+   "fm": 1.0,
+   "cm": 1.0,
+   "guard": null
+  },
+  {
+   "id": "E02",
+   "src": "F_BluSkyOrbit150K [1.0, true, 5, 1.0, 0.25, 0.0]",
+   "key": "F_BluSkyOrbit150K",
+   "firm": "BluSky",
+   "label": "BluSky Orbit 150K",
+   "price_status": "secondary $419 (damnpropfirms, one affiliate source)",
+   "plan": {
+    "monthly": false,
+    "activation": 0.0,
+    "eval_days": 30,
+    "phases": [
+     {
+      "target": 9000,
+      "mll": 4500,
+      "type": "eod",
+      "lock": false,
+      "dll": null,
+      "soft": true,
+      "cons": null,
+      "min_days": 0
+     }
+    ],
+    "funded": {
+     "type": "eod",
+     "lock": true,
+     "soft": true,
+     "mll": 4500,
+     "dll": null,
+     "split": 0.9,
+     "first_wait": 5,
+     "cycle": 7,
+     "cap": 3000,
+     "min_pay": 500,
+     "buffer": 4500,
+     "cons": 0.4,
+     "floor_zero_after_pay": true
+    },
+    "fee": 419.0
+   },
+   "stream": {
+    "kind": "fut",
+    "risk": 4500.0,
+    "session": true,
+    "K": 5
+   },
+   "fm": 1.0,
+   "cm": 1.0,
+   "guard": 1125.0
+  },
+  {
+   "id": "E03",
+   "src": "F_BrightCore50K [0.3, true, 5, 0.5, null, 0.0]",
+   "key": "F_BrightCore50K",
+   "firm": "BrightFunded Futures",
+   "label": "BrightFunded Futures BrightCore 50K",
+   "price_status": "secondary (list $190, sale $95; activation $0)",
+   "plan": {
+    "monthly": false,
+    "activation": 0.0,
+    "phases": [
+     {
+      "target": 3000,
+      "mll": 2000,
+      "type": "eod",
+      "lock": false,
+      "dll": null,
+      "soft": true,
+      "cons": 0.4,
+      "min_days": 3
+     }
+    ],
+    "funded": {
+     "type": "eod",
+     "lock": false,
+     "soft": true,
+     "mll": 2000,
+     "dll": null,
+     "split": 0.9,
+     "win_days": 5,
+     "win_thr": 100,
+     "first_wait": 0,
+     "cycle": 1,
+     "max_frac": 0.5,
+     "cap": 2000,
+     "min_pay": 250,
+     "floor_zero_after_pay": true
+    },
+    "fee": 190.0
+   },
+   "stream": {
+    "kind": "fut",
+    "risk": 600.0,
+    "session": true,
+    "K": 5
+   },
+   "fm": 0.5,
+   "cm": 1.0,
+   "guard": null
+  },
+  {
+   "id": "E04",
+   "src": "F_DayTradersStatic50K [1.0, true, 5, 1.0, 0.25, 0.0]",
+   "key": "F_DayTradersStatic50K",
+   "firm": "DayTraders",
+   "label": "DayTraders Static 50K",
+   "price_status": "official $200 (daytraders.com small-accounts page; agent V44 quote, not re-read by main); billing not stated, one-time assumed",
+   "plan": {
+    "monthly": false,
+    "activation": 5.0,
+    "phases": [
+     {
+      "target": 3750,
+      "mll": 1000,
+      "type": "static",
+      "lock": false,
+      "dll": null,
+      "soft": true,
+      "cons": 0.5,
+      "min_days": 2
+     }
+    ],
+    "funded": {
+     "type": "static",
+     "lock": false,
+     "soft": true,
+     "mll": 1000,
+     "dll": null,
+     "split": 1.0,
+     "win_days": 8,
+     "win_thr": 200,
+     "first_wait": 0,
+     "cycle": 1,
+     "cons": 0.3,
+     "buffer": 2000,
+     "cap": 2000,
+     "min_pay": 500
+    },
+    "fee": 200.0
+   },
+   "stream": {
+    "kind": "fut",
+    "risk": 1000.0,
+    "session": true,
+    "K": 5
+   },
+   "fm": 1.0,
+   "cm": 1.0,
+   "guard": 250.0
+  },
+  {
+   "id": "E05",
+   "src": "F_ETF_DH100K [1.0, false, 5, 0.75, 0.25, 0.0]",
+   "key": "F_ETF_DH100K",
+   "firm": "Elite Trader Funding",
+   "label": "ETF Diamond Hands 100K (held)",
+   "price_status": "verified",
+   "plan": {
+    "monthly": true,
+    "activation": 307.0,
+    "phases": [
+     {
+      "target": 5000,
+      "mll": 3500,
+      "dll": 1500,
+      "soft": false,
+      "cons": null,
+      "min_days": 5
+     }
+    ],
+    "funded": {
+     "mll": 3500,
+     "dll": 1500,
+     "soft": false,
+     "win_days": 8,
+     "win_thr": 1,
+     "cycle": 14,
+     "cap": 2500,
+     "min_pay": 100,
+     "split": 0.9
+    },
+    "fee": 397.0
+   },
+   "stream": {
+    "kind": "fut",
+    "risk": 3500.0,
+    "session": false,
+    "K": 5
+   },
+   "fm": 0.75,
+   "cm": 1.0,
+   "guard": 875.0
+  },
+  {
+   "id": "E06",
+   "src": "F_FTMOFutPro150K [1.0, true, 5, 1.0, 0.25, 0.0]",
+   "key": "F_FTMOFutPro150K",
+   "firm": "FTMO Futures",
+   "label": "FTMO Futures Pro 150K",
+   "price_status": "official (ftmo.com/en/futures/comparison-table, read 2026-11-25)",
+   "plan": {
+    "monthly": true,
+    "activation": 0.0,
+    "phases": [
+     {
+      "target": 9000,
+      "mll": 6000,
+      "type": "eod",
+      "lock": true,
+      "dll": 2000,
+      "soft": false,
+      "cons": 0.5,
+      "min_days": 0
+     }
+    ],
+    "funded": {
+     "type": "eod",
+     "lock": true,
+     "soft": false,
+     "mll": 6000,
+     "dll": 2000,
+     "split": 0.9,
+     "first_wait": 0,
+     "cycle": 0,
+     "cap": 8000,
+     "min_pay": 20,
+     "win_days": 5,
+     "win_thr": 500,
+     "new_frac": 0.5
+    },
+    "fee": 269.0
+   },
+   "stream": {
+    "kind": "fut",
+    "risk": 6000.0,
+    "session": true,
+    "K": 5
+   },
+   "fm": 1.0,
+   "cm": 1.0,
+   "guard": 1500.0
+  },
+  {
+   "id": "E07",
+   "src": "F_FundedNextFuturesFlex150K [1.0, true, 5, 1.0, 0.25, 0.0]",
+   "key": "F_FundedNextFuturesFlex150K",
+   "firm": "FundedNext",
+   "label": "FundedNext Futures Flex 150K (C338 rules)",
+   "price_status": "verified 2026-11-22 (C338)",
+   "plan": {
+    "monthly": false,
+    "activation": 0.0,
+    "phases": [
+     {
+      "target": 8000,
+      "mll": 4000,
+      "dll": null,
+      "soft": true,
+      "cons": 0.4,
+      "min_days": 0
+     }
+    ],
+    "funded": {
+     "mll": 4000,
+     "win_days": 5,
+     "win_thr": 100,
+     "first_wait": 5,
+     "cycle": 5,
+     "min_cycle": 500,
+     "cap": 4000,
+     "min_pay": 250,
+     "split": 0.95
+    },
+    "fee": 259.99
+   },
+   "stream": {
+    "kind": "fut",
+    "risk": 4000.0,
+    "session": true,
+    "K": 5
+   },
+   "fm": 1.0,
+   "cm": 1.0,
+   "guard": 1000.0
+  },
+  {
+   "id": "E08",
+   "src": "F_LucidFlex150K [1.0, true, 5, 1.0, 0.25, 0.0]",
+   "key": "F_LucidFlex150K",
+   "firm": "Lucid Trading",
+   "label": "LucidFlex 150K (no DLL)",
+   "price_status": "secondary (DLL-on list price; DLL-off may cost more)",
+   "plan": {
+    "monthly": false,
+    "activation": 0.0,
+    "phases": [
+     {
+      "target": 9000,
+      "mll": 4500,
+      "type": "eod",
+      "lock": true,
+      "dll": null,
+      "soft": true,
+      "cons": 0.4,
+      "min_days": 0
+     }
+    ],
+    "funded": {
+     "type": "eod",
+     "lock": true,
+     "soft": true,
+     "mll": 4500,
+     "dll": null,
+     "split": 0.9,
+     "win_days": 5,
+     "win_thr": 250,
+     "first_wait": 1,
+     "cycle": 1,
+     "max_frac": 0.5,
+     "cap": 3000,
+     "min_pay": 500,
+     "floor_zero_after_pay": true
+    },
+    "fee": 323.0
+   },
+   "stream": {
+    "kind": "fut",
+    "risk": 4500.0,
+    "session": true,
+    "K": 5
+   },
+   "fm": 1.0,
+   "cm": 1.0,
+   "guard": 1125.0
+  },
+  {
+   "id": "E09",
+   "src": "F_MyFundedFuturesPro50K [1.0, true, 5, 1.0, 0.25, 0.0]",
+   "key": "F_MyFundedFuturesPro50K",
+   "firm": "MyFundedFutures",
+   "label": "MyFundedFutures Pro 50K (C338 rules)",
+   "price_status": "verified 2026-11-22 (C338)",
+   "plan": {
+    "monthly": false,
+    "activation": 0.0,
+    "phases": [
+     {
+      "target": 3000,
+      "mll": 2000,
+      "dll": null,
+      "soft": true,
+      "cons": 0.5,
+      "min_days": 2
+     }
+    ],
+    "funded": {
+     "mll": 2000,
+     "first_wait": 14,
+     "cycle": 14,
+     "buffer": 2100,
+     "min_pay": 1000,
+     "split": 0.8,
+     "floor_zero_after_pay": true
+    },
+    "fee": 265
+   },
+   "stream": {
+    "kind": "fut",
+    "risk": 2000.0,
+    "session": true,
+    "K": 5
+   },
+   "fm": 1.0,
+   "cm": 1.0,
+   "guard": 500.0
+  },
+  {
+   "id": "E10",
+   "src": "F_Topstep150K [1.0, true, 5, 1.0, 0.25, 0.0]",
+   "key": "F_Topstep150K",
+   "firm": "Topstep",
+   "label": "Topstep 150K (C338 rules)",
+   "price_status": "verified 2026-11-22 (C338)",
+   "plan": {
+    "monthly": true,
+    "activation": 149,
+    "phases": [
+     {
+      "target": 9000,
+      "mll": 4500,
+      "dll": null,
+      "soft": true,
+      "cons": 0.55,
+      "min_days": 2
+     }
+    ],
+    "funded": {
+     "mll": 4500,
+     "win_days": 5,
+     "win_thr": 150,
+     "max_frac": 0.5,
+     "cap": 5000,
+     "min_pay": 125,
+     "split": 0.9,
+     "floor_zero_after_pay": true
+    },
+    "fee": 199
+   },
+   "stream": {
+    "kind": "fut",
+    "risk": 4500.0,
+    "session": true,
+    "K": 5
+   },
+   "fm": 1.0,
+   "cm": 1.0,
+   "guard": 1125.0
+  },
+  {
+   "id": "E11",
+   "src": "HY200 {\"vt\": 1500, \"g\": 2400.0, \"cm\": 1.0, \"fm\": 1.0}",
+   "key": "HY200",
+   "firm": "HyroTrader One-Step ($600 assumed)",
+   "label": "HyroTrader One-Step ($600 assumed) (current book)",
+   "price_status": "verified (C347)",
+   "plan": {
+    "fee": 1200,
+    "monthly": false,
+    "refund": true,
+    "refund_n": 1,
+    "phases": [
+     {
+      "target": 20000,
+      "mll": 16000,
+      "type": "static",
+      "lock": false,
+      "dll": 8000,
+      "soft": false,
+      "min_days": 3,
+      "cons": 0.4
+     }
+    ],
+    "funded": {
+     "type": "static",
+     "lock": false,
+     "soft": false,
+     "split": 0.8,
+     "mll": 16000,
+     "dll": 8000,
+     "first_wait": 7,
+     "cycle": 7,
+     "min_pay": 62,
+     "cap": 10000.0
+    }
+   },
+   "stream": {
+    "kind": "perp",
+    "size": 2,
+    "vt": 1500,
+    "ten": false
+   },
+   "fm": 1.0,
+   "cm": 1.0,
+   "guard": 4800.0
+  },
+  {
+   "id": "E12",
+   "src": "MFPSIG100 {\"ru\": 2.0, \"vc\": 1.25, \"g\": 1800.0, \"fm\": 1.0}",
+   "key": "MFPSIG100",
+   "firm": "MyFundedPerps",
+   "label": "MyFundedPerps Signature 1-Step 100K",
+   "price_status": "secondary",
+   "plan": {
+    "fee": 839.0,
+    "monthly": false,
+    "refund": false,
+    "refund_n": 1,
+    "phases": [
+     {
+      "target": 10000,
+      "mll": 6000,
+      "type": "static",
+      "lock": false,
+      "dll": 3000,
+      "soft": false,
+      "min_days": 0,
+      "cons": null
+     }
+    ],
+    "funded": {
+     "type": "static",
+     "lock": false,
+     "soft": false,
+     "split": 0.8,
+     "mll": 6000,
+     "dll": 3000,
+     "first_wait": 1,
+     "cycle": 1,
+     "min_pay": 100
+    }
+   },
+   "stream": {
+    "kind": "mix",
+    "size": 1,
+    "ru": 2.0,
+    "vt": 1250.0,
+    "g": 1800.0
+   },
+   "fm": 1.0,
+   "cm": 1.0,
+   "guard": null
+  },
+  {
+   "id": "E13",
+   "src": "VTC2S100 {\"ru\": 2.0, \"vc\": 1.25, \"g\": 3000.0, \"fm\": 1.0}",
+   "key": "VTC2S100",
+   "firm": "Velotrade",
+   "label": "Velotrade CLASSIC 2-Step 100K",
+   "price_status": "secondary",
+   "plan": {
+    "fee": 769.0,
+    "monthly": false,
+    "refund": false,
+    "refund_n": 1,
+    "phases": [
+     {
+      "target": 10000,
+      "mll": 10000,
+      "type": "static",
+      "lock": false,
+      "dll": 5000,
+      "soft": false,
+      "min_days": 5,
+      "cons": null
+     },
+     {
+      "target": 5000,
+      "mll": 10000,
+      "type": "static",
+      "lock": false,
+      "dll": 5000,
+      "soft": false,
+      "min_days": 5,
+      "cons": null
+     }
+    ],
+    "funded": {
+     "type": "static",
+     "lock": false,
+     "soft": false,
+     "split": 0.8,
+     "mll": 10000,
+     "dll": 5000,
+     "first_wait": 14,
+     "cycle": 7
+    }
+   },
+   "stream": {
+    "kind": "mix",
+    "size": 1,
+    "ru": 2.0,
+    "vt": 1250.0,
+    "g": 3000.0
+   },
+   "fm": 1.0,
+   "cm": 1.0,
+   "guard": null
+  },
+  {
+   "id": "E14",
+   "src": "F_Topstep150K [1.0, true, 4, 1.0, 0.25, 0.0]",
+   "key": "F_Topstep150K",
+   "firm": "Topstep",
+   "label": "Topstep 150K (C338 rules)",
+   "price_status": "verified 2026-11-22 (C338)",
+   "plan": {
+    "monthly": true,
+    "activation": 149,
+    "phases": [
+     {
+      "target": 9000,
+      "mll": 4500,
+      "dll": null,
+      "soft": true,
+      "cons": 0.55,
+      "min_days": 2
+     }
+    ],
+    "funded": {
+     "mll": 4500,
+     "win_days": 5,
+     "win_thr": 150,
+     "max_frac": 0.5,
+     "cap": 5000,
+     "min_pay": 125,
+     "split": 0.9,
+     "floor_zero_after_pay": true
+    },
+    "fee": 199
+   },
+   "stream": {
+    "kind": "fut",
+    "risk": 4500.0,
+    "session": true,
+    "K": 4
+   },
+   "fm": 1.0,
+   "cm": 1.0,
+   "guard": 1125.0
+  },
+  {
+   "id": "E15",
+   "src": "F_FundedNextFuturesFlex150K [1.0, true, 4, 1.0, 0.25, 0.0]",
+   "key": "F_FundedNextFuturesFlex150K",
+   "firm": "FundedNext",
+   "label": "FundedNext Futures Flex 150K (C338 rules)",
+   "price_status": "verified 2026-11-22 (C338)",
+   "plan": {
+    "monthly": false,
+    "activation": 0.0,
+    "phases": [
+     {
+      "target": 8000,
+      "mll": 4000,
+      "dll": null,
+      "soft": true,
+      "cons": 0.4,
+      "min_days": 0
+     }
+    ],
+    "funded": {
+     "mll": 4000,
+     "win_days": 5,
+     "win_thr": 100,
+     "first_wait": 5,
+     "cycle": 5,
+     "min_cycle": 500,
+     "cap": 4000,
+     "min_pay": 250,
+     "split": 0.95
+    },
+    "fee": 259.99
+   },
+   "stream": {
+    "kind": "fut",
+    "risk": 4000.0,
+    "session": true,
+    "K": 4
+   },
+   "fm": 1.0,
+   "cm": 1.0,
+   "guard": 1000.0
+  },
+  {
+   "id": "E16",
+   "src": "F_LucidFlex150K [1.0, true, 4, 1.0, 0.25, 0.0]",
+   "key": "F_LucidFlex150K",
+   "firm": "Lucid Trading",
+   "label": "LucidFlex 150K (no DLL)",
+   "price_status": "secondary (DLL-on list price; DLL-off may cost more)",
+   "plan": {
+    "monthly": false,
+    "activation": 0.0,
+    "phases": [
+     {
+      "target": 9000,
+      "mll": 4500,
+      "type": "eod",
+      "lock": true,
+      "dll": null,
+      "soft": true,
+      "cons": 0.4,
+      "min_days": 0
+     }
+    ],
+    "funded": {
+     "type": "eod",
+     "lock": true,
+     "soft": true,
+     "mll": 4500,
+     "dll": null,
+     "split": 0.9,
+     "win_days": 5,
+     "win_thr": 250,
+     "first_wait": 1,
+     "cycle": 1,
+     "max_frac": 0.5,
+     "cap": 3000,
+     "min_pay": 500,
+     "floor_zero_after_pay": true
+    },
+    "fee": 323.0
+   },
+   "stream": {
+    "kind": "fut",
+    "risk": 4500.0,
+    "session": true,
+    "K": 4
+   },
+   "fm": 1.0,
+   "cm": 1.0,
+   "guard": 1125.0
+  },
+  {
+   "id": "E17",
+   "src": "MFPEL3D50 {\"ru\": 2.0, \"vc\": 1.25, \"g\": 1800.0, \"fm\": 0.5}",
+   "key": "MFPEL3D50",
+   "firm": "MyFundedPerps",
+   "label": "MyFundedPerps Elite 3% DLL 50K",
+   "price_status": "official list $495 on myfundedperpetuals.com homepage (sale $371; agent V42 quote, not re-read by main)",
+   "plan": {
+    "fee": 495.0,
+    "monthly": false,
+    "refund": false,
+    "refund_n": 1,
+    "phases": [
+     {
+      "target": 5000.0,
+      "mll": 2500.0,
+      "type": "static",
+      "lock": false,
+      "dll": 1500.0,
+      "soft": false,
+      "min_days": 0,
+      "cons": null
+     }
+    ],
+    "funded": {
+     "type": "static",
+     "lock": false,
+     "soft": false,
+     "split": 0.8,
+     "mll": 2500.0,
+     "dll": 1500.0,
+     "first_wait": 1,
+     "cycle": 1,
+     "min_pay": 500.0
+    }
+   },
+   "stream": {
+    "kind": "mix",
+    "size": 0.5,
+    "ru": 2.0,
+    "vt": 1250.0,
+    "g": 1800.0
+   },
+   "fm": 0.5,
+   "cm": 1.0,
+   "guard": null
+  },
+  {
+   "id": "E18",
+   "src": "F_LucidFlex100K [1.0, true, 4, 1.0, 0.25, 0.0]",
+   "key": "F_LucidFlex100K",
+   "firm": "Lucid Trading",
+   "label": "LucidFlex 100K (no DLL)",
+   "price_status": "secondary (DLL-on list price; DLL-off may cost more)",
+   "plan": {
+    "monthly": false,
+    "activation": 0.0,
+    "phases": [
+     {
+      "target": 6000,
+      "mll": 3000,
+      "type": "eod",
+      "lock": true,
+      "dll": null,
+      "soft": true,
+      "cons": 0.4,
+      "min_days": 0
+     }
+    ],
+    "funded": {
+     "type": "eod",
+     "lock": true,
+     "soft": true,
+     "mll": 3000,
+     "dll": null,
+     "split": 0.9,
+     "win_days": 5,
+     "win_thr": 200,
+     "first_wait": 1,
+     "cycle": 1,
+     "max_frac": 0.5,
+     "cap": 2500,
+     "min_pay": 500,
+     "floor_zero_after_pay": true
+    },
+    "fee": 215.0
+   },
+   "stream": {
+    "kind": "fut",
+    "risk": 3000.0,
+    "session": true,
+    "K": 4
+   },
+   "fm": 1.0,
+   "cm": 1.0,
+   "guard": 750.0
+  },
+  {
+   "id": "E19",
+   "src": "F_FTMOFutPro150K [1.0, true, 4, 1.0, 0.25, 0.0]",
+   "key": "F_FTMOFutPro150K",
+   "firm": "FTMO Futures",
+   "label": "FTMO Futures Pro 150K",
+   "price_status": "official (ftmo.com/en/futures/comparison-table, read 2026-11-25)",
+   "plan": {
+    "monthly": true,
+    "activation": 0.0,
+    "phases": [
+     {
+      "target": 9000,
+      "mll": 6000,
+      "type": "eod",
+      "lock": true,
+      "dll": 2000,
+      "soft": false,
+      "cons": 0.5,
+      "min_days": 0
+     }
+    ],
+    "funded": {
+     "type": "eod",
+     "lock": true,
+     "soft": false,
+     "mll": 6000,
+     "dll": 2000,
+     "split": 0.9,
+     "first_wait": 0,
+     "cycle": 0,
+     "cap": 8000,
+     "min_pay": 20,
+     "win_days": 5,
+     "win_thr": 500,
+     "new_frac": 0.5
+    },
+    "fee": 269.0
+   },
+   "stream": {
+    "kind": "fut",
+    "risk": 6000.0,
+    "session": true,
+    "K": 4
+   },
+   "fm": 1.0,
+   "cm": 1.0,
+   "guard": 1500.0
+  },
+  {
+   "id": "E20",
+   "src": "F_ETF_DH100K [1.0, false, 4, 1.0, 0.25, 0.0]",
+   "key": "F_ETF_DH100K",
+   "firm": "Elite Trader Funding",
+   "label": "ETF Diamond Hands 100K (held)",
+   "price_status": "verified",
+   "plan": {
+    "monthly": true,
+    "activation": 307.0,
+    "phases": [
+     {
+      "target": 5000,
+      "mll": 3500,
+      "dll": 1500,
+      "soft": false,
+      "cons": null,
+      "min_days": 5
+     }
+    ],
+    "funded": {
+     "mll": 3500,
+     "dll": 1500,
+     "soft": false,
+     "win_days": 8,
+     "win_thr": 1,
+     "cycle": 14,
+     "cap": 2500,
+     "min_pay": 100,
+     "split": 0.9
+    },
+    "fee": 397.0
+   },
+   "stream": {
+    "kind": "fut",
+    "risk": 3500.0,
+    "session": false,
+    "K": 4
+   },
+   "fm": 1.0,
+   "cm": 1.0,
+   "guard": 875.0
+  },
+  {
+   "id": "E21",
+   "src": "F_BluSkyOrbit150K [1.0, true, 4, 1.0, 0.25, 0.0]",
+   "key": "F_BluSkyOrbit150K",
+   "firm": "BluSky",
+   "label": "BluSky Orbit 150K",
+   "price_status": "secondary $419 (damnpropfirms, one affiliate source)",
+   "plan": {
+    "monthly": false,
+    "activation": 0.0,
+    "eval_days": 30,
+    "phases": [
+     {
+      "target": 9000,
+      "mll": 4500,
+      "type": "eod",
+      "lock": false,
+      "dll": null,
+      "soft": true,
+      "cons": null,
+      "min_days": 0
+     }
+    ],
+    "funded": {
+     "type": "eod",
+     "lock": true,
+     "soft": true,
+     "mll": 4500,
+     "dll": null,
+     "split": 0.9,
+     "first_wait": 5,
+     "cycle": 7,
+     "cap": 3000,
+     "min_pay": 500,
+     "buffer": 4500,
+     "cons": 0.4,
+     "floor_zero_after_pay": true
+    },
+    "fee": 419.0
+   },
+   "stream": {
+    "kind": "fut",
+    "risk": 4500.0,
+    "session": true,
+    "K": 4
+   },
+   "fm": 1.0,
+   "cm": 1.0,
+   "guard": 1125.0
+  },
+  {
+   "id": "E22",
+   "src": "BF100 {\"vt\": 1500, \"g\": 3000.0, \"cm\": 1.5, \"fm\": 1.0}",
+   "key": "BF100",
+   "firm": "Bitfunded 2-Step ($799)",
+   "label": "Bitfunded 2-Step ($799) (current book)",
+   "price_status": "verified (C347)",
+   "plan": {
+    "fee": 799,
+    "monthly": false,
+    "refund": true,
+    "refund_n": 3,
+    "phases": [
+     {
+      "target": 8000,
+      "mll": 10000,
+      "type": "static",
+      "lock": false,
+      "dll": 5000,
+      "soft": false,
+      "min_days": 0,
+      "cons": null
+     },
+     {
+      "target": 5000,
+      "mll": 10000,
+      "type": "static",
+      "lock": false,
+      "dll": 5000,
+      "soft": false,
+      "min_days": 0,
+      "cons": null
+     }
+    ],
+    "funded": {
+     "type": "static",
+     "lock": false,
+     "soft": false,
+     "split": 0.8,
+     "mll": 8000,
+     "dll": 5000,
+     "first_wait": 15,
+     "cycle": 15
+    }
+   },
+   "stream": {
+    "kind": "perp",
+    "size": 1,
+    "vt": 1500,
+    "ten": true
+   },
+   "fm": 1.0,
+   "cm": 1.5,
+   "guard": 3000.0
+  },
+  {
+   "id": "E23",
+   "src": "C2P200 {\"vt\": 1500, \"g\": 3000.0, \"cm\": 1.5, \"fm\": 1.0}",
+   "key": "C2P200",
+   "firm": "CFT 2-Phase",
+   "label": "CFT 2-Phase (current book)",
+   "price_status": "verified (C347)",
+   "plan": {
+    "fee": 1250,
+    "monthly": false,
+    "refund": false,
+    "refund_n": 1,
+    "phases": [
+     {
+      "target": 16000,
+      "mll": 20000,
+      "type": "static",
+      "lock": false,
+      "dll": 10000,
+      "soft": false,
+      "min_days": 0,
+      "cons": null
+     },
+     {
+      "target": 10000,
+      "mll": 20000,
+      "type": "static",
+      "lock": false,
+      "dll": 10000,
+      "soft": false,
+      "min_days": 0,
+      "cons": null
+     }
+    ],
+    "funded": {
+     "type": "static",
+     "lock": false,
+     "soft": false,
+     "split": 0.8,
+     "mll": 20000,
+     "dll": 10000,
+     "first_wait": 15,
+     "cycle": 15
+    }
+   },
+   "stream": {
+    "kind": "perp",
+    "size": 2,
+    "vt": 1500,
+    "ten": false
+   },
+   "fm": 1.0,
+   "cm": 1.5,
+   "guard": 6000.0
+  },
+  {
+   "id": "E24",
+   "src": "CTI2S100 {\"ru\": 1.5, \"vc\": 1.25, \"g\": 4000.0, \"fm\": 1.0}",
+   "key": "CTI2S100",
+   "firm": "City Traders Imperium",
+   "label": "CTI 2-Step 100K",
+   "price_status": "verified",
+   "plan": {
+    "fee": 549,
+    "monthly": false,
+    "refund": false,
+    "refund_n": 1,
+    "phases": [
+     {
+      "target": 10000,
+      "mll": 10000,
+      "type": "static",
+      "lock": false,
+      "dll": 5000,
+      "soft": false,
+      "min_days": 3,
+      "cons": null
+     },
+     {
+      "target": 5000,
+      "mll": 10000,
+      "type": "static",
+      "lock": false,
+      "dll": 5000,
+      "soft": false,
+      "min_days": 3,
+      "cons": null
+     }
+    ],
+    "funded": {
+     "type": "static",
+     "lock": false,
+     "soft": false,
+     "split": 0.8,
+     "mll": 10000,
+     "dll": 5000,
+     "first_wait": 7,
+     "cycle": 14
+    }
+   },
+   "stream": {
+    "kind": "cfd",
+    "size": 1,
+    "ru": 1.5,
+    "vc": 1.25,
+    "g": 4000.0,
+    "gap_rule": false
+   },
+   "fm": 1.0,
+   "cm": 1.0,
+   "guard": null
+  },
+  {
+   "id": "E25",
+   "src": "FN200 {\"ru\": 1.5, \"vc\": 1.25, \"g\": 4000.0, \"fm\": 1.0}",
+   "key": "FN200",
+   "firm": "FundedNext Stellar 2-Step (CFD)",
+   "label": "FundedNext Stellar 2-Step (CFD) (current book)",
+   "price_status": "verified (C347)",
+   "plan": {
+    "fee": 999.99,
+    "monthly": false,
+    "refund": true,
+    "refund_n": 1,
+    "phases": [
+     {
+      "target": 16000,
+      "mll": 20000,
+      "type": "static",
+      "lock": false,
+      "dll": 10000,
+      "soft": false,
+      "min_days": 5,
+      "cons": null
+     },
+     {
+      "target": 10000,
+      "mll": 20000,
+      "type": "static",
+      "lock": false,
+      "dll": 10000,
+      "soft": false,
+      "min_days": 5,
+      "cons": null
+     }
+    ],
+    "funded": {
+     "type": "static",
+     "lock": false,
+     "soft": false,
+     "split": 0.8,
+     "mll": 20000,
+     "dll": 10000,
+     "first_wait": 21,
+     "cycle": 14
+    }
+   },
+   "stream": {
+    "kind": "cfd",
+    "size": 2,
+    "ru": 1.5,
+    "vc": 1.25,
+    "g": 4000.0,
+    "gap_rule": false,
+    "funded": {
+     "ru": 0.75,
+     "vc": 0.0
+    }
+   },
+   "fm": 1.0,
+   "cm": 1.0,
+   "guard": null
+  },
+  {
+   "id": "E26",
+   "src": "F_AlphaAdvanced150K [1.0, true, 4, 1.0, 0.25, 0.0]",
+   "key": "F_AlphaAdvanced150K",
+   "firm": "Alpha",
+   "label": "Alpha Advanced 150K (C338 rules)",
+   "price_status": "verified 2026-11-22 (C338)",
+   "plan": {
+    "monthly": true,
+    "activation": 0.0,
+    "phases": [
+     {
+      "target": 12000,
+      "mll": 5250,
+      "dll": null,
+      "soft": true,
+      "cons": 0.4,
+      "min_days": 3
+     }
+    ],
+    "funded": {
+     "mll": 5250,
+     "win_days": 5,
+     "win_thr": 200,
+     "cycle": 7,
+     "max_frac": 0.5,
+     "min_pay": 1000,
+     "cap": 15000,
+     "split": 0.9
+    },
+    "fee": 489
+   },
+   "stream": {
+    "kind": "fut",
+    "risk": 5250.0,
+    "session": true,
+    "K": 4
+   },
+   "fm": 1.0,
+   "cm": 1.0,
+   "guard": 1312.5
+  },
+  {
+   "id": "E27",
+   "src": "F_AquaFlex50K [1.0, true, 5, 1.0, 0.25, 0.0]",
+   "key": "F_AquaFlex50K",
+   "firm": "AquaFunded",
+   "label": "Aqua Futures Flex 50K (list price, DLL on)",
+   "price_status": "verified (list $152; sale $91)",
+   "plan": {
+    "monthly": false,
+    "activation": 0.0,
+    "phases": [
+     {
+      "target": 3000,
+      "mll": 2000,
+      "dll": 1200,
+      "soft": false,
+      "cons": 0.5,
+      "min_days": 0
+     }
+    ],
+    "funded": {
+     "mll": 2000,
+     "dll": 1200,
+     "soft": false,
+     "win_days": 5,
+     "win_thr": 200,
+     "first_wait": 1,
+     "cycle": 1,
+     "cap": 2000,
+     "min_pay": 100,
+     "split": 0.9
+    },
+    "fee": 152.0
+   },
+   "stream": {
+    "kind": "fut",
+    "risk": 2000.0,
+    "session": true,
+    "K": 5
+   },
+   "fm": 1.0,
+   "cm": 1.0,
+   "guard": 500.0
+  },
+  {
+   "id": "E28",
+   "src": "F_LucidFlex150K [1.0, true, 5, 0.75, 0.25, 0.0]",
+   "key": "F_LucidFlex150K",
+   "firm": "Lucid Trading",
+   "label": "LucidFlex 150K (no DLL)",
+   "price_status": "secondary (DLL-on list price; DLL-off may cost more)",
+   "plan": {
+    "monthly": false,
+    "activation": 0.0,
+    "phases": [
+     {
+      "target": 9000,
+      "mll": 4500,
+      "type": "eod",
+      "lock": true,
+      "dll": null,
+      "soft": true,
+      "cons": 0.4,
+      "min_days": 0
+     }
+    ],
+    "funded": {
+     "type": "eod",
+     "lock": true,
+     "soft": true,
+     "mll": 4500,
+     "dll": null,
+     "split": 0.9,
+     "win_days": 5,
+     "win_thr": 250,
+     "first_wait": 1,
+     "cycle": 1,
+     "max_frac": 0.5,
+     "cap": 3000,
+     "min_pay": 500,
+     "floor_zero_after_pay": true
+    },
+    "fee": 323.0
+   },
+   "stream": {
+    "kind": "fut",
+    "risk": 4500.0,
+    "session": true,
+    "K": 5
+   },
+   "fm": 0.75,
+   "cm": 1.0,
+   "guard": 1125.0
+  },
+  {
+   "id": "E29",
+   "src": "F_LucidFlex150K [0.8, true, 5, 1.0, 0.25, 0.0]",
+   "key": "F_LucidFlex150K",
+   "firm": "Lucid Trading",
+   "label": "LucidFlex 150K (no DLL)",
+   "price_status": "secondary (DLL-on list price; DLL-off may cost more)",
+   "plan": {
+    "monthly": false,
+    "activation": 0.0,
+    "phases": [
+     {
+      "target": 9000,
+      "mll": 4500,
+      "type": "eod",
+      "lock": true,
+      "dll": null,
+      "soft": true,
+      "cons": 0.4,
+      "min_days": 0
+     }
+    ],
+    "funded": {
+     "type": "eod",
+     "lock": true,
+     "soft": true,
+     "mll": 4500,
+     "dll": null,
+     "split": 0.9,
+     "win_days": 5,
+     "win_thr": 250,
+     "first_wait": 1,
+     "cycle": 1,
+     "max_frac": 0.5,
+     "cap": 3000,
+     "min_pay": 500,
+     "floor_zero_after_pay": true
+    },
+    "fee": 323.0
+   },
+   "stream": {
+    "kind": "fut",
+    "risk": 3600.0,
+    "session": true,
+    "K": 5
+   },
+   "fm": 1.0,
+   "cm": 1.0,
+   "guard": 1125.0
+  },
+  {
+   "id": "E30",
+   "src": "F_MyFundedFuturesPro50K [1.0, true, 4, 1.0, 0.25, 0.0]",
+   "key": "F_MyFundedFuturesPro50K",
+   "firm": "MyFundedFutures",
+   "label": "MyFundedFutures Pro 50K (C338 rules)",
+   "price_status": "verified 2026-11-22 (C338)",
+   "plan": {
+    "monthly": false,
+    "activation": 0.0,
+    "phases": [
+     {
+      "target": 3000,
+      "mll": 2000,
+      "dll": null,
+      "soft": true,
+      "cons": 0.5,
+      "min_days": 2
+     }
+    ],
+    "funded": {
+     "mll": 2000,
+     "first_wait": 14,
+     "cycle": 14,
+     "buffer": 2100,
+     "min_pay": 1000,
+     "split": 0.8,
+     "floor_zero_after_pay": true
+    },
+    "fee": 265
+   },
+   "stream": {
+    "kind": "fut",
+    "risk": 2000.0,
+    "session": true,
+    "K": 4
+   },
+   "fm": 1.0,
+   "cm": 1.0,
+   "guard": 500.0
+  },
+  {
+   "id": "E31",
+   "src": "F_BluSkyOrbit50K [1.0, true, 4, 1.0, 0.25, 0.0]",
+   "key": "F_BluSkyOrbit50K",
+   "firm": "BluSky",
+   "label": "BluSky Orbit 50K",
+   "price_status": "secondary $199 (saveonpropfirms, propfirmsfinder)",
+   "plan": {
+    "monthly": false,
+    "activation": 0.0,
+    "eval_days": 30,
+    "phases": [
+     {
+      "target": 3000,
+      "mll": 2000,
+      "type": "eod",
+      "lock": false,
+      "dll": null,
+      "soft": true,
+      "cons": null,
+      "min_days": 0
+     }
+    ],
+    "funded": {
+     "type": "eod",
+     "lock": true,
+     "soft": true,
+     "mll": 2000,
+     "dll": null,
+     "split": 0.9,
+     "first_wait": 5,
+     "cycle": 7,
+     "cap": 2000,
+     "min_pay": 500,
+     "buffer": 2000,
+     "cons": 0.4,
+     "floor_zero_after_pay": true
+    },
+    "fee": 199.0
+   },
+   "stream": {
+    "kind": "fut",
+    "risk": 2000.0,
+    "session": true,
+    "K": 4
+   },
+   "fm": 1.0,
+   "cm": 1.0,
+   "guard": 500.0
+  }
+ ]
+}

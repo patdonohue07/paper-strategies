@@ -43,6 +43,7 @@ JOBS = [
     ("c296f-nav.yml", ["21:00"], WEEKDAYS, {}, 120),
     ("c348f-book.yml", ["09:40", "21:30"], ALL, {}, 120),   # replaced c334f-book (retired 2026-11-23)
     ("c349f-book.yml", ["09:40", "21:30"], ALL, {}, 120),   # C348F book + C349 stablecoin stream (C358 capped sizes)
+    ("c390f-book.yml", ["09:40", "21:30"], ALL, {}, 120),   # C387 v3.2 prop books (futures + CFD + perp), from 2026-12-01
 ]
 
 def slots_on(day, job):
