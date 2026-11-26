@@ -10,9 +10,18 @@ answer per attempt. So this log starts a **new one-attempt simulated account (a 
 | S02 | MFFU Pro 50K | $265 | 4% (2%) |
 | S03 | Velotrade CLASSIC 2-Step $5K | $54 | 5% (1%) |
 | S04 | CFT 2-Phase $5K (manual in the US) | $58 | 9% (6%) |
+| S07 / S08 | MFFU Pro 50K, C400 fast / annual seed setups, contract cap 30 micros | $265 ($159 BF) | C400 seed |
+| S09 / S10 | FundedNext Futures Flex 50K / 100K, C400 fast seed setups, caps 30 / 50 micros | $75 / $145 | C400 seed |
+| S11 | MFFU Pro 50K, C401 seed (US rule K5 + T1 at the 30-micro cap, $500 daily stop); ends at its 3rd payout | $159 | C401 seed |
+| S12 / S13 | MFFU Builder 50K (C401 Amendment 1 rules), C401 seeds (K5 / K4 + T1 at the 40-micro cap, firm's $1,000 soft daily limit); end at their 5th payout | $92 | C401 seed |
+| S14 | FundedNext Flex 50K, C401 seed (K4 + T1 at the 30-micro cap, $375 daily stop) | $75 | C401 seed |
 | S05 / S06 | S01 with leverage capped at 5x / 10x gross notional (C391 Amendment 1) | $71 | 21% / 25% (9% / 10%) |
 
 P30 = the chance of a first payout within 30 days on one attempt. The twin is the same setup with no edge.
+
+**$1,000 ledger** (`ledger.csv`): one simulated bankroll buys S07-S10 on 2026-12-01 at Black Friday prices ($538). On the 1st of each later month it re-buys any seed that ended, if cash covers the regular fee, and logs cash daily. It flags the $3,000 scale-up point; buying the full book after that is not simulated.
+
+**C401 $1,000 ledger** (`ledger_c401.csv`, addendum 4): a second bankroll follows the C401 policy. It buys S11-S14 on 2026-12-01 at Black Friday prices ($418), re-buys any seed that ended every 15 days (FundedNext: the second purchase is also at $74.99), and flags $4,500. In research (fold-honest, conservative payout limits) this policy funds the whole book within a year in 75% of paths. It is 53% with no edge and costs kept, so most of that comes from MFFU's rules, not the strategy. What the log cannot test is whether MFFU accepts this trading style (max size with a tight daily stop): reviews, Fair Play, or Pro's news rule.
 
 **Books:** AUTO_150 = 2 x S01; AUTO_150_L5 / _L10 = 2 x S05 / S06; AUTO_500 = S02 + 2 x S01 + S03; AUTO_1500 = 5 x S02 + 2 x S01; ALL_500 = S02 + 2 x S01 + S04.
 
@@ -36,4 +45,4 @@ whole-micro futures version, and the hourly lows behind the combined futures sto
 - **Dry run** (2026-09-20..11-24, scratch): files written and 28 cohorts completed (all failed in October 2026). Not part of the
   window.
 
-Prereg and decision rules: research_lab `claude/c391f-preregistration.md`, plus addenda 1-2. MyFundedPerps' leverage cap for Elite $10K is not verified: S05 is the reference below 10x, S06 at 10x or more. Day-14 plumbing check about 2026-12-15; review 2027-12-01.
+Prereg and decision rules: research_lab `claude/c391f-preregistration.md`, plus addenda 1-4. MyFundedPerps' leverage cap for Elite $10K is not verified: S05 is the reference below 10x, S06 at 10x or more. Day-14 plumbing check about 2026-12-15; review 2027-12-01.

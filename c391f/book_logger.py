@@ -173,6 +173,39 @@ def _fut_low_hours(data, f5, V, first, last, K):
     return LOW, ev
 
 
+def micro_counts(data, V, risk, K, t1, k_leg, first, last):
+    """{date: micros held} of the US rule leg (threshold K) + the T1 leg at this risk, entry days included (research c399_caps.counts)."""
+    out = {}
+    for s in base.US:
+        px = data[s]; days = list(px); sc, atr, C = V[s]; pv = c390.MICRO[s][0]; held = {}
+        if k_leg:
+            pos = None
+            for i, d in enumerate(days):
+                if pos is None:
+                    if d in sc and abs(sc[d]) >= K and d in atr:
+                        per = 1.5 * atr[d] * C[i] * pv; n = int(risk // per); n = 1 if (n == 0 and per <= 1.5 * risk) else n; n = min(n, c390.MAXC)
+                        if n > 0:
+                            pos = dict(e=C[i], u=1.5 * atr[d], n=n, i0=i, sg=base.sgn(sc[d])); held[d] = held.get(d, 0) + n
+                    continue
+                held[d] = held.get(d, 0) + pos["n"]; rt = pos["sg"] * (C[i] / pos["e"] - 1)
+                if rt <= -pos["u"] or rt >= 2 * pos["u"] or i - pos["i0"] >= 7:
+                    pos = None
+        if t1:
+            tp, _ = t1_positions(data, s); n = 0
+            for i in range(1, len(days)):
+                d = days[i]
+                if tp.get(d, 0.0) == 0:
+                    continue
+                if tp.get(days[i - 1], 0.0) == 0:
+                    dp = days[i - 1]; per = 1.5 * atr[dp] * C[i - 1] * pv if dp in atr else float("inf"); n = int(risk // per) if per != float("inf") else 0
+                    n = 1 if (n == 0 and per <= 1.5 * risk) else min(n, c390.MAXC); held[dp] = held.get(dp, 0) + n
+                held[d] = held.get(d, 0) + n
+        for d, v in held.items():
+            if first <= d <= last:
+                out[d] = out.get(d, 0) + v
+    return out
+
+
 # ---------------------------------------------------------------- per-entry streams
 Z24 = [0.0] * 24
 
@@ -188,7 +221,12 @@ def entry_stream(e, R, X, d):
             kl = X["KH"][st["K"]].get(d, Z24); lh = [lh[h] + s * kl[h] for h in range(24)]
         if st["t1"]:
             tl = X["T1F"].get(d, (Z24, Z24))[1]; lh = [lh[h] + s * tl[h] for h in range(24)]
-        return (x, a, min(min(lh), x, 0.0), "")
+        lo = min(min(lh), x, 0.0)
+        if st.get("caps"):                                   # C399 contract caps: eval stream, funded stream
+            n = X["MIC"][(st["risk"], st["K"], st["t1"], st["k_leg"])].get(d, 0)
+            ke, kf = ((min(1.0, c / n) if n > 0 else 1.0) for c in st["caps"])
+            return [(x * ke, a, lo * ke, ""), (x * kf, a, lo * kf, "")]
+        return (x, a, lo, "")
     sz = st["size"]
     if k == "mix":
         U, PP = R["Un"], R["crp"]; T = X["T1C"].get(d, (Z24, Z24)); k = 1.0
@@ -250,8 +288,13 @@ def compute(data, f5, first, last, live_today=None, hourly=None, wait=False):
     X = dict(FS=FS, KH={K: k_hours(data, f5, V, first, last, K) for K in sorted({e["stream"]["K"] for e in BOOK["entries"] if e["stream"]["kind"] == "fut"})},
              T1M={(r, s): t1_micro(data, V, r, s, first, last) for r, s, K in FUT}, T1F=t1_hours(data, f5, V, first, last, False), T1C=t1_hours(data, f5, V, first, last, True))
     X['USNOT'], X['T1NOT'] = notional(data, V, first, last)
+    X["MIC"] = {(e["stream"]["risk"], e["stream"]["K"], e["stream"]["t1"], e["stream"]["k_leg"]): micro_counts(data, V, e["stream"]["risk"], e["stream"]["K"], e["stream"]["t1"], e["stream"]["k_leg"], first, last)
+                for e in BOOK["entries"] if e["stream"]["kind"] == "fut" and e["stream"].get("caps")}
     for r in rows:
-        d = r["date"]; r["S"]["absp"] = sum(abs(v) for v in r["pos"].values()); r["E"] = {i: entry_stream(e, r["S"], X, d) for i, e in ENT.items()}
+        d = r["date"]; r["S"]["absp"] = sum(abs(v) for v in r["pos"].values()); r["E"], r["Ef"] = {}, {}
+        for i, e in ENT.items():
+            x = entry_stream(e, r["S"], X, d)
+            r["E"][i], r["Ef"][i] = (x[0], x[1]) if isinstance(x, list) else (x, None)
         r["t1"] = {s: t1_positions(data, s)[0].get(d, 0.0) for s in base.US}
     return rows, why
 
@@ -262,6 +305,58 @@ def backtest(a, b, path):
         w = csv.writer(f); ids = list(ENT); w.writerow(["date"] + [f"{i}_{x}" for i in ids for x in ("E", "A", "Lo")])
         for r in rows:
             w.writerow([r["date"].isoformat()] + [v for i in ids for v in (round(r["E"][i][0], 4), int(bool(r["E"][i][1])), round(r["E"][i][2], 4))])
+
+
+# ---------------------------------------------------------------- $1,000 bootstrap ledger (C400 seed policy, C391F addendum 3)
+LEDGER_CASH0, LEDGER_SCALE = 1000.0, 3000.0
+LEDGERS = (("SEED_1000", "ledger", "ledger.csv", 3000.0, None),           # C400 seeds: re-buy on the 1st of the month, flag at $3,000
+           ("SEED_1000_C401", "ledger_c401", "ledger_c401.csv", 4500.0, 15))  # C401 seeds (addendum 4): re-buy every 15 days, flag at $4,500
+
+
+def step1(a, e, E, Ef, t):
+    """c390.step plus the C401 amendment 2 rule: an account whose plan sets funded max_pays ends at that payout (live transition not
+    credited). Entries without max_pays are unchanged."""
+    pnl, ev = c390.step(a, e, E, Ef, t=t); mp = e["plan"]["funded"].get("max_pays")
+    if mp and not a["dead"] and a["npay"] >= mp:
+        a["dead"] = True; a["restart"] = False; ev.append(f"account ended at payout {a['npay']} (live transition not credited)")
+    return pnl, ev
+
+
+def ledger_step(S, r, d, path, book="SEED_1000", key="ledger", scale=LEDGER_SCALE, every=None):
+    """one simulated $1,000 bankroll: buy the SEED_1000 entries on START at their promo fees, step every holding (one attempt each),
+    and on the 1st of each later month re-buy any seed that is no longer alive if cash covers its regular fee. Writes ledger.csv.
+    C401 (addendum 4): book / state key / flag threshold / re-buy cadence (every N days from START) are parameters; an entry's
+    promo price applies to its first promo_uses purchases (default 1 = day one only, the C400 behaviour)."""
+    seeds = list(BOOKS.get(book, {}))
+    if not seeds or d < START or d > LAST_START + timedelta(days=HORIZON - 1):
+        return
+    L = S.get(key)
+    price = lambda i: float(ENT[i].get("seed_promo_fee", ENT[i]["plan"]["fee"])) if sum(h["entry"] == i for h in L["hold"]) < ENT[i].get("promo_uses", 1) else float(ENT[i]["plan"]["fee"])
+    if L is None:
+        L = S[key] = dict(hold=[], ev=[], scaled=False)
+        for i in seeds:
+            a = c390.new_account(ENT[i]); a["attempts"] = c390.MAX_ATT; p_ = price(i)
+            L["hold"].append(dict(entry=i, start=str(d), acc=a, adj=float(ENT[i]["plan"]["fee"]) - p_))
+    cash = lambda: LEDGER_CASH0 + sum(h["acc"]["cash"] + h["adj"] for h in L["hold"]); ev = []
+    if d > START and ((every is None and d.day == 1) or (every is not None and (d - START).days % every == 0)):
+        for i in seeds:
+            if not any(h["entry"] == i and not h["acc"]["dead"] and not h["acc"]["restart"] for h in L["hold"]) and cash() >= price(i):
+                a = c390.new_account(ENT[i]); a["attempts"] = c390.MAX_ATT; p_ = price(i)
+                L["hold"].append(dict(entry=i, start=str(d), acc=a, adj=float(ENT[i]["plan"]["fee"]) - p_)); ev.append(f"re-buy {i}" + (f" (${p_:,.2f})" if p_ != float(ENT[i]["plan"]["fee"]) else ""))
+    for h in L["hold"]:
+        if not h["acc"]["dead"]:
+            _, e2 = step1(h["acc"], ENT[h["entry"]], r["E"][h["entry"]], r["Ef"][h["entry"]], t=d)
+            ev += [f"{h['entry']}: {x}".replace(f"stopped after {c390.MAX_ATT} attempts", "account ended (one attempt)") for x in e2 if not x.startswith(("stop (stream)", "personal stop"))]
+    c = cash()
+    if c >= scale and not L["scaled"]:
+        L["scaled"] = True; ev.append(f"scale-up threshold reached (${scale:,.0f}): buy the rest of the book from here (not simulated)")
+    new = not os.path.exists(path)
+    with open(path, "a", newline="") as f:
+        w = csv.writer(f)
+        if new:
+            w.writerow(["date", "cash", "alive", "payouts_to_date", "fees_to_date", "events"])
+        w.writerow([d.isoformat(), round(c, 2), sum(1 for h in L["hold"] if not h["acc"]["dead"] and not h["acc"]["restart"]),
+                    round(sum(h["acc"]["payouts"] for h in L["hold"]), 2), round(sum(h["acc"]["fees"] - h["adj"] for h in L["hold"]), 2), "; ".join(ev)])
 
 
 # ---------------------------------------------------------------- cohorts
@@ -296,7 +391,7 @@ def main(stdir):
                 S["active"] += [new_cohort(i, d) for i in ids]
             keep = []
             for c in S["active"]:
-                e = ENT[c["entry"]]; _, ev = c390.step(c["acc"], e, r["E"][c["entry"]], None, t=d); c["age"] += 1
+                e = ENT[c["entry"]]; _, ev = step1(c["acc"], e, r["E"][c["entry"]], r["Ef"][c["entry"]], t=d); c["age"] += 1
                 c.setdefault("ev", []).extend(f"{d}: {x}".replace(f"stopped after {c390.MAX_ATT} attempts", "cohort ended (one attempt)") for x in ev if not x.startswith(("stop (stream)", "personal stop")))
                 if c["age"] == 31:
                     c["cash30"] = round(c["acc"]["cash"], 2)
@@ -307,6 +402,8 @@ def main(stdir):
                 else:
                     keep.append(c)
             S["active"] = keep
+            for b_, k_, f_, sc_, ev_ in LEDGERS:
+                ledger_step(S, r, d, os.path.join(stdir, f_), b_, k_, sc_, ev_)
             w1.writerow([d.isoformat()] + [round(r["E"][i][j], 2) for i in ids for j in (0, 2)] + [int(any(v for v in r["t1"].values())),
                         round(r["pos"]["BTC-USD"], 4), round(r["pos"]["ETH-USD"], 4), "; ".join(r["events"])])
             print(d, " ".join(f"{i}={r['E'][i][0]:.0f}" for i in ids), f"active cohorts {len(S['active'])}", flush=True)
