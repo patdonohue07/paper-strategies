@@ -1,0 +1,33 @@
+key check 2026-11-27T15:32:20
+APACKEYID/APCSECRET (bond fund + BILI): key length 26, secret length 44 -> OK, account status ACTIVE
+   order BILI sell qty 8748 filled 0 @ None market/day status accepted submitted 2026-11-27T20:15:19 filled_at 
+   order BILI buy qty 8748 filled 8748 @ 12.31 market/day status filled submitted 2026-11-27T13:40:30 filled_at 2026-11-27T14:32:45
+   order BILI sell qty 9009 filled 9009 @ 11.43 market/day status filled submitted 2026-11-25T20:15:23 filled_at 2026-11-25T20:15:23
+   order VCIT sell qty 9 filled 9 @ 79.73 market/day status filled submitted 2026-11-25T20:15:19 filled_at 2026-11-25T20:15:24
+   order BILI buy qty 9009 filled 9009 @ 11.28 market/day status filled submitted 2026-11-25T13:40:21 filled_at 2026-11-25T14:31:46
+   order BILI buy qty 9182 filled 9182 @ 11.07 market/day status filled submitted 2026-11-24T20:15:33 filled_at 2026-11-24T20:15:33
+   order VCIT sell qty 27 filled 27 @ 79.42 market/day status filled submitted 2026-11-24T20:15:30 filled_at 2026-11-24T20:15:32
+   order BILI sell qty 9182 filled 9182 @ 10.371601 market/day status filled submitted 2026-11-24T13:40:26 filled_at 2026-11-24T14:35:40
+   order BILI sell qty 9433 filled 9433 @ 10.97 market/day status filled submitted 2026-11-23T20:15:23 filled_at 2026-11-23T20:15:23
+   order VCIT sell qty 4 filled 4 @ 79.38 market/day status filled submitted 2026-11-23T20:15:22 filled_at 2026-11-23T20:15:22
+   order BILI buy qty 9433 filled 9433 @ 11.13 market/day status filled submitted 2026-11-23T13:40:15 filled_at 2026-11-23T14:30:16
+   order VCIT sell qty 27 filled 27 @ 79.38 market/day status filled submitted 2026-11-20T20:15:31 filled_at 2026-11-20T20:15:32
+   position BILI qty 8748 value 106725.6
+   position IEF qty -2774 value -254348.06
+   position VCIT qty 3737 value 297166.24
+APACKEYID2/APACSECRET2 (portable alpha): key length 26, secret length 44 -> OK, account status ACTIVE
+   order TLT sell qty 18 filled 18 @ 82.39 market/day status filled submitted 2026-11-25T20:15:22 filled_at 2026-11-25T20:15:25
+   order IEF sell qty 10 filled 10 @ 92.14 market/day status filled submitted 2026-11-25T20:15:21 filled_at 2026-11-25T20:15:23
+   order SPY buy qty 6 filled 6 @ 715.87 market/day status filled submitted 2026-11-25T20:15:21 filled_at 2026-11-25T20:15:21
+   order TLT sell qty 23 filled 23 @ 81.65 market/day status filled submitted 2026-11-24T20:15:32 filled_at 2026-11-24T20:15:34
+   order IEF sell qty 52 filled 52 @ 91.76 market/day status filled submitted 2026-11-24T20:15:32 filled_at 2026-11-24T20:15:34
+   order TLT buy qty 2641 filled 2641 @ 81.65 market/day status filled submitted 2026-11-23T20:15:22 filled_at 2026-11-23T20:15:24
+   order IEF buy qty 5229 filled 5229 @ 91.64 market/day status filled submitted 2026-11-23T20:15:22 filled_at 2026-11-23T20:15:24
+   order SPY buy qty 1 filled 1 @ 723.9 market/day status filled submitted 2026-11-23T20:15:22 filled_at 2026-11-23T20:15:23
+   order SPY sell qty 1 filled 1 @ 693.54 market/day status filled submitted 2026-11-20T20:15:33 filled_at 2026-11-20T20:15:34
+   order SPY buy qty 1 filled 1 @ 753.64 market/day status filled submitted 2026-11-13T20:15:22 filled_at 2026-11-13T20:15:23
+   order SPY sell qty 1 filled 1 @ 757.13 market/day status filled submitted 2026-11-12T20:15:18 filled_at 2026-11-12T20:15:19
+   order SPY buy qty 1324 filled 1324 @ 755.26914 market/day status filled submitted 2026-11-09T20:15:18 filled_at 2026-11-09T20:15:29
+   position IEF qty 5167 value 473762.23
+   position SPY qty 1330 value 970687.2
+   position TLT qty 2600 value 211380
