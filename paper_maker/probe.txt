@@ -1,0 +1,5 @@
+open KXBTCD events 3 ['KXBTCD-26NOV0317', 'KXBTCD-26NOV0617']
+markets 80
+{'ticker': 'KXBTCD-26NOV0317-T67499.99', 'close_time': '2026-11-03T22:00:00Z', 'yes_bid': None, 'yes_ask': None, 'yes_bid_dollars': '0.9900', 'yes_ask_dollars': '1.0000', 'status': 'active', 'result': ''}
+trades sample []
+KXBTC open ['KXBTC-26NOV0309', 'KXBTC-26NOV0317', 'KXBTC-26NOV0617']
