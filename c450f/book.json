@@ -1,0 +1,1383 @@
+{
+ "source": "research_lab reports/c450 (final book, 48 accounts) frozen by code/c451_freeze.py and code/c451_book.py on 2026-11-28",
+ "accounts": 48,
+ "fees": 38376.0,
+ "research": {
+  "mean": 109495,
+  "honest_loyo": 105500,
+  "median": 33291,
+  "p10": -39111
+ },
+ "entries": [
+  {
+   "id": "E01",
+   "key": "HY200",
+   "label": "HyroTrader One-Step 200K",
+   "firm": "HyroTrader",
+   "count": 1,
+   "research_value_each": 9411,
+   "research_by_year": [
+    9852,
+    14005,
+    8643,
+    4851,
+    9702
+   ],
+   "variant": "C448 book",
+   "cfg": {
+    "vt": 1500,
+    "g": 2400.0,
+    "cm": 1.0,
+    "fm": 1.0
+   },
+   "plan": {
+    "fee": 1299.0,
+    "monthly": false,
+    "refund": true,
+    "refund_n": 1,
+    "phases": [
+     {
+      "target": 20000,
+      "mll": 16000,
+      "type": "static",
+      "lock": false,
+      "dll": 8000,
+      "soft": false,
+      "min_days": 3,
+      "cons": 0.4
+     }
+    ],
+    "funded": {
+     "type": "static",
+     "lock": false,
+     "soft": false,
+     "split": 0.8,
+     "mll": 16000,
+     "dll": 8000,
+     "first_wait": 0,
+     "cycle": 1,
+     "min_pay": 31.25,
+     "cap": 10000.0,
+     "cap_forfeit": true,
+     "min_cycle": 3000.0
+    }
+   },
+   "stream": {
+    "kind": "perp",
+    "size": 2.0,
+    "vt": 1500
+   },
+   "engine": {
+    "cm": 1.0,
+    "fm": 1.0,
+    "guard": 4800.0,
+    "pay_gap": 0,
+    "cushion": 0.0
+   }
+  },
+  {
+   "id": "E02",
+   "key": "PR1S100_200K",
+   "label": "Propr Classic 1-Step 200K",
+   "firm": "Propr",
+   "count": 1,
+   "research_value_each": 6372,
+   "research_by_year": [
+    6914,
+    10185,
+    4217,
+    3844,
+    6698
+   ],
+   "variant": "C448 book",
+   "cfg": {
+    "vt": 1125.0,
+    "g": 1800.0,
+    "cm": 1.0,
+    "fm": 1.0,
+    "add": "base",
+    "mult": 1.0
+   },
+   "plan": {
+    "fee": 1998.0,
+    "monthly": false,
+    "refund": false,
+    "refund_n": 1,
+    "phases": [
+     {
+      "target": 20000.0,
+      "mll": 12000.0,
+      "type": "static",
+      "lock": false,
+      "dll": 6000.0,
+      "soft": false,
+      "min_days": 0,
+      "cons": null
+     }
+    ],
+    "funded": {
+     "type": "static",
+     "lock": false,
+     "soft": false,
+     "mll": 12000.0,
+     "dll": 6000.0,
+     "split": 0.8,
+     "first_wait": 0,
+     "cycle": 0,
+     "min_pay": 25.0,
+     "buffer": 0.0
+    }
+   },
+   "stream": {
+    "kind": "perp",
+    "size": 2.0,
+    "vt": 1125.0
+   },
+   "engine": {
+    "cm": 1.0,
+    "fm": 1.0,
+    "guard": 3600.0,
+    "pay_gap": 0,
+    "cushion": 0.0
+   }
+  },
+  {
+   "id": "E03",
+   "key": "C2P200#v",
+   "label": "CFT 2-Phase 200K, 90% split add-on, 0.75x evaluation / 1.25x funded",
+   "firm": "Crypto Fund Trader",
+   "count": 1,
+   "research_value_each": 9040,
+   "research_by_year": [
+    8998,
+    11976,
+    7289,
+    6654,
+    10285
+   ],
+   "variant": "C450 phase",
+   "cfg": {
+    "vt": 1500,
+    "g": 3000.0,
+    "cm": 1.5,
+    "fm": 1.0,
+    "phase": [
+     0.75,
+     0.75,
+     1.25
+    ]
+   },
+   "plan": {
+    "fee": 1500.0,
+    "monthly": false,
+    "refund": false,
+    "refund_n": 1,
+    "phases": [
+     {
+      "target": 16000,
+      "mll": 20000,
+      "type": "static",
+      "lock": false,
+      "dll": 10000,
+      "soft": false,
+      "min_days": 5,
+      "cons": null
+     },
+     {
+      "target": 10000,
+      "mll": 20000,
+      "type": "static",
+      "lock": false,
+      "dll": 10000,
+      "soft": false,
+      "min_days": 5,
+      "cons": null
+     }
+    ],
+    "funded": {
+     "type": "static",
+     "lock": false,
+     "soft": false,
+     "split": 0.9,
+     "mll": 20000,
+     "dll": 10000,
+     "first_wait": 15,
+     "cycle": 15
+    }
+   },
+   "stream": {
+    "kind": "perp",
+    "size": 2.0,
+    "vt": 1500,
+    "day_cap": 10000.0,
+    "trade_cap": {
+     "realize_at": 8000.0,
+     "cap": 10000.0,
+     "rt": 0.0015
+    },
+    "stage_mult": [
+     1.125,
+     1.25
+    ]
+   },
+   "engine": {
+    "cm": 1.5,
+    "fm": 1.25,
+    "guard": 6000.0,
+    "pay_gap": 0,
+    "cushion": 0.0,
+    "phase_mult": [
+     1.125,
+     1.125
+    ]
+   }
+  },
+  {
+   "id": "E04",
+   "key": "CTI#c",
+   "label": "City Traders Imperium 2-Step 100K",
+   "firm": "City Traders Imperium",
+   "count": 1,
+   "research_value_each": 2919,
+   "research_by_year": [
+    8049,
+    707,
+    1217,
+    1090,
+    3531
+   ],
+   "variant": "C446",
+   "cfg": {
+    "ru": 1.5,
+    "vc": 1.25,
+    "g": 4000.0,
+    "fm": 1.0,
+    "t1": 0
+   },
+   "plan": {
+    "fee": 549,
+    "monthly": false,
+    "refund": false,
+    "refund_n": 1,
+    "phases": [
+     {
+      "target": 10000,
+      "mll": 10000,
+      "type": "static",
+      "lock": false,
+      "dll": 5000,
+      "soft": false,
+      "min_days": 3,
+      "cons": null
+     },
+     {
+      "target": 5000,
+      "mll": 10000,
+      "type": "static",
+      "lock": false,
+      "dll": 5000,
+      "soft": false,
+      "min_days": 3,
+      "cons": null
+     }
+    ],
+    "funded": {
+     "type": "static",
+     "lock": false,
+     "soft": false,
+     "split": 0.8,
+     "mll": 10000,
+     "dll": 5000,
+     "first_wait": 7,
+     "cycle": 14
+    }
+   },
+   "stream": {
+    "kind": "cfd",
+    "size": 1.0,
+    "us": "US4",
+    "crypto": "C2",
+    "ru": 1.5,
+    "vc": 1.25,
+    "g": 4000.0,
+    "offset": {
+     "type": "open",
+     "us": "US4",
+     "crypto": "C2"
+    }
+   },
+   "engine": {
+    "fm": 1.0,
+    "pay_gap": 0,
+    "cushion": 0.0,
+    "cm": 1.0,
+    "guard": null
+   }
+  },
+  {
+   "id": "E05",
+   "key": "FTUS#r",
+   "label": "FTMO US 2-Step 200K Swing (indices without Russell + BTC), losers closed and reopened at the reset",
+   "firm": "FTMO US",
+   "count": 2,
+   "research_value_each": 7173,
+   "research_by_year": [
+    10993,
+    -1105,
+    16982,
+    2532,
+    6461
+   ],
+   "variant": "C446",
+   "cfg": {
+    "ru": 2.0,
+    "vc": 0.5,
+    "g": 4000.0,
+    "fm": 1.0,
+    "pp": 0
+   },
+   "plan": {
+    "fee": 1249.0,
+    "monthly": false,
+    "refund": true,
+    "refund_n": 1,
+    "phases": [
+     {
+      "target": 20000.0,
+      "mll": 20000.0,
+      "type": "static",
+      "lock": false,
+      "dll": 10000.0,
+      "soft": false,
+      "min_days": 4,
+      "cons": null
+     },
+     {
+      "target": 10000.0,
+      "mll": 20000.0,
+      "type": "static",
+      "lock": false,
+      "dll": 10000.0,
+      "soft": false,
+      "min_days": 4,
+      "cons": null
+     }
+    ],
+    "funded": {
+     "type": "static",
+     "lock": false,
+     "soft": false,
+     "split": 0.8,
+     "mll": 20000.0,
+     "dll": 10000.0,
+     "first_wait": 14,
+     "cycle": 14
+    }
+   },
+   "stream": {
+    "kind": "cfd",
+    "size": 2.0,
+    "us": "US3",
+    "crypto": "BTC",
+    "ru": 2.0,
+    "vc": 0.5,
+    "g": 4000.0,
+    "crypto_cap": {
+     "basis": "BTC",
+     "lev": 1.0
+    },
+    "offset": {
+     "type": "realize",
+     "us": "US3",
+     "crypto": "BTC"
+    }
+   },
+   "engine": {
+    "fm": 1.0,
+    "pay_gap": 0,
+    "cushion": 0.0,
+    "cm": 1.0,
+    "guard": null
+   }
+  },
+  {
+   "id": "E06",
+   "key": "FP#f",
+   "label": "FunderPro 2-Phase 200K Swing, 90% split add-on",
+   "firm": "FunderPro",
+   "count": 1,
+   "research_value_each": 7957,
+   "research_by_year": [
+    21264,
+    -619,
+    9827,
+    2003,
+    7308
+   ],
+   "variant": "C447 add-on",
+   "cfg": {
+    "fm": 1.0,
+    "g": 4000.0,
+    "ru": 1.5,
+    "vc": 1.0
+   },
+   "plan": {
+    "fee": 1564.55,
+    "monthly": false,
+    "refund": false,
+    "refund_n": 1,
+    "phases": [
+     {
+      "target": 20000.0,
+      "mll": 20000.0,
+      "type": "static",
+      "lock": false,
+      "dll": 10000.0,
+      "soft": false,
+      "min_days": 4,
+      "cons": null
+     },
+     {
+      "target": 10000.0,
+      "mll": 20000.0,
+      "type": "static",
+      "lock": false,
+      "dll": 10000.0,
+      "soft": false,
+      "min_days": 4,
+      "cons": null
+     }
+    ],
+    "funded": {
+     "type": "static",
+     "lock": false,
+     "soft": false,
+     "split": 0.9,
+     "mll": 20000.0,
+     "dll": 10000.0,
+     "first_wait": 14,
+     "cycle": 14,
+     "min_pay": 100.0
+    }
+   },
+   "stream": {
+    "kind": "cfd_fp",
+    "size": 2.0,
+    "us": "US4",
+    "crypto": "C2",
+    "ru": 1.5,
+    "vc": 1.0,
+    "g": 4000.0,
+    "eval_caps": {
+     "crypto": 1.0,
+     "us": null
+    },
+    "funded_caps": {
+     "crypto": 0.2,
+     "us": 2.0
+    },
+    "offset": {
+     "type": "realize",
+     "us": "US4",
+     "crypto": "C2",
+     "min_of_stages": true
+    }
+   },
+   "engine": {
+    "fm": 1.0,
+    "pay_gap": 0,
+    "cushion": 0.0,
+    "cm": 1.0,
+    "guard": null
+   }
+  },
+  {
+   "id": "E07",
+   "key": "IF100",
+   "label": "Instant Funding One-Phase Crypto 100K, 90% split add-on",
+   "firm": "Instant Funding",
+   "count": 10,
+   "research_value_each": 2106,
+   "research_by_year": [
+    3203,
+    3086,
+    1628,
+    679,
+    1937
+   ],
+   "variant": "C450 add-on",
+   "cfg": {
+    "fm": 1.0,
+    "g": 1800.0,
+    "pp": 0,
+    "vc": 1.25
+   },
+   "plan": {
+    "fee": 1078.65,
+    "monthly": false,
+    "refund": false,
+    "refund_n": 1,
+    "phases": [
+     {
+      "target": 10000.0,
+      "mll": 6000.0,
+      "type": "static",
+      "lock": false,
+      "dll": 3000.0,
+      "soft": false,
+      "min_days": 7,
+      "cons": null
+     }
+    ],
+    "funded": {
+     "type": "static",
+     "lock": false,
+     "soft": false,
+     "split": 0.9,
+     "mll": 6000.0,
+     "dll": 3000.0,
+     "first_wait": 7,
+     "cycle": 7,
+     "min_cycle": 1500.0,
+     "min_pay": 25.0
+    }
+   },
+   "stream": {
+    "kind": "cfd",
+    "size": 1.0,
+    "us": "US4",
+    "crypto": "C2",
+    "ru": 0.0,
+    "vc": 1.25,
+    "g": 1800.0,
+    "crypto_cap": {
+     "basis": "ABS2",
+     "lev": 1.0
+    },
+    "offset": {
+     "type": "open_neg",
+     "crypto": "C2"
+    }
+   },
+   "engine": {
+    "fm": 1.0,
+    "pay_gap": 0,
+    "cushion": 0.0,
+    "cm": 1.0,
+    "guard": null
+   }
+  },
+  {
+   "id": "E08",
+   "key": "VTC2S100#f",
+   "label": "Velotrade Classic 100K (crypto only), 1.25x phase 1 and funded",
+   "firm": "Velotrade",
+   "count": 1,
+   "research_value_each": 3756,
+   "research_by_year": [
+    2862,
+    6599,
+    2564,
+    1695,
+    5060
+   ],
+   "variant": "C450 phase",
+   "cfg": {
+    "fm": 1.0,
+    "g": 2000.0,
+    "pp": 0,
+    "ru": 0.0,
+    "t1": 0,
+    "vc": 1.5,
+    "phase": [
+     1.25,
+     1.0,
+     1.25
+    ],
+    "med_abs": 23.2939596939698
+   },
+   "plan": {
+    "fee": 769.0,
+    "monthly": false,
+    "refund": false,
+    "refund_n": 1,
+    "phases": [
+     {
+      "target": 10000,
+      "mll": 10000,
+      "type": "static",
+      "lock": false,
+      "dll": 5000,
+      "soft": false,
+      "min_days": 5,
+      "cons": null,
+      "min_day_thr": 800.0,
+      "min_day_cost": 52.41140931143206
+     },
+     {
+      "target": 5000,
+      "mll": 10000,
+      "type": "static",
+      "lock": false,
+      "dll": 5000,
+      "soft": false,
+      "min_days": 5,
+      "cons": null,
+      "min_day_thr": 800.0,
+      "min_day_cost": 52.41140931143206
+     }
+    ],
+    "funded": {
+     "type": "static",
+     "lock": false,
+     "soft": false,
+     "split": 0.8,
+     "mll": 10000,
+     "dll": 5000,
+     "first_wait": 14,
+     "cycle": 7,
+     "cap": 15380.0,
+     "win_days_first": 5,
+     "win_thr_first": 800.0,
+     "win_cost_first": 52.41140931143206
+    }
+   },
+   "stream": {
+    "kind": "mix",
+    "size": 1.0,
+    "ru": 0.0,
+    "vt": 1500.0,
+    "g": 2000.0,
+    "offset": {
+     "type": "open_neg",
+     "crypto": "C2",
+     "vc": 1.5
+    }
+   },
+   "engine": {
+    "fm": 1.25,
+    "pay_gap": 0,
+    "cushion": 0.0,
+    "cm": 1.0,
+    "guard": null,
+    "phase_mult": [
+     1.25,
+     1.0
+    ]
+   }
+  },
+  {
+   "id": "E09",
+   "key": "MFPSIG100#co",
+   "label": "MyFundedPerps Signature 100K, 90/10 add-on",
+   "firm": "MyFundedPerps",
+   "count": 1,
+   "research_value_each": 983,
+   "research_by_year": [
+    945,
+    2295,
+    -74,
+    250,
+    1502
+   ],
+   "variant": "C447 add-on",
+   "cfg": {
+    "fm": 1.0,
+    "g": 1800.0,
+    "pp": 3,
+    "ru": 0.0,
+    "t1": 0,
+    "vc": 1.25
+   },
+   "plan": {
+    "fee": 1007.0,
+    "monthly": false,
+    "refund": false,
+    "refund_n": 1,
+    "phases": [
+     {
+      "target": 10000,
+      "mll": 6000,
+      "type": "static",
+      "lock": false,
+      "dll": 3000,
+      "soft": false,
+      "min_days": 0,
+      "cons": null
+     }
+    ],
+    "funded": {
+     "type": "static",
+     "lock": false,
+     "soft": false,
+     "split": 0.9,
+     "mll": 6000,
+     "dll": 3000,
+     "first_wait": 1,
+     "cycle": 1,
+     "min_pay": 100,
+     "floor_zero_after_pay": true
+    }
+   },
+   "stream": {
+    "kind": "mix",
+    "size": 1.0,
+    "ru": 0.0,
+    "vt": 1250.0,
+    "g": 1800.0
+   },
+   "engine": {
+    "fm": 1.0,
+    "pay_gap": 7,
+    "cushion": 0.5,
+    "cm": 1.0,
+    "guard": null
+   }
+  },
+  {
+   "id": "E10",
+   "key": "MFPEL3D50#co",
+   "label": "MyFundedPerps Elite 50K (3% daily limit), 90/10 add-on, 0.75x evaluation / 1.25x funded",
+   "firm": "MyFundedPerps",
+   "count": 2,
+   "research_value_each": 1310,
+   "research_by_year": [
+    1320,
+    2767,
+    198,
+    597,
+    1669
+   ],
+   "variant": "C448 phase",
+   "cfg": {
+    "fm": 1.0,
+    "g": 1800.0,
+    "pp": 3,
+    "ru": 0.0,
+    "t1": 0,
+    "vc": 1.25,
+    "phase": [
+     0.75,
+     1.0,
+     1.25
+    ]
+   },
+   "plan": {
+    "fee": 594.0,
+    "monthly": false,
+    "refund": false,
+    "refund_n": 1,
+    "phases": [
+     {
+      "target": 5000.0,
+      "mll": 2500.0,
+      "type": "static",
+      "lock": false,
+      "dll": 1500.0,
+      "soft": false,
+      "min_days": 0,
+      "cons": null
+     }
+    ],
+    "funded": {
+     "type": "static",
+     "lock": false,
+     "soft": false,
+     "split": 0.9,
+     "mll": 2500.0,
+     "dll": 1500.0,
+     "first_wait": 1,
+     "cycle": 1,
+     "min_pay": 500.0
+    }
+   },
+   "stream": {
+    "kind": "mix",
+    "size": 0.5,
+    "ru": 0.0,
+    "vt": 1250.0,
+    "g": 1800.0
+   },
+   "engine": {
+    "fm": 1.25,
+    "pay_gap": 7,
+    "cushion": 0.5,
+    "cm": 1.0,
+    "guard": null,
+    "phase_mult": [
+     0.75
+    ]
+   }
+  },
+  {
+   "id": "E11",
+   "key": "MENT#buf",
+   "label": "Ment Funding $1M (indices without Russell), 90% split add-on, 1.5x max-loss buffer kept",
+   "firm": "Ment Funding",
+   "count": 1,
+   "research_value_each": 20902,
+   "research_by_year": [
+    41567,
+    -11164,
+    59246,
+    4289,
+    10572
+   ],
+   "variant": "C447 add-on",
+   "cfg": {
+    "cush": 1.5,
+    "fm": 1.0,
+    "g": 4000.0,
+    "gap": 0,
+    "pp": 0,
+    "ru": 2.0,
+    "vc": 0.0
+   },
+   "plan": {
+    "fee": 11180.0,
+    "monthly": false,
+    "refund": false,
+    "refund_n": 1,
+    "phases": [
+     {
+      "target": 100000.0,
+      "mll": 60000.0,
+      "type": "static",
+      "lock": false,
+      "dll": 50000.0,
+      "soft": false,
+      "min_days": 0,
+      "cons": null
+     }
+    ],
+    "funded": {
+     "type": "static",
+     "lock": false,
+     "soft": false,
+     "split": 0.9,
+     "mll": 60000.0,
+     "dll": 50000.0,
+     "first_wait": 0,
+     "cycle": 30,
+     "wait_cal": true,
+     "lock_at": 0.0,
+     "floor_zero_after_pay": true
+    }
+   },
+   "stream": {
+    "kind": "cfd",
+    "size": 10.0,
+    "us": "US3",
+    "crypto": "BTC",
+    "ru": 2.0,
+    "vc": 0.0,
+    "g": 4000.0,
+    "offset": {
+     "type": "realize",
+     "us": "US3",
+     "crypto": "BTC"
+    }
+   },
+   "engine": {
+    "fm": 1.0,
+    "pay_gap": 0,
+    "cushion": 1.5,
+    "cm": 1.0,
+    "guard": null
+   }
+  },
+  {
+   "id": "E12",
+   "key": "F_FundedNextFuturesFlex100K#3d",
+   "label": "FundedNext Futures Flex 100K, buy after 3 down closes",
+   "firm": "FundedNext",
+   "count": 5,
+   "research_value_each": 769,
+   "research_by_year": [
+    -143,
+    544,
+    142,
+    -60,
+    3365
+   ],
+   "variant": "C448 book",
+   "cfg": {
+    "stream": "3down",
+    "R": 800
+   },
+   "plan": {
+    "monthly": false,
+    "activation": 0.0,
+    "phases": [
+     {
+      "target": 5000,
+      "mll": 2500,
+      "dll": null,
+      "soft": true,
+      "cons": 0.4,
+      "min_days": 0
+     }
+    ],
+    "funded": {
+     "mll": 2500,
+     "win_days": 5,
+     "win_thr": 200.0,
+     "first_wait": 5,
+     "cycle": 5,
+     "min_cycle": 500,
+     "cap": 2500,
+     "min_pay": 250,
+     "split": 0.95,
+     "max_frac": 0.5
+    },
+    "fee": 159.99
+   },
+   "stream": {
+    "kind": "fut3d",
+    "risk": 1600.0,
+    "caps": [
+     50,
+     50
+    ],
+    "news": [
+     false,
+     false
+    ]
+   },
+   "engine": {
+    "cm": 1.0,
+    "fm": 1.0,
+    "guard": null,
+    "pay_gap": 0,
+    "cushion": 0.0
+   }
+  },
+  {
+   "id": "E13",
+   "key": "F_LucidFlex50K#3d#mp5",
+   "label": "Lucid Flex 50K (max 5 payouts), buy after 3 down closes",
+   "firm": "Lucid",
+   "count": 5,
+   "research_value_each": 465,
+   "research_by_year": [
+    -122,
+    501,
+    49,
+    31,
+    1868
+   ],
+   "variant": "C448 book",
+   "cfg": {
+    "stream": "3down",
+    "R": 800
+   },
+   "plan": {
+    "monthly": false,
+    "activation": 0.0,
+    "phases": [
+     {
+      "target": 3000,
+      "mll": 2000,
+      "type": "eod",
+      "lock": true,
+      "dll": null,
+      "soft": true,
+      "cons": 0.4,
+      "min_days": 3,
+      "lock_at": 100.0
+     }
+    ],
+    "funded": {
+     "type": "eod",
+     "lock": true,
+     "soft": true,
+     "mll": 2000,
+     "dll": null,
+     "split": 0.9,
+     "win_days": 5,
+     "win_thr": 150,
+     "first_wait": 1,
+     "cycle": 1,
+     "max_frac": 0.5,
+     "cap": 2000,
+     "min_pay": 500,
+     "floor_zero_after_pay": true,
+     "lock_at": 100.0,
+     "max_pays": 5
+    },
+    "fee": 126.0
+   },
+   "stream": {
+    "kind": "fut3d",
+    "risk": 800.0,
+    "caps": [
+     40,
+     20
+    ],
+    "news": [
+     false,
+     false
+    ]
+   },
+   "engine": {
+    "cm": 1.0,
+    "fm": 1.0,
+    "guard": null,
+    "pay_gap": 0,
+    "cushion": 0.0
+   }
+  },
+  {
+   "id": "E14",
+   "key": "F_MyFundedFuturesBuilder50K#3d",
+   "label": "MyFundedFutures Builder 50K, buy after 3 down closes",
+   "firm": "MyFundedFutures",
+   "count": 1,
+   "research_value_each": 348,
+   "research_by_year": [
+    -153,
+    308,
+    -92,
+    -56,
+    1734
+   ],
+   "variant": "C448 book",
+   "cfg": {
+    "stream": "3down",
+    "R": 800
+   },
+   "plan": {
+    "monthly": false,
+    "activation": 0.0,
+    "phases": [
+     {
+      "target": 3000,
+      "mll": 2000,
+      "dll": 1000,
+      "soft": true,
+      "cons": null,
+      "min_days": 1,
+      "lock_at": 100.0
+     }
+    ],
+    "funded": {
+     "mll": 2000,
+     "dll": 1000,
+     "soft": true,
+     "cons": 0.5,
+     "first_wait": 2,
+     "cycle": 2,
+     "buffer": 2100,
+     "min_pay": 500,
+     "cap": 2000,
+     "min_cycle": 500,
+     "split": 0.8,
+     "floor_zero_after_pay": true,
+     "lock_at": 100.0,
+     "max_pays": 5
+    },
+    "fee": 153.0
+   },
+   "stream": {
+    "kind": "fut3d",
+    "risk": 800.0,
+    "caps": [
+     40,
+     40
+    ],
+    "news": [
+     false,
+     false
+    ]
+   },
+   "engine": {
+    "cm": 1.0,
+    "fm": 1.0,
+    "guard": null,
+    "pay_gap": 0,
+    "cushion": 0.0
+   }
+  },
+  {
+   "id": "E15",
+   "key": "F_MyFundedFuturesPro50K#3d",
+   "label": "MyFundedFutures Pro 50K, buy after 3 down closes",
+   "firm": "MyFundedFutures",
+   "count": 4,
+   "research_value_each": 269,
+   "research_by_year": [
+    -262,
+    303,
+    -187,
+    -153,
+    1644
+   ],
+   "variant": "C448 book",
+   "cfg": {
+    "stream": "3down",
+    "R": 800
+   },
+   "plan": {
+    "monthly": false,
+    "activation": 0.0,
+    "phases": [
+     {
+      "target": 3000,
+      "mll": 2000,
+      "dll": null,
+      "soft": true,
+      "cons": 0.5,
+      "min_days": 2,
+      "lock_at": 100.0
+     }
+    ],
+    "funded": {
+     "mll": 2000,
+     "first_wait": 14,
+     "cycle": 14,
+     "buffer": 2100,
+     "min_pay": 1000,
+     "split": 0.8,
+     "floor_zero_after_pay": true,
+     "lock_at": 100.0,
+     "wait_cal": true,
+     "max_pays": 3
+    },
+    "fee": 265
+   },
+   "stream": {
+    "kind": "fut3d",
+    "risk": 800.0,
+    "caps": [
+     30,
+     30
+    ],
+    "news": [
+     false,
+     true
+    ]
+   },
+   "engine": {
+    "cm": 1.0,
+    "fm": 1.0,
+    "guard": null,
+    "pay_gap": 0,
+    "cushion": 0.0
+   }
+  },
+  {
+   "id": "E16",
+   "key": "F_Topstep50K#3d#mp5",
+   "label": "Topstep 50K (max 5 payouts), buy after 3 down closes",
+   "firm": "Topstep",
+   "count": 5,
+   "research_value_each": 267,
+   "research_by_year": [
+    -171,
+    328,
+    -158,
+    -147,
+    1484
+   ],
+   "variant": "C448 book",
+   "cfg": {
+    "stream": "3down",
+    "R": 800
+   },
+   "plan": {
+    "monthly": true,
+    "activation": 149,
+    "phases": [
+     {
+      "target": 3000,
+      "mll": 2000,
+      "dll": null,
+      "soft": true,
+      "cons": 0.55,
+      "min_days": 2
+     }
+    ],
+    "funded": {
+     "mll": 2000,
+     "win_days": 5,
+     "win_thr": 150,
+     "max_frac": 0.5,
+     "cap": 2000,
+     "min_pay": 125,
+     "split": 0.9,
+     "floor_zero_after_pay": true,
+     "max_pays": 5
+    },
+    "fee": 49.0
+   },
+   "stream": {
+    "kind": "fut3d",
+    "risk": 800.0,
+    "caps": [
+     50,
+     20
+    ],
+    "news": [
+     true,
+     true
+    ]
+   },
+   "engine": {
+    "cm": 1.0,
+    "fm": 1.0,
+    "guard": null,
+    "pay_gap": 0,
+    "cushion": 0.0
+   }
+  },
+  {
+   "id": "E17",
+   "key": "F_BrightCore50K#3d",
+   "label": "BrightFunded Core 50K, buy after 3 down closes",
+   "firm": "BrightFunded",
+   "count": 5,
+   "research_value_each": 225,
+   "research_by_year": [
+    -187,
+    246,
+    -49,
+    -80,
+    1196
+   ],
+   "variant": "C448 book",
+   "cfg": {
+    "stream": "3down",
+    "R": 800
+   },
+   "plan": {
+    "monthly": false,
+    "activation": 0.0,
+    "phases": [
+     {
+      "target": 3000,
+      "mll": 2000,
+      "type": "eod",
+      "lock": false,
+      "dll": null,
+      "soft": true,
+      "cons": 0.4,
+      "min_days": 3,
+      "lock_at": 100.0
+     }
+    ],
+    "funded": {
+     "type": "eod",
+     "lock": false,
+     "soft": true,
+     "mll": 2000,
+     "dll": null,
+     "split": 0.8,
+     "win_days": 5,
+     "win_thr": 200.0,
+     "first_wait": 0,
+     "cycle": 1,
+     "max_frac": 0.5,
+     "cap": 2000,
+     "min_pay": 250,
+     "floor_zero_after_pay": true,
+     "lock_at": 100.0
+    },
+    "fee": 190.0
+   },
+   "stream": {
+    "kind": "fut3d",
+    "risk": 800.0,
+    "caps": [
+     40,
+     40
+    ],
+    "news": [
+     false,
+     false
+    ]
+   },
+   "engine": {
+    "cm": 1.0,
+    "fm": 1.0,
+    "guard": null,
+    "pay_gap": 0,
+    "cushion": 0.0
+   }
+  },
+  {
+   "id": "E18",
+   "key": "F_BluSkyOrbit50K#on",
+   "label": "BluSky Orbit 50K, index-futures trend held through the evening session, funded half size",
+   "firm": "BluSky",
+   "count": 1,
+   "research_value_each": 68,
+   "research_by_year": [
+    -57,
+    -197,
+    217,
+    245,
+    130
+   ],
+   "variant": "C448 book",
+   "cfg": {
+    "fam": "K",
+    "stream": "K",
+    "seg": "ch",
+    "rf": 0.5,
+    "K": 5,
+    "g": null,
+    "fm": 0.5
+   },
+   "plan": {
+    "monthly": false,
+    "activation": 0.0,
+    "eval_days": 30,
+    "phases": [
+     {
+      "target": 3000,
+      "mll": 2000,
+      "type": "eod",
+      "lock": false,
+      "dll": null,
+      "soft": true,
+      "cons": null,
+      "min_days": 0
+     }
+    ],
+    "funded": {
+     "type": "eod",
+     "lock": true,
+     "soft": true,
+     "mll": 2000,
+     "dll": null,
+     "split": 0.9,
+     "first_wait": 5,
+     "cycle": 3,
+     "cap": 2000,
+     "min_pay": 500,
+     "buffer": 2000,
+     "cons": 0.4,
+     "floor_zero_after_pay": true
+    },
+    "fee": 199.0
+   },
+   "stream": {
+    "kind": "futk",
+    "risk": 1000.0,
+    "K": 5,
+    "session": true,
+    "caps": [
+     50,
+     20
+    ]
+   },
+   "engine": {
+    "cm": 1.0,
+    "fm": 0.5,
+    "guard": null,
+    "pay_gap": 0,
+    "cushion": 0.0
+   }
+  }
+ ]
+}
