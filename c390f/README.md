@@ -67,3 +67,11 @@ whose data are complete. Window 2026-12-01 .. 2027-11-30 (365 days); every accou
   index, and assumed at 0.03%/day when files stay missing for more than 3 days (as C348F).
 - **Not modelled:** Topstep's call-up to a Live account (which closes all funded accounts), Lucid's live transition, and firm
   discretion.
+
+**C402 engine fixes (2026-11-26, before the 2026-12-01 start):** `step` now:
+- books a soft daily-loss breach at exactly -dll (it used to keep a positive close);
+- counts payout waits in days with a position, unless a plan sets `funded.wait_cal`;
+- supports `lock_at`.
+
+These match research_lab `code/c402_engine.py`: 0 mismatches on 3,600 random paths (research_lab `reports/c402/README.md`). Plans
+without soft daily limits or payout waits are unaffected.
