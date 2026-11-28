@@ -309,8 +309,9 @@ def backtest(a, b, path):
 
 # ---------------------------------------------------------------- $1,000 bootstrap ledger (C400 seed policy, C391F addendum 3)
 LEDGER_CASH0, LEDGER_SCALE = 1000.0, 3000.0
-LEDGERS = (("SEED_1000", "ledger", "ledger.csv", 3000.0, None),           # C400 seeds: re-buy on the 1st of the month, flag at $3,000
-           ("SEED_1000_C401", "ledger_c401", "ledger_c401.csv", 4500.0, 15))  # C401 seeds (addendum 4): re-buy every 15 days, flag at $4,500
+LEDGERS = (("SEED_1000", "ledger", "ledger.csv", 3000.0, None),)          # C400 seeds: re-buy on the 1st of the month, flag at $3,000
+# The C401 ledger (SEED_1000_C401, re-buy every 15 days, flag $4,500) was retired by C391F addendum 5: C402 found the C401 model inflated.
+# ledger_step still supports (book, key, file, flag, cadence) tuples for a corrected seed set.
 
 
 def step1(a, e, E, Ef, t):

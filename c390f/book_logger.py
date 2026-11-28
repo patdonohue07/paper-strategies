@@ -156,7 +156,8 @@ def rules(plan):
     for p in plan["phases"] + [F]:
         fu = p is F
         out.append(dict(tgt=INF if fu else p["target"], mll=p["mll"], eod=p.get("type", "eod") == "eod", lock=p.get("lock", True),
-                        dll=p.get("dll") or INF, soft=p.get("soft", True), cons=0.0 if fu else (p.get("cons") or 0.0), mind=0 if fu else p.get("min_days", 0)))
+                        dll=p.get("dll") or INF, soft=p.get("soft", True), cons=0.0 if fu else (p.get("cons") or 0.0), mind=0 if fu else p.get("min_days", 0),
+                        lka=p.get("lock_at", 0.0)))
     return out
 
 
@@ -184,12 +185,12 @@ def step(a, e, S, Sf=None, t=None):
         pnl = low = -g; ev.append(f"personal stop -${g:,.0f}")
     r = R[a["st"]]; hit = low < -r["dll"]; hard = hit and not r["soft"]
     if hit and r["soft"]:
-        pnl = max(pnl, -r["dll"]); low = -r["dll"]; ev.append("soft daily limit")
+        pnl = -r["dll"]; low = -r["dll"]; ev.append("soft daily limit")      # C402 fix: a soft breach books exactly -dll
     floor = (a["hw"] - r["mll"]) if r["eod"] else -r["mll"]
     if r["lock"]:
-        floor = min(floor, 0.0)
+        floor = min(floor, r["lka"])
     if a["fz"]:
-        floor = max(floor, 0.0)
+        floor = max(floor, r["lka"])                        # C402: lock_at (default 0 = unchanged)
     br = hard or (a["bal"] + low <= floor)
     if br and not dead:
         ev.append(f"BREACH ({'daily' if hard else 'max'} loss) in {'funded' if fu else 'phase ' + str(a['st'] + 1)}")
@@ -217,7 +218,8 @@ def step(a, e, S, Sf=None, t=None):
             return pnl, ev                                 # nf: no funded-stage bookkeeping on the day of funding (research ~nf)
     fa = ok and a["st"] == nph
     if fa:
-        a["since"] += 1; a["wins"] += int(pnl >= F.get("win_thr", 0.01)); a["cyc"] += pnl; a["cbest"] = max(a["cbest"], pnl)
+        a["since"] += int(bool(X[1]) or F.get("wait_cal", False))      # C402 fix: waits count days with a position unless calendar days
+        a["wins"] += int(pnl >= F.get("win_thr", 0.01)); a["cyc"] += pnl; a["cbest"] = max(a["cbest"], pnl)
     wait = F.get("first_wait", 0) if a["npay"] == 0 else F.get("cycle", 1)
     amt = min(F.get("cap", INF), F.get("max_frac", 1.0) * (a["bal"] - F.get("buffer", 0.0)))
     if F.get("new_frac"):
