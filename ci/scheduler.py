@@ -45,6 +45,7 @@ JOBS = [
     ("c349f-book.yml", ["09:40", "21:30"], ALL, {}, 120),   # C348F book + C349 stablecoin stream (C358 capped sizes)
     ("c390f-book.yml", ["09:40", "21:30"], ALL, {}, 120),   # C387 v3.2 prop books (futures + CFD + perp), from 2026-12-01
     ("c391f-book.yml", ["09:40", "21:30"], ALL, {}, 120),   # C391 short-horizon book, daily one-attempt cohorts, from 2026-12-01
+    ("c450f-book.yml", ["09:40", "21:30"], ALL, {}, 120),   # C450 final prop book (48 accounts, one attempt each), from 2026-12-01
 ]
 
 def slots_on(day, job):

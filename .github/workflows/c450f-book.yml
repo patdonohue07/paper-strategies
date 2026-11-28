@@ -1,0 +1,23 @@
+name: c450f-book
+# C450F forward paper log: the final C450 prop book (48 accounts at 16 firms: crypto trend, US index swing and futures
+# three-down copies). Daily 09:40 and 21:30 ET via ci/scheduler.py; Yahoo and data.binance.vision public data, no orders, no account.
+# State on state-c450f. First logged day 2026-12-01; review 2027-12-01.
+on:
+  workflow_dispatch:
+permissions: {contents: write}
+concurrency: {group: c450f, cancel-in-progress: false}
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env: {TZ: America/New_York, GH_TOKEN: "${{ secrets.GITHUB_TOKEN }}"}
+    steps:
+      - uses: actions/checkout@v4
+      - id: gate
+        run: if [ -f ci/ENABLED ]; then echo "on=1" >> $GITHUB_OUTPUT; else echo "on=0" >> $GITHUB_OUTPUT; fi
+      - if: steps.gate.outputs.on == '1'
+        run: ci/state.sh restore c450f c450f/state
+      - if: steps.gate.outputs.on == '1'
+        run: python3 c450f/book_logger.py c450f/state
+      - if: steps.gate.outputs.on == '1' && always()
+        run: ci/state.sh save c450f c450f/state
